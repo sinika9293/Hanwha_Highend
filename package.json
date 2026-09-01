@@ -1,0 +1,22 @@
+{
+  "name": "hanwha-highend",
+  "version": "1.0.0",
+  "description": "Hanwha High-End Residence Trend Report",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linter configured for static HTML'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "vercel",
+    "analytics",
+    "static-site"
+  ],
+  "author": "",
+  "license": "MIT"
+}
