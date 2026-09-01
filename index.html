@@ -3,164 +3,580 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>하이엔드 주거 트렌드 리포트</title>
+<title>HIGHEND RESIDENCE — 하이엔드 주거 트렌드 리포트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+  rel="stylesheet"
+/>
 <style>
   :root {
-    --bg: #0f1115;
-    --card: #171a21;
-    --border: #2a2e38;
-    --text: #e6e8ec;
-    --muted: #9aa1ac;
-    --accent: #d8b26a;
+    --bg: #0a0f1e;
+    --bg-alt: #0d1428;
+    --surface: #101830;
+    --surface-2: #131c38;
+    --border: rgba(201, 169, 110, 0.18);
+    --border-soft: rgba(255, 255, 255, 0.07);
+    --text: #eef0f5;
+    --muted: #8a92a6;
+    --gold: #c9a96e;
+    --gold-soft: rgba(201, 169, 110, 0.12);
   }
+
   * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
   body {
     margin: 0;
     background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 500px at 20% -10%, rgba(201, 169, 110, 0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(201, 169, 110, 0.05), transparent 60%);
     color: var(--text);
-    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    line-height: 1.6;
+    font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
   }
-  header {
-    padding: 64px 24px 32px;
-    max-width: 880px;
+
+  .serif {
+    font-family: "Playfair Display", "Noto Sans KR", serif;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 1080px;
     margin: 0 auto;
+    padding: 0 32px;
   }
-  header h1 {
-    font-size: 28px;
-    margin: 0 0 8px;
-  }
-  header p {
-    color: var(--muted);
-    margin: 0;
-    font-size: 15px;
-  }
-  main {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 0 24px 64px;
-  }
-  section {
-    margin-top: 40px;
-  }
-  section h2 {
-    font-size: 16px;
-    letter-spacing: 0.05em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  ul.report-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+  /* ---------- Header ---------- */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(10, 15, 30, 0.72);
+    border-bottom: 1px solid var(--border-soft);
   }
-  ul.report-list li a {
-    display: block;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
-    color: var(--text);
-    text-decoration: none;
-    transition: border-color 0.15s ease;
+
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.06em;
   }
-  ul.report-list li a:hover {
-    border-color: var(--accent);
+  .logo .mark {
+    color: var(--gold);
   }
-  ul.report-list li a span.date {
-    display: block;
+  .logo .sub {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.18em;
     color: var(--muted);
-    font-size: 13px;
-    margin-top: 4px;
+    text-transform: uppercase;
   }
-  .muted {
+
+  nav.site-nav {
+    display: flex;
+    gap: 36px;
+  }
+  nav.site-nav a {
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+  nav.site-nav a:hover {
+    color: var(--gold);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 200px 0 120px;
+    text-align: center;
+    position: relative;
+  }
+  .hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .hero .eyebrow::before,
+  .hero .eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+  .hero h1 {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1.25;
+    margin: 0 0 24px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero p {
+    max-width: 560px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .divider {
+    width: 1px;
+    height: 64px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 56px auto 0;
+    opacity: 0.7;
+  }
+
+  /* ---------- Sections ---------- */
+  section {
+    padding: 96px 0;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 56px;
+    flex-wrap: wrap;
+  }
+  .section-head .label {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .section-head h2 {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3vw, 36px);
+    margin: 8px 0 0;
+  }
+  .section-head p {
+    max-width: 380px;
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+    text-align: right;
+  }
+
+  /* ---------- Report cards ---------- */
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .report-card {
+    display: block;
+    text-decoration: none;
+    background: linear-gradient(160deg, var(--surface-2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .report-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .report-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201, 169, 110, 0.5);
+    box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+  }
+  .report-card:hover::before {
+    opacity: 1;
+  }
+  .report-card .date {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .report-card h3 {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0 0 14px;
+    line-height: 1.4;
+  }
+  .report-card .summary {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+    margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .report-card .cta {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .report-card .cta .arrow {
+    transition: transform 0.25s ease;
+  }
+  .report-card:hover .cta .arrow {
+    transform: translateX(4px);
+  }
+
+  .report-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 0;
     color: var(--muted);
     font-size: 14px;
   }
-  footer {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 0 24px 48px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-  a.plain {
-    color: var(--accent);
-  }
+
+  /* ---------- Pipeline ---------- */
   .pipeline {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    position: relative;
   }
-  .pipeline span {
-    background: var(--card);
+  .pipeline-step {
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+  }
+  .pipeline-step .ring {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 14px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 18px;
+    position: relative;
+    z-index: 2;
+  }
+  .pipeline-step::before {
+    content: "";
+    position: absolute;
+    top: 27px;
+    left: -50%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), var(--border));
+    opacity: 0.5;
+    z-index: 1;
+  }
+  .pipeline-step:first-child::before {
+    display: none;
+  }
+  .pipeline-step h4 {
     font-size: 13px;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  .pipeline-step p {
+    font-size: 12.5px;
     color: var(--muted);
+    margin: 0;
+  }
+
+  /* ---------- About ---------- */
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .about-card blockquote {
+    margin: 0;
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .about-card blockquote .gold {
+    color: var(--gold);
+  }
+  .about-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .about-meta .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+  .about-meta .row span:first-child {
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .about-meta .row span:last-child {
+    text-align: right;
+  }
+  .about-meta a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.4);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--border-soft);
+    padding: 48px 0 64px;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  footer .disclaimer {
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  footer .foot-logo {
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    font-size: 15px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .about-card {
+      grid-template-columns: 1fr;
+    }
+    .pipeline {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .pipeline-step::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    .site-header { padding: 16px 20px; }
+    nav.site-nav { gap: 20px; }
+    nav.site-nav a { font-size: 11px; }
+    .hero { padding: 150px 0 80px; }
+    .section-head { flex-direction: column; }
+    .section-head p { text-align: left; }
+    section { padding: 64px 0; }
+    .about-card { padding: 28px; }
   }
 </style>
 </head>
 <body>
-  <header>
-    <h1>하이엔드 주거 트렌드 리포트</h1>
-    <p>
-      Claude API 웹검색으로 국내 부동산·건설 매체와 해외 리서치하우스·건축 전문지를
-      수집해, 매월 자동으로 생성하는 트렌드 리포트입니다.
-    </p>
+
+  <header class="site-header">
+    <div class="logo">
+      <span class="mark">H</span>ighend<span class="sub">RESIDENCE JOURNAL</span>
+    </div>
+    <nav class="site-nav">
+      <a href="#reports">Reports</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/sinika9293/Hanwha_Highend" target="_blank" rel="noopener">GitHub</a>
+    </nav>
   </header>
 
   <main>
-    <section>
-      <h2>월간 리포트</h2>
-      <ul class="report-list" id="report-list">
-        <li><span class="muted">불러오는 중...</span></li>
-      </ul>
+    <section class="hero wrap" style="border-top:none; padding-bottom: 0;">
+      <p class="eyebrow">Monthly Intelligence</p>
+      <h1>하이엔드 주거,<br /><em>흐름을 읽다</em></h1>
+      <p>
+        Claude API 웹검색으로 국내 부동산·건설 매체와 해외 리서치하우스·건축 전문지를
+        수집해, 매월 자동으로 발행하는 하이엔드 주거 트렌드 리포트입니다.
+      </p>
+      <div class="divider"></div>
     </section>
 
-    <section>
-      <h2>이 프로젝트</h2>
-      <div class="card">
-        <p style="margin-top: 0;">
-          실행 시점이 속한 달의 <strong>전월 1일~말일</strong>을 대상 기간으로 자동
-          계산해, 아래 파이프라인으로 리포트를 생성합니다.
-        </p>
-        <div class="pipeline">
-          <span>대상 기간 계산</span>
-          <span>Claude 웹검색 조사</span>
-          <span>구조화 (JSON)</span>
-          <span>Markdown 렌더링</span>
-          <span>Excel 렌더링</span>
+    <section id="reports">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="label">Archive</span>
+            <h2>월간 리포트</h2>
+          </div>
+          <p>매월 자동 계산된 전월 1일~말일 기준으로 발행되는 리포트 아카이브입니다.</p>
         </div>
-        <p class="muted" style="margin-bottom: 0;">
-          자세한 설치·실행 방법은
-          <a class="plain" href="https://github.com/sinika9293/Hanwha_Highend#readme">README</a>를
-          참고하세요.
-        </p>
+        <div class="report-grid" id="report-list">
+          <div class="report-placeholder">불러오는 중...</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pipeline">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="label">Process</span>
+            <h2>제작 파이프라인</h2>
+          </div>
+          <p>대상 기간 계산부터 최종 문서 출력까지, 다섯 단계로 자동화됩니다.</p>
+        </div>
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="ring">01</div>
+            <h4>대상 기간 계산</h4>
+            <p>전월 1일~말일 자동 산정</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="ring">02</div>
+            <h4>웹검색 조사</h4>
+            <p>Claude 웹검색으로 사실 수집</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="ring">03</div>
+            <h4>구조화</h4>
+            <p>고정 템플릿 JSON 변환</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="ring">04</div>
+            <h4>Markdown</h4>
+            <p>리포트 본문 렌더링</p>
+          </div>
+          <div class="pipeline-step">
+            <div class="ring">05</div>
+            <h4>Excel</h4>
+            <p>데이터 표 산출물 생성</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="label">About</span>
+            <h2>이 저널에 대하여</h2>
+          </div>
+        </div>
+        <div class="about-card">
+          <blockquote>
+            마감재의 시대는 지나고, <span class="gold">운영과 서비스</span>가
+            하이엔드 주거의 새로운 경쟁축이 되고 있습니다.
+          </blockquote>
+          <div class="about-meta">
+            <div class="row"><span>Frequency</span><span>매월 1회 자동 발행</span></div>
+            <div class="row"><span>Coverage</span><span>국내 청약·상품 · 해외 브랜디드 레지던스</span></div>
+            <div class="row"><span>Method</span><span>Claude API Web Search</span></div>
+            <div class="row"><span>Source</span><span><a href="https://github.com/sinika9293/Hanwha_Highend#readme" target="_blank" rel="noopener">README 보기 →</a></span></div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
-    본 페이지와 리포트는 Claude API 웹검색으로 수집한 공개 보도·리서치 자료를 기반으로
-    자동 생성됩니다. 수치·사실은 원 보도 시점 기준이며 별도 검증이 필요합니다.
+    <div class="wrap">
+      <div class="foot-logo">HIGHEND RESIDENCE JOURNAL</div>
+      <p class="disclaimer">
+        본 페이지와 리포트는 Claude API 웹검색으로 수집한 공개 보도·리서치 자료를
+        기반으로 자동 생성됩니다. 수치·사실은 원 보도 시점 기준이며 별도 검증이
+        필요합니다.
+      </p>
+    </div>
   </footer>
 
   <script>
     const OWNER = "sinika9293";
     const REPO = "Hanwha_Highend";
     const REPORT_PATTERN = /^(\d{4}-\d{2})_하이엔드주거_트렌드보고서\.md$/;
+
+    function stripMarkdown(text) {
+      return text
+        .replace(/\*\*(.+?)\*\*/g, "$1")
+        .replace(/[*_`]/g, "")
+        .trim();
+    }
+
+    function extractSummary(markdown) {
+      const match = markdown.match(/## 0\. 한눈에 보기[^\n]*\n+([\s\S]*?)(?:\n---|\n## )/);
+      if (!match) return "";
+      const firstLine = match[1]
+        .split("\n")
+        .map((l) => l.trim())
+        .find((l) => l.length > 0);
+      if (!firstLine) return "";
+      return stripMarkdown(firstLine.replace(/^\d+\.\s*/, ""));
+    }
+
+    function monthLabel(label) {
+      const [y, m] = label.split("-");
+      return `${y}. ${m}`;
+    }
 
     async function loadReports() {
       const listEl = document.getElementById("report-list");
@@ -177,33 +593,47 @@
             name: f.name,
             label: f.name.match(REPORT_PATTERN)[1],
             htmlUrl: f.html_url,
+            downloadUrl: f.download_url,
           }))
           .sort((a, b) => b.label.localeCompare(a.label));
 
         if (reports.length === 0) {
-          listEl.innerHTML = '<li><span class="muted">아직 생성된 리포트가 없습니다.</span></li>';
+          listEl.innerHTML =
+            '<div class="report-placeholder">아직 생성된 리포트가 없습니다. 첫 리포트가 곧 발행됩니다.</div>';
           return;
         }
 
         listEl.innerHTML = reports
           .map(
             (r) => `
-          <li>
-            <a href="${r.htmlUrl}">
-              ${r.label} 하이엔드 주거 트렌드 리포트
-              <span class="date">${r.name}</span>
-            </a>
-          </li>`
+          <a class="report-card" href="${r.htmlUrl}" target="_blank" rel="noopener" data-name="${r.name}">
+            <span class="date">${monthLabel(r.label)}</span>
+            <h3>하이엔드 주거 트렌드 리포트</h3>
+            <p class="summary">요약을 불러오는 중...</p>
+            <span class="cta">리포트 읽기 <span class="arrow">→</span></span>
+          </a>`
           )
           .join("");
+
+        reports.forEach(async (r) => {
+          try {
+            const res = await fetch(r.downloadUrl);
+            if (!res.ok) return;
+            const text = await res.text();
+            const summary = extractSummary(text);
+            const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
+            if (card) {
+              card.textContent = summary || "리포트 본문에서 자세한 내용을 확인하세요.";
+            }
+          } catch (e) {
+            const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
+            if (card) card.textContent = "리포트 본문에서 자세한 내용을 확인하세요.";
+          }
+        });
       } catch (err) {
         listEl.innerHTML =
-          '<li><span class="muted">리포트 목록을 불러오지 못했습니다. ' +
-          '<a class="plain" href="https://github.com/' +
-          OWNER +
-          "/" +
-          REPO +
-          '">GitHub 저장소</a>에서 직접 확인하세요.</span></li>';
+          '<div class="report-placeholder">리포트 목록을 불러오지 못했습니다. ' +
+          `<a href="https://github.com/${OWNER}/${REPO}" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>`;
       }
     }
 
