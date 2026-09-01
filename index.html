@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>하이엔드 주거 트렌드 리포트</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #2a2e38;
+    --text: #e6e8ec;
+    --muted: #9aa1ac;
+    --accent: #d8b26a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    line-height: 1.6;
+  }
+  header {
+    padding: 64px 24px 32px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  header h1 {
+    font-size: 28px;
+    margin: 0 0 8px;
+  }
+  header p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 15px;
+  }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+  section {
+    margin-top: 40px;
+  }
+  section h2 {
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  ul.report-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  ul.report-list li a {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+  ul.report-list li a:hover {
+    border-color: var(--accent);
+  }
+  ul.report-list li a span.date {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .muted {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  a.plain {
+    color: var(--accent);
+  }
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pipeline span {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>하이엔드 주거 트렌드 리포트</h1>
+    <p>
+      Claude API 웹검색으로 국내 부동산·건설 매체와 해외 리서치하우스·건축 전문지를
+      수집해, 매월 자동으로 생성하는 트렌드 리포트입니다.
+    </p>
+  </header>
+
+  <main>
+    <section>
+      <h2>월간 리포트</h2>
+      <ul class="report-list" id="report-list">
+        <li><span class="muted">불러오는 중...</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>이 프로젝트</h2>
+      <div class="card">
+        <p style="margin-top: 0;">
+          실행 시점이 속한 달의 <strong>전월 1일~말일</strong>을 대상 기간으로 자동
+          계산해, 아래 파이프라인으로 리포트를 생성합니다.
+        </p>
+        <div class="pipeline">
+          <span>대상 기간 계산</span>
+          <span>Claude 웹검색 조사</span>
+          <span>구조화 (JSON)</span>
+          <span>Markdown 렌더링</span>
+          <span>Excel 렌더링</span>
+        </div>
+        <p class="muted" style="margin-bottom: 0;">
+          자세한 설치·실행 방법은
+          <a class="plain" href="https://github.com/sinika9293/Hanwha_Highend#readme">README</a>를
+          참고하세요.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    본 페이지와 리포트는 Claude API 웹검색으로 수집한 공개 보도·리서치 자료를 기반으로
+    자동 생성됩니다. 수치·사실은 원 보도 시점 기준이며 별도 검증이 필요합니다.
+  </footer>
+
+  <script>
+    const OWNER = "sinika9293";
+    const REPO = "Hanwha_Highend";
+    const REPORT_PATTERN = /^(\d{4}-\d{2})_하이엔드주거_트렌드보고서\.md$/;
+
+    async function loadReports() {
+      const listEl = document.getElementById("report-list");
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${OWNER}/${REPO}/contents/`
+        );
+        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+        const files = await res.json();
+
+        const reports = files
+          .filter((f) => f.type === "file" && REPORT_PATTERN.test(f.name))
+          .map((f) => ({
+            name: f.name,
+            label: f.name.match(REPORT_PATTERN)[1],
+            htmlUrl: f.html_url,
+          }))
+          .sort((a, b) => b.label.localeCompare(a.label));
+
+        if (reports.length === 0) {
+          listEl.innerHTML = '<li><span class="muted">아직 생성된 리포트가 없습니다.</span></li>';
+          return;
+        }
+
+        listEl.innerHTML = reports
+          .map(
+            (r) => `
+          <li>
+            <a href="${r.htmlUrl}">
+              ${r.label} 하이엔드 주거 트렌드 리포트
+              <span class="date">${r.name}</span>
+            </a>
+          </li>`
+          )
+          .join("");
+      } catch (err) {
+        listEl.innerHTML =
+          '<li><span class="muted">리포트 목록을 불러오지 못했습니다. ' +
+          '<a class="plain" href="https://github.com/' +
+          OWNER +
+          "/" +
+          REPO +
+          '">GitHub 저장소</a>에서 직접 확인하세요.</span></li>';
+      }
+    }
+
+    loadReports();
+  </script>
+</body>
+</html>
