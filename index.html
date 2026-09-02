@@ -308,6 +308,42 @@
     font-size: 14px;
   }
 
+  /* ---------- Insight tabs ---------- */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    font-family: "Noto Serif KR", serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--brown-soft);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .tab-btn:hover {
+    border-color: var(--gold);
+    color: var(--brown);
+  }
+  .tab-btn.active {
+    background: var(--brown);
+    border-color: var(--brown);
+    color: var(--cream);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tab-intro {
+    max-width: 720px;
+    color: var(--brown-soft);
+    font-size: 15px;
+    margin: 0 0 40px;
+  }
+
   /* ---------- Amenity trends ---------- */
   .amenity-list {
     display: flex;
@@ -461,8 +497,7 @@
     </div>
     <nav class="site-nav">
       <a href="#reports">Reports</a>
-      <a href="#amenity">Amenity</a>
-      <a href="#overseas">Global</a>
+      <a href="#insight">Insight</a>
       <a href="https://github.com/sinika9293/Hanwha_Highend" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </header>
@@ -496,33 +531,49 @@
       </div>
     </section>
 
-    <section id="amenity">
+    <section id="insight">
       <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="label">Amenity Intelligence</span>
-            <h2>어메니티 트렌드</h2>
+            <span class="label">Insight</span>
+            <h2>최신 인사이트</h2>
           </div>
-          <p>마감재의 시대를 지나, 운영·서비스로 이동한 하이엔드 주거의 경쟁축입니다.</p>
+          <p>가장 최근 리포트의 트렌드·어메니티·부대시설·해외 개발 사례를 한눈에 확인하세요.</p>
         </div>
-        <div class="amenity-list" id="amenity-list">
-          <div class="report-placeholder">불러오는 중...</div>
-        </div>
-      </div>
-    </section>
 
-    <section id="overseas">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <span class="label">Global Cases</span>
-            <h2>해외 사례</h2>
-          </div>
-          <p>해외 브랜디드 레지던스·하이엔드 개발의 최신 딜과 흐름입니다.</p>
+        <div class="tab-bar" id="insight-tabs">
+          <button class="tab-btn active" data-tab="trend">트렌드</button>
+          <button class="tab-btn" data-tab="amenity">어메니티</button>
+          <button class="tab-btn" data-tab="facility">부대시설</button>
+          <button class="tab-btn" data-tab="global_case">해외 개발 사례</button>
         </div>
-        <p class="overseas-intro" id="overseas-intro"></p>
-        <div class="overseas-grid" id="overseas-list">
-          <div class="overseas-placeholder">불러오는 중...</div>
+
+        <div class="tab-panel active" id="panel-trend">
+          <p class="tab-intro" id="trend-intro"></p>
+          <div class="amenity-list" id="trend-list">
+            <div class="report-placeholder">불러오는 중...</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-amenity">
+          <p class="tab-intro" id="amenity-intro"></p>
+          <div class="amenity-list" id="amenity-list">
+            <div class="report-placeholder">불러오는 중...</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-facility">
+          <p class="tab-intro" id="facility-intro"></p>
+          <div class="amenity-list" id="facility-list">
+            <div class="report-placeholder">불러오는 중...</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-global_case">
+          <p class="tab-intro" id="global_case-intro"></p>
+          <div class="overseas-grid" id="global_case-list">
+            <div class="overseas-placeholder">불러오는 중...</div>
+          </div>
         </div>
       </div>
     </section>
@@ -546,7 +597,8 @@
   <script>
     const OWNER = "sinika9293";
     const REPO = "Hanwha_Highend";
-    const JSON_PATTERN = /^(\d{4}-\d{2})_하이엔드주거_트렌드보고서\.json$/;
+    const JSON_PATTERN = /^(\d{4}-\d{2})_trend\.json$/;
+    const SECTION_KEYS = ["trend", "amenity", "facility", "global_case"];
     const rawUrl = (name) =>
       `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${encodeURIComponent(name)}`;
 
@@ -568,14 +620,41 @@
       return res.json();
     }
 
-    function renderAmenity(data) {
-      const el = document.getElementById("amenity-list");
-      const items = (data?.domestic?.product_trend_items || []).slice(0, 5);
+    function placeholder(elId, wrapperClass, message) {
+      const el = document.getElementById(elId);
+      if (el) el.innerHTML = `<div class="${wrapperClass}">${message}</div>`;
+    }
+
+    function renderTrend(data) {
+      document.getElementById("trend-intro").textContent = "";
+      const items = (data?.executive_summary || []).slice(0, 6);
       if (items.length === 0) {
-        el.innerHTML = '<div class="report-placeholder">등록된 어메니티 트렌드가 없습니다.</div>';
+        placeholder("trend-list", "report-placeholder", "등록된 트렌드 요약이 없습니다.");
         return;
       }
-      el.innerHTML = items
+      document.getElementById("trend-list").innerHTML = items
+        .map(
+          (text, i) => `
+        <div class="amenity-item">
+          <span class="idx">${String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <p>${stripMarkdown(text)}</p>
+          </div>
+        </div>`
+        )
+        .join("");
+    }
+
+    function renderItemsSection(data, introElId, listElId, emptyMessage) {
+      const introEl = document.getElementById(introElId);
+      if (introEl) introEl.textContent = stripMarkdown(data?.intro || "");
+
+      const items = (data?.items || []).slice(0, 6);
+      if (items.length === 0) {
+        placeholder(listElId, "report-placeholder", emptyMessage);
+        return;
+      }
+      document.getElementById(listElId).innerHTML = items
         .map(
           (item, i) => `
         <div class="amenity-item">
@@ -589,17 +668,16 @@
         .join("");
     }
 
-    function renderOverseas(data) {
-      const introEl = document.getElementById("overseas-intro");
-      const listEl = document.getElementById("overseas-list");
-      introEl.textContent = stripMarkdown(data?.overseas?.market_overview || "");
+    function renderGlobalCase(data) {
+      const introEl = document.getElementById("global_case-intro");
+      if (introEl) introEl.textContent = stripMarkdown(data?.market_overview || "");
 
-      const deals = (data?.overseas?.deals || []).slice(0, 6);
+      const deals = (data?.deals || []).slice(0, 6);
       if (deals.length === 0) {
-        listEl.innerHTML = '<div class="overseas-placeholder">등록된 해외 사례가 없습니다.</div>';
+        placeholder("global_case-list", "overseas-placeholder", "등록된 해외 사례가 없습니다.");
         return;
       }
-      listEl.innerHTML = deals
+      document.getElementById("global_case-list").innerHTML = deals
         .map(
           (d) => `
         <div class="overseas-card">
@@ -611,8 +689,61 @@
         .join("");
     }
 
+    function setInsightEmptyState(message) {
+      placeholder("trend-list", "report-placeholder", message);
+      placeholder("amenity-list", "report-placeholder", message);
+      placeholder("facility-list", "report-placeholder", message);
+      placeholder("global_case-list", "overseas-placeholder", message);
+    }
+
+    async function loadInsightTabs(label) {
+      const results = await Promise.allSettled(
+        SECTION_KEYS.map((key) => fetchReportJson(`${label}_${key}.json`))
+      );
+
+      const [trend, amenity, facility, globalCase] = results;
+
+      if (trend.status === "fulfilled") {
+        renderTrend(trend.value);
+      } else {
+        placeholder("trend-list", "report-placeholder", "준비 중입니다.");
+      }
+
+      if (amenity.status === "fulfilled") {
+        renderItemsSection(amenity.value, "amenity-intro", "amenity-list", "준비 중입니다.");
+      } else {
+        placeholder("amenity-list", "report-placeholder", "준비 중입니다.");
+      }
+
+      if (facility.status === "fulfilled") {
+        renderItemsSection(facility.value, "facility-intro", "facility-list", "준비 중입니다.");
+      } else {
+        placeholder("facility-list", "report-placeholder", "준비 중입니다.");
+      }
+
+      if (globalCase.status === "fulfilled") {
+        renderGlobalCase(globalCase.value);
+      } else {
+        placeholder("global_case-list", "overseas-placeholder", "준비 중입니다.");
+      }
+    }
+
+    function setupTabs() {
+      const buttons = document.querySelectorAll("#insight-tabs .tab-btn");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.tab;
+          buttons.forEach((b) => b.classList.toggle("active", b === btn));
+          document.querySelectorAll("#insight .tab-panel").forEach((panel) => {
+            panel.classList.toggle("active", panel.id === `panel-${key}`);
+          });
+        });
+      });
+    }
+
     async function loadReports() {
       const listEl = document.getElementById("report-list");
+      setupTabs();
       try {
         const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/`);
         if (!res.ok) throw new Error(`GitHub API ${res.status}`);
@@ -623,17 +754,14 @@
           .map((f) => ({
             name: f.name,
             label: f.name.match(JSON_PATTERN)[1],
-            mdUrl: `https://github.com/${OWNER}/${REPO}/blob/main/${f.name.replace(/\.json$/, ".md")}`,
+            mdUrl: `https://github.com/${OWNER}/${REPO}/blob/main/${f.name.match(JSON_PATTERN)[1]}_하이엔드주거_트렌드보고서.md`,
           }))
           .sort((a, b) => b.label.localeCompare(a.label));
 
         if (reports.length === 0) {
           listEl.innerHTML =
             '<div class="report-placeholder">아직 생성된 리포트가 없습니다. 첫 리포트가 곧 발행됩니다.</div>';
-          document.getElementById("amenity-list").innerHTML =
-            '<div class="report-placeholder">아직 데이터가 없습니다.</div>';
-          document.getElementById("overseas-list").innerHTML =
-            '<div class="overseas-placeholder">아직 데이터가 없습니다.</div>';
+          setInsightEmptyState("아직 데이터가 없습니다.");
           return;
         }
 
@@ -666,23 +794,15 @@
         });
 
         try {
-          const latest = await fetchReportJson(reports[0].name);
-          renderAmenity(latest);
-          renderOverseas(latest);
+          await loadInsightTabs(reports[0].label);
         } catch (e) {
-          document.getElementById("amenity-list").innerHTML =
-            '<div class="report-placeholder">데이터를 불러오지 못했습니다.</div>';
-          document.getElementById("overseas-list").innerHTML =
-            '<div class="overseas-placeholder">데이터를 불러오지 못했습니다.</div>';
+          setInsightEmptyState("데이터를 불러오지 못했습니다.");
         }
       } catch (err) {
         listEl.innerHTML =
           '<div class="report-placeholder">리포트 목록을 불러오지 못했습니다. ' +
           `<a href="https://github.com/${OWNER}/${REPO}" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>`;
-        document.getElementById("amenity-list").innerHTML =
-          '<div class="report-placeholder">데이터를 불러오지 못했습니다.</div>';
-        document.getElementById("overseas-list").innerHTML =
-          '<div class="overseas-placeholder">데이터를 불러오지 못했습니다.</div>';
+        setInsightEmptyState("데이터를 불러오지 못했습니다.");
       }
     }
 

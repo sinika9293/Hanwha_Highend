@@ -1,0 +1,12 @@
+# 환경변수 — API 키가 들어가므로 절대 커밋하지 않습니다
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Claude Code 로컬 설정 (개인 권한 설정, 공유 대상 아님)
+.claude/settings.local.json

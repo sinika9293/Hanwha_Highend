@@ -1,0 +1,10 @@
+# 하이엔드 주거 트렌드 조사 자동화 — 의존성
+
+# Claude API (웹검색 도구 포함)
+anthropic>=0.40.0
+
+# .env 파일에서 API 키 로드
+python-dotenv>=1.0.0
+
+# 리포트 표를 .xlsx 로 출력
+openpyxl>=3.1.0
