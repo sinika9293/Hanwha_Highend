@@ -3,25 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>HIGHEND RESIDENCE — 하이엔드 주거 트렌드 리포트</title>
+<title>MUWA — Highend Living Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap"
   rel="stylesheet"
 />
 <style>
   :root {
-    --bg: #0a0f1e;
-    --bg-alt: #0d1428;
-    --surface: #101830;
-    --surface-2: #131c38;
-    --border: rgba(201, 169, 110, 0.18);
-    --border-soft: rgba(255, 255, 255, 0.07);
-    --text: #eef0f5;
-    --muted: #8a92a6;
-    --gold: #c9a96e;
-    --gold-soft: rgba(201, 169, 110, 0.12);
+    --cream: #f5f0e8;
+    --cream-deep: #ece3d3;
+    --brown: #2c1810;
+    --brown-soft: #6e5847;
+    --gold: #b8960c;
+    --gold-soft: rgba(184, 150, 12, 0.14);
+    --border: rgba(44, 24, 16, 0.14);
+    --border-soft: rgba(44, 24, 16, 0.08);
   }
 
   * { box-sizing: border-box; }
@@ -30,27 +28,24 @@
 
   body {
     margin: 0;
-    background: var(--bg);
-    background-image:
-      radial-gradient(ellipse 900px 500px at 20% -10%, rgba(201, 169, 110, 0.08), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(201, 169, 110, 0.05), transparent 60%);
-    color: var(--text);
-    font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    font-family: "Noto Serif KR", "Apple SD Gothic Neo", serif;
     font-weight: 300;
-    line-height: 1.7;
+    line-height: 1.9;
     -webkit-font-smoothing: antialiased;
   }
 
   .serif {
-    font-family: "Playfair Display", "Noto Sans KR", serif;
+    font-family: "Cormorant Garamond", "Noto Serif KR", serif;
   }
 
   a { color: inherit; }
 
   .wrap {
-    max-width: 1080px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 40px;
   }
 
   /* ---------- Header ---------- */
@@ -63,45 +58,41 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 32px;
-    backdrop-filter: blur(14px) saturate(140%);
-    background: rgba(10, 15, 30, 0.72);
+    padding: 26px 40px;
+    backdrop-filter: blur(10px);
+    background: rgba(245, 240, 232, 0.78);
     border-bottom: 1px solid var(--border-soft);
   }
 
   .logo {
     display: flex;
     align-items: baseline;
-    gap: 8px;
-    font-family: "Playfair Display", serif;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.06em;
-  }
-  .logo .mark {
-    color: var(--gold);
+    gap: 10px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: 0.14em;
   }
   .logo .sub {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Noto Serif KR", serif;
     font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--brown-soft);
     text-transform: uppercase;
   }
 
   nav.site-nav {
     display: flex;
-    gap: 36px;
+    gap: 40px;
   }
   nav.site-nav a {
     text-decoration: none;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--brown-soft);
     text-transform: uppercase;
-    transition: color 0.2s ease;
-    position: relative;
+    transition: color 0.25s ease;
   }
   nav.site-nav a:hover {
     color: var(--gold);
@@ -109,330 +100,356 @@
 
   /* ---------- Hero ---------- */
   .hero {
-    padding: 200px 0 120px;
-    text-align: center;
     position: relative;
-  }
-  .hero .eyebrow {
-    display: inline-flex;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    letter-spacing: 0.22em;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 0 40px;
+  }
+  .hero .ghost {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    font-size: clamp(160px, 32vw, 460px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(44, 24, 16, 0.06);
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+  .hero .content {
+    position: relative;
+    z-index: 1;
+  }
+  .hero .brandmark {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 28px;
-  }
-  .hero .eyebrow::before,
-  .hero .eyebrow::after {
-    content: "";
-    width: 28px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.6;
+    margin-bottom: 40px;
   }
   .hero h1 {
-    font-family: "Playfair Display", serif;
-    font-weight: 600;
-    font-size: clamp(36px, 5.5vw, 64px);
-    line-height: 1.25;
-    margin: 0 0 24px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(40px, 6.5vw, 84px);
+    line-height: 1.15;
+    margin: 0 0 28px;
     letter-spacing: 0.01em;
   }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-  .hero p {
-    max-width: 560px;
-    margin: 0 auto;
-    color: var(--muted);
-    font-size: 16px;
+  .hero .kr {
+    font-family: "Noto Serif KR", serif;
     font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    color: var(--brown-soft);
+    text-transform: uppercase;
+    margin: 0 0 56px;
   }
-
-  .divider {
+  .hero .scroll-cue {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--brown-soft);
+    text-transform: uppercase;
+  }
+  .hero .scroll-cue .line {
     width: 1px;
-    height: 64px;
-    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-    margin: 56px auto 0;
-    opacity: 0.7;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
   }
 
   /* ---------- Sections ---------- */
   section {
-    padding: 96px 0;
+    padding: 120px 0;
     border-top: 1px solid var(--border-soft);
   }
 
   .section-head {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 56px;
+    gap: 32px;
+    margin-bottom: 64px;
     flex-wrap: wrap;
   }
   .section-head .label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 13px;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--gold);
+    margin-bottom: 14px;
   }
   .section-head h2 {
-    font-family: "Playfair Display", serif;
+    font-family: "Noto Serif KR", serif;
     font-weight: 600;
-    font-size: clamp(26px, 3vw, 36px);
-    margin: 8px 0 0;
+    font-size: clamp(28px, 3.4vw, 40px);
+    margin: 0;
+    letter-spacing: -0.01em;
   }
   .section-head p {
     max-width: 380px;
-    color: var(--muted);
+    color: var(--brown-soft);
     font-size: 14px;
     margin: 0;
-    text-align: right;
   }
 
-  /* ---------- Report cards ---------- */
+  /* ---------- Report grid (magazine) ---------- */
   .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 48px 40px;
   }
 
-  .report-card {
-    display: block;
-    text-decoration: none;
-    background: linear-gradient(160deg, var(--surface-2), var(--surface));
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 32px;
+  .report-card { display: block; text-decoration: none; }
+
+  .report-card .cover {
     position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(160deg, rgba(184, 150, 12, 0.16), transparent 60%),
+      var(--cream-deep);
     overflow: hidden;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 22px;
+    transition: border-color 0.3s ease;
   }
-  .report-card::before {
+  .report-card .cover::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    inset: 14px;
+    border: 1px solid rgba(184, 150, 12, 0.35);
   }
-  .report-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(201, 169, 110, 0.5);
-    box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+  .report-card .cover .num {
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 64px;
+    color: rgba(44, 24, 16, 0.14);
+    line-height: 1;
   }
-  .report-card:hover::before {
-    opacity: 1;
+  .report-card .cover .issue {
+    position: absolute;
+    top: 26px;
+    left: 26px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .report-card:hover .cover {
+    border-color: var(--gold);
   }
   .report-card .date {
-    font-family: "Playfair Display", serif;
-    font-style: italic;
-    font-size: 13px;
-    color: var(--gold);
-    letter-spacing: 0.04em;
-    margin-bottom: 16px;
     display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    margin-bottom: 10px;
   }
   .report-card h3 {
-    font-family: "Playfair Display", serif;
+    font-family: "Noto Serif KR", serif;
     font-weight: 600;
-    font-size: 21px;
-    margin: 0 0 14px;
-    line-height: 1.4;
+    font-size: 19px;
+    margin: 0 0 12px;
+    line-height: 1.5;
   }
   .report-card .summary {
-    color: var(--muted);
-    font-size: 14px;
+    color: var(--brown-soft);
+    font-size: 13.5px;
     font-weight: 300;
-    margin: 0 0 20px;
+    margin: 0 0 16px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .report-card .cta {
-    font-size: 12px;
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--brown);
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 3px;
+    transition: gap 0.25s ease;
   }
-  .report-card .cta .arrow {
-    transition: transform 0.25s ease;
-  }
-  .report-card:hover .cta .arrow {
-    transform: translateX(4px);
-  }
+  .report-card:hover .cta { gap: 12px; }
 
   .report-placeholder {
     grid-column: 1 / -1;
     text-align: center;
     padding: 48px 0;
-    color: var(--muted);
+    color: var(--brown-soft);
     font-size: 14px;
   }
 
-  /* ---------- Pipeline ---------- */
-  .pipeline {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    position: relative;
-  }
-  .pipeline-step {
-    text-align: center;
-    padding: 0 12px;
-    position: relative;
-  }
-  .pipeline-step .ring {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Playfair Display", serif;
-    font-style: italic;
-    color: var(--gold);
-    font-size: 18px;
-    position: relative;
-    z-index: 2;
-  }
-  .pipeline-step::before {
-    content: "";
-    position: absolute;
-    top: 27px;
-    left: -50%;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, var(--gold), var(--border));
-    opacity: 0.5;
-    z-index: 1;
-  }
-  .pipeline-step:first-child::before {
-    display: none;
-  }
-  .pipeline-step h4 {
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    margin: 0 0 8px;
-    font-weight: 500;
-  }
-  .pipeline-step p {
-    font-size: 12.5px;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  /* ---------- About ---------- */
-  .about-card {
-    background: var(--surface);
-    border: 1px solid var(--border-soft);
-    border-radius: 4px;
-    padding: 48px;
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 48px;
-    align-items: center;
-  }
-  .about-card blockquote {
-    margin: 0;
-    font-family: "Playfair Display", serif;
-    font-style: italic;
-    font-size: 22px;
-    line-height: 1.6;
-    color: var(--text);
-  }
-  .about-card blockquote .gold {
-    color: var(--gold);
-  }
-  .about-meta {
+  /* ---------- Amenity trends ---------- */
+  .amenity-list {
     display: flex;
     flex-direction: column;
-    gap: 18px;
   }
-  .about-meta .row {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border-soft);
-    padding-bottom: 12px;
-    font-size: 13px;
+  .amenity-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 32px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border-soft);
+    align-items: baseline;
   }
-  .about-meta .row span:first-child {
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-size: 11px;
-  }
-  .about-meta .row span:last-child {
-    text-align: right;
-  }
-  .about-meta a {
+  .amenity-item:first-child { border-top: none; }
+  .amenity-item .idx {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 32px;
     color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(201, 169, 110, 0.4);
+  }
+  .amenity-item h4 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 0 10px;
+  }
+  .amenity-item p {
+    margin: 0;
+    color: var(--brown-soft);
+    font-size: 14px;
+    max-width: 640px;
+  }
+
+  /* ---------- Overseas cases ---------- */
+  .overseas-intro {
+    max-width: 720px;
+    color: var(--brown-soft);
+    font-size: 15px;
+    margin: -24px 0 56px;
+  }
+  .overseas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .overseas-card {
+    background: var(--cream);
+    padding: 36px 32px;
+  }
+  .overseas-card .region {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .overseas-card h4 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .overseas-card p {
+    margin: 0;
+    color: var(--brown-soft);
+    font-size: 13.5px;
+  }
+  .overseas-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 0;
+    color: var(--brown-soft);
+    font-size: 14px;
+    background: var(--cream);
   }
 
   /* ---------- Footer ---------- */
   footer {
-    border-top: 1px solid var(--border-soft);
-    padding: 48px 0 64px;
+    background: var(--brown);
+    color: var(--cream);
+    padding: 72px 0 48px;
   }
   footer .wrap {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 24px;
+    gap: 40px;
     flex-wrap: wrap;
   }
-  footer .disclaimer {
-    max-width: 520px;
-    color: var(--muted);
-    font-size: 12.5px;
-  }
   footer .foot-logo {
-    font-family: "Playfair Display", serif;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--gold);
-    font-size: 15px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    font-size: 18px;
+  }
+  footer .foot-logo .sub {
+    display: block;
+    font-family: "Noto Serif KR", serif;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: rgba(245, 240, 232, 0.5);
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  footer .disclaimer {
+    max-width: 560px;
+    color: rgba(245, 240, 232, 0.55);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  footer .divider-line {
+    border-top: 1px solid rgba(245, 240, 232, 0.14);
+    margin-top: 48px;
+    padding-top: 24px;
+    font-size: 11px;
+    color: rgba(245, 240, 232, 0.35);
+    letter-spacing: 0.08em;
   }
 
   /* ---------- Responsive ---------- */
   @media (max-width: 860px) {
-    .about-card {
-      grid-template-columns: 1fr;
-    }
-    .pipeline {
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
-    .pipeline-step::before {
-      display: none;
-    }
+    .amenity-item { grid-template-columns: 1fr; gap: 10px; }
+    .overseas-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
-    .wrap { padding: 0 20px; }
-    .site-header { padding: 16px 20px; }
-    nav.site-nav { gap: 20px; }
-    nav.site-nav a { font-size: 11px; }
-    .hero { padding: 150px 0 80px; }
-    .section-head { flex-direction: column; }
-    .section-head p { text-align: left; }
-    section { padding: 64px 0; }
-    .about-card { padding: 28px; }
+    .wrap { padding: 0 22px; }
+    .site-header { padding: 18px 22px; }
+    .logo .sub { display: none; }
+    nav.site-nav { gap: 16px; }
+    nav.site-nav a { font-size: 9.5px; }
+    .hero { padding: 0 22px; }
+    .hero .ghost { font-size: clamp(90px, 40vw, 200px); }
+    section { padding: 80px 0; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .report-grid { gap: 40px 0; }
   }
 </style>
 </head>
@@ -440,25 +457,28 @@
 
   <header class="site-header">
     <div class="logo">
-      <span class="mark">H</span>ighend<span class="sub">RESIDENCE JOURNAL</span>
+      MUWA<span class="sub">Highend Living Intelligence</span>
     </div>
     <nav class="site-nav">
       <a href="#reports">Reports</a>
-      <a href="#pipeline">Pipeline</a>
-      <a href="#about">About</a>
+      <a href="#amenity">Amenity</a>
+      <a href="#overseas">Global</a>
       <a href="https://github.com/sinika9293/Hanwha_Highend" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero wrap" style="border-top:none; padding-bottom: 0;">
-      <p class="eyebrow">Monthly Intelligence</p>
-      <h1>하이엔드 주거,<br /><em>흐름을 읽다</em></h1>
-      <p>
-        Claude API 웹검색으로 국내 부동산·건설 매체와 해외 리서치하우스·건축 전문지를
-        수집해, 매월 자동으로 발행하는 하이엔드 주거 트렌드 리포트입니다.
-      </p>
-      <div class="divider"></div>
+    <section class="hero" style="border-top:none;">
+      <div class="ghost">MUWA</div>
+      <div class="content">
+        <p class="brandmark">MUWA</p>
+        <h1>Highend Living<br />Intelligence</h1>
+        <p class="kr">하이엔드 주거, 흐름을 읽다</p>
+        <div class="scroll-cue">
+          <span>Scroll</span>
+          <span class="line"></span>
+        </div>
+      </div>
     </section>
 
     <section id="reports">
@@ -476,64 +496,33 @@
       </div>
     </section>
 
-    <section id="pipeline">
+    <section id="amenity">
       <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="label">Process</span>
-            <h2>제작 파이프라인</h2>
+            <span class="label">Amenity Intelligence</span>
+            <h2>어메니티 트렌드</h2>
           </div>
-          <p>대상 기간 계산부터 최종 문서 출력까지, 다섯 단계로 자동화됩니다.</p>
+          <p>마감재의 시대를 지나, 운영·서비스로 이동한 하이엔드 주거의 경쟁축입니다.</p>
         </div>
-        <div class="pipeline">
-          <div class="pipeline-step">
-            <div class="ring">01</div>
-            <h4>대상 기간 계산</h4>
-            <p>전월 1일~말일 자동 산정</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="ring">02</div>
-            <h4>웹검색 조사</h4>
-            <p>Claude 웹검색으로 사실 수집</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="ring">03</div>
-            <h4>구조화</h4>
-            <p>고정 템플릿 JSON 변환</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="ring">04</div>
-            <h4>Markdown</h4>
-            <p>리포트 본문 렌더링</p>
-          </div>
-          <div class="pipeline-step">
-            <div class="ring">05</div>
-            <h4>Excel</h4>
-            <p>데이터 표 산출물 생성</p>
-          </div>
+        <div class="amenity-list" id="amenity-list">
+          <div class="report-placeholder">불러오는 중...</div>
         </div>
       </div>
     </section>
 
-    <section id="about">
+    <section id="overseas">
       <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="label">About</span>
-            <h2>이 저널에 대하여</h2>
+            <span class="label">Global Cases</span>
+            <h2>해외 사례</h2>
           </div>
+          <p>해외 브랜디드 레지던스·하이엔드 개발의 최신 딜과 흐름입니다.</p>
         </div>
-        <div class="about-card">
-          <blockquote>
-            마감재의 시대는 지나고, <span class="gold">운영과 서비스</span>가
-            하이엔드 주거의 새로운 경쟁축이 되고 있습니다.
-          </blockquote>
-          <div class="about-meta">
-            <div class="row"><span>Frequency</span><span>매월 1회 자동 발행</span></div>
-            <div class="row"><span>Coverage</span><span>국내 청약·상품 · 해외 브랜디드 레지던스</span></div>
-            <div class="row"><span>Method</span><span>Claude API Web Search</span></div>
-            <div class="row"><span>Source</span><span><a href="https://github.com/sinika9293/Hanwha_Highend#readme" target="_blank" rel="noopener">README 보기 →</a></span></div>
-          </div>
+        <p class="overseas-intro" id="overseas-intro"></p>
+        <div class="overseas-grid" id="overseas-list">
+          <div class="overseas-placeholder">불러오는 중...</div>
         </div>
       </div>
     </section>
@@ -541,36 +530,31 @@
 
   <footer>
     <div class="wrap">
-      <div class="foot-logo">HIGHEND RESIDENCE JOURNAL</div>
+      <div class="foot-logo">
+        MUWA
+        <span class="sub">Highend Living Intelligence Journal</span>
+      </div>
       <p class="disclaimer">
         본 페이지와 리포트는 Claude API 웹검색으로 수집한 공개 보도·리서치 자료를
         기반으로 자동 생성됩니다. 수치·사실은 원 보도 시점 기준이며 별도 검증이
         필요합니다.
       </p>
     </div>
+    <div class="wrap divider-line">© MUWA — Hanwha Highend Living Intelligence</div>
   </footer>
 
   <script>
     const OWNER = "sinika9293";
     const REPO = "Hanwha_Highend";
-    const REPORT_PATTERN = /^(\d{4}-\d{2})_하이엔드주거_트렌드보고서\.md$/;
+    const JSON_PATTERN = /^(\d{4}-\d{2})_하이엔드주거_트렌드보고서\.json$/;
+    const rawUrl = (name) =>
+      `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${encodeURIComponent(name)}`;
 
     function stripMarkdown(text) {
-      return text
+      return String(text || "")
         .replace(/\*\*(.+?)\*\*/g, "$1")
         .replace(/[*_`]/g, "")
         .trim();
-    }
-
-    function extractSummary(markdown) {
-      const match = markdown.match(/## 0\. 한눈에 보기[^\n]*\n+([\s\S]*?)(?:\n---|\n## )/);
-      if (!match) return "";
-      const firstLine = match[1]
-        .split("\n")
-        .map((l) => l.trim())
-        .find((l) => l.length > 0);
-      if (!firstLine) return "";
-      return stripMarkdown(firstLine.replace(/^\d+\.\s*/, ""));
     }
 
     function monthLabel(label) {
@@ -578,62 +562,127 @@
       return `${y}. ${m}`;
     }
 
+    async function fetchReportJson(name) {
+      const res = await fetch(rawUrl(name));
+      if (!res.ok) throw new Error(`raw fetch ${res.status}`);
+      return res.json();
+    }
+
+    function renderAmenity(data) {
+      const el = document.getElementById("amenity-list");
+      const items = (data?.domestic?.product_trend_items || []).slice(0, 5);
+      if (items.length === 0) {
+        el.innerHTML = '<div class="report-placeholder">등록된 어메니티 트렌드가 없습니다.</div>';
+        return;
+      }
+      el.innerHTML = items
+        .map(
+          (item, i) => `
+        <div class="amenity-item">
+          <span class="idx">${String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <h4>${stripMarkdown(item.name)}</h4>
+            <p>${stripMarkdown(item.description)}</p>
+          </div>
+        </div>`
+        )
+        .join("");
+    }
+
+    function renderOverseas(data) {
+      const introEl = document.getElementById("overseas-intro");
+      const listEl = document.getElementById("overseas-list");
+      introEl.textContent = stripMarkdown(data?.overseas?.market_overview || "");
+
+      const deals = (data?.overseas?.deals || []).slice(0, 6);
+      if (deals.length === 0) {
+        listEl.innerHTML = '<div class="overseas-placeholder">등록된 해외 사례가 없습니다.</div>';
+        return;
+      }
+      listEl.innerHTML = deals
+        .map(
+          (d) => `
+        <div class="overseas-card">
+          <span class="region">${stripMarkdown(d.region)}</span>
+          <h4>${stripMarkdown(d.project)}</h4>
+          <p>${stripMarkdown(d.news)}</p>
+        </div>`
+        )
+        .join("");
+    }
+
     async function loadReports() {
       const listEl = document.getElementById("report-list");
       try {
-        const res = await fetch(
-          `https://api.github.com/repos/${OWNER}/${REPO}/contents/`
-        );
+        const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/`);
         if (!res.ok) throw new Error(`GitHub API ${res.status}`);
         const files = await res.json();
 
         const reports = files
-          .filter((f) => f.type === "file" && REPORT_PATTERN.test(f.name))
+          .filter((f) => f.type === "file" && JSON_PATTERN.test(f.name))
           .map((f) => ({
             name: f.name,
-            label: f.name.match(REPORT_PATTERN)[1],
-            htmlUrl: f.html_url,
-            downloadUrl: f.download_url,
+            label: f.name.match(JSON_PATTERN)[1],
+            mdUrl: `https://github.com/${OWNER}/${REPO}/blob/main/${f.name.replace(/\.json$/, ".md")}`,
           }))
           .sort((a, b) => b.label.localeCompare(a.label));
 
         if (reports.length === 0) {
           listEl.innerHTML =
             '<div class="report-placeholder">아직 생성된 리포트가 없습니다. 첫 리포트가 곧 발행됩니다.</div>';
+          document.getElementById("amenity-list").innerHTML =
+            '<div class="report-placeholder">아직 데이터가 없습니다.</div>';
+          document.getElementById("overseas-list").innerHTML =
+            '<div class="overseas-placeholder">아직 데이터가 없습니다.</div>';
           return;
         }
 
         listEl.innerHTML = reports
           .map(
-            (r) => `
-          <a class="report-card" href="${r.htmlUrl}" target="_blank" rel="noopener" data-name="${r.name}">
+            (r, i) => `
+          <a class="report-card" href="${r.mdUrl}" target="_blank" rel="noopener" data-name="${r.name}">
+            <div class="cover">
+              <span class="issue">Issue No. ${String(reports.length - i).padStart(2, "0")}</span>
+              <span class="num">${monthLabel(r.label)}</span>
+            </div>
             <span class="date">${monthLabel(r.label)}</span>
             <h3>하이엔드 주거 트렌드 리포트</h3>
             <p class="summary">요약을 불러오는 중...</p>
-            <span class="cta">리포트 읽기 <span class="arrow">→</span></span>
+            <span class="cta">리포트 읽기 →</span>
           </a>`
           )
           .join("");
 
         reports.forEach(async (r) => {
           try {
-            const res = await fetch(r.downloadUrl);
-            if (!res.ok) return;
-            const text = await res.text();
-            const summary = extractSummary(text);
+            const data = await fetchReportJson(r.name);
+            const summary = stripMarkdown((data.executive_summary || [])[0] || "");
             const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
-            if (card) {
-              card.textContent = summary || "리포트 본문에서 자세한 내용을 확인하세요.";
-            }
+            if (card) card.textContent = summary || "리포트 본문에서 자세한 내용을 확인하세요.";
           } catch (e) {
             const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
             if (card) card.textContent = "리포트 본문에서 자세한 내용을 확인하세요.";
           }
         });
+
+        try {
+          const latest = await fetchReportJson(reports[0].name);
+          renderAmenity(latest);
+          renderOverseas(latest);
+        } catch (e) {
+          document.getElementById("amenity-list").innerHTML =
+            '<div class="report-placeholder">데이터를 불러오지 못했습니다.</div>';
+          document.getElementById("overseas-list").innerHTML =
+            '<div class="overseas-placeholder">데이터를 불러오지 못했습니다.</div>';
+        }
       } catch (err) {
         listEl.innerHTML =
           '<div class="report-placeholder">리포트 목록을 불러오지 못했습니다. ' +
           `<a href="https://github.com/${OWNER}/${REPO}" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>`;
+        document.getElementById("amenity-list").innerHTML =
+          '<div class="report-placeholder">데이터를 불러오지 못했습니다.</div>';
+        document.getElementById("overseas-list").innerHTML =
+          '<div class="overseas-placeholder">데이터를 불러오지 못했습니다.</div>';
       }
     }
 
