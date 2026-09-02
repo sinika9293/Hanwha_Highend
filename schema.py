@@ -22,6 +22,7 @@ TREND_SCHEMA = {
         "risk_signals",
         "keywords",
         "watchpoints",
+        "overseas_highlights",
         "sources",
     ],
     "properties": {
@@ -85,6 +86,19 @@ TREND_SCHEMA = {
             "items": {"type": "string"},
             "minItems": 3,
         },
+        "overseas_highlights": {
+            "type": "array",
+            "description": "해외 하이엔드 주거시장에서 이번 기간 주목할 만한 핵심 동향/키워드.",
+            "items": {
+                "type": "object",
+                "required": ["keyword", "description"],
+                "properties": {
+                    "keyword": {"type": "string"},
+                    "description": {"type": "string", "description": "왜 주목할 만한지, 근거"},
+                },
+            },
+            "minItems": 3,
+        },
         "sources": {
             "type": "array",
             "description": "국내 출처. '매체명(날짜) — 내용' 형식.",
@@ -106,10 +120,15 @@ AMENITY_SCHEMA = {
             "description": "컨시어지·커뮤니티 프로그램·멤버십·다이닝 등 서비스·운영 트렌드 사례.",
             "items": {
                 "type": "object",
-                "required": ["name", "description"],
+                "required": ["name", "description", "region"],
                 "properties": {
                     "name": {"type": "string", "description": "단지명 또는 서비스명"},
                     "description": {"type": "string", "description": "핵심 내용과 특징"},
+                    "region": {
+                        "type": "string",
+                        "enum": ["domestic", "overseas"],
+                        "description": "이 사례가 국내(domestic) 또는 해외(overseas) 사례인지",
+                    },
                 },
             },
             "minItems": 4,
@@ -135,10 +154,15 @@ FACILITY_SCHEMA = {
             "description": "웰니스센터·스카이라운지·프라이빗 다이닝룸·펫파크 등 신설·부상 중인 부대시설 사례.",
             "items": {
                 "type": "object",
-                "required": ["name", "description"],
+                "required": ["name", "description", "region"],
                 "properties": {
                     "name": {"type": "string", "description": "단지명 또는 시설명"},
                     "description": {"type": "string", "description": "핵심 스펙과 특징"},
+                    "region": {
+                        "type": "string",
+                        "enum": ["domestic", "overseas"],
+                        "description": "이 사례가 국내(domestic) 또는 해외(overseas) 사례인지",
+                    },
                 },
             },
             "minItems": 4,

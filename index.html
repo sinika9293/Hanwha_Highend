@@ -98,10 +98,10 @@
     color: var(--gold);
   }
 
-  /* ---------- Hero ---------- */
+  /* ---------- Hero slider ---------- */
   .hero {
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,26 +109,38 @@
     text-align: center;
     overflow: hidden;
     padding: 0 40px;
+    background: var(--brown);
   }
-  .hero .ghost {
+  .hero .slide {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -52%);
-    font-family: "Cormorant Garamond", serif;
-    font-weight: 600;
-    font-size: clamp(160px, 32vw, 460px);
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(44, 24, 16, 0.06);
-    white-space: nowrap;
-    letter-spacing: 0.04em;
-    pointer-events: none;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
     z-index: 0;
-    user-select: none;
+  }
+  .hero .slide.active {
+    opacity: 1;
+  }
+  .hero .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero .slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(44, 24, 16, 0.35) 0%,
+      rgba(44, 24, 16, 0.25) 45%,
+      rgba(44, 24, 16, 0.6) 100%
+    );
   }
   .hero .content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    color: var(--cream);
   }
   .hero .brandmark {
     font-family: "Cormorant Garamond", serif;
@@ -153,7 +165,7 @@
     font-weight: 300;
     font-size: 15px;
     letter-spacing: 0.28em;
-    color: var(--brown-soft);
+    color: rgba(245, 240, 232, 0.75);
     text-transform: uppercase;
     margin: 0 0 56px;
   }
@@ -164,13 +176,69 @@
     gap: 12px;
     font-size: 11px;
     letter-spacing: 0.2em;
-    color: var(--brown-soft);
+    color: rgba(245, 240, 232, 0.7);
     text-transform: uppercase;
   }
   .hero .scroll-cue .line {
     width: 1px;
     height: 40px;
     background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  .hero .slide-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(245, 240, 232, 0.35);
+    background: rgba(44, 24, 16, 0.25);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: "Cormorant Garamond", serif;
+    transition: all 0.25s ease;
+  }
+  .hero .slide-arrow:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(44, 24, 16, 0.45);
+  }
+  .hero .slide-arrow.prev { left: 32px; }
+  .hero .slide-arrow.next { right: 32px; }
+
+  .hero .slide-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+  }
+  .hero .slide-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 240, 232, 0.6);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .hero .slide-dots .dot.active {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  @media (max-width: 640px) {
+    .hero .slide-arrow { width: 36px; height: 36px; font-size: 15px; }
+    .hero .slide-arrow.prev { left: 14px; }
+    .hero .slide-arrow.next { right: 14px; }
   }
 
   /* ---------- Sections ---------- */
@@ -300,6 +368,40 @@
   }
   .report-card:hover .cta { gap: 12px; }
 
+  .report-card .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: var(--gold-soft);
+    margin-bottom: 16px;
+  }
+  .report-card .badge.progress {
+    border-color: var(--border);
+    color: var(--brown-soft);
+    background: rgba(44, 24, 16, 0.05);
+  }
+  .report-card.locked {
+    opacity: 0.68;
+    pointer-events: none;
+    cursor: default;
+  }
+  .report-card.locked .cover {
+    filter: grayscale(0.55);
+  }
+  .report-card.locked .cover .issue,
+  .report-card.locked .cover .num {
+    color: var(--brown-soft);
+  }
+
   .report-placeholder {
     grid-column: 1 / -1;
     text-align: center;
@@ -342,6 +444,37 @@
     color: var(--brown-soft);
     font-size: 15px;
     margin: 0 0 40px;
+  }
+
+  .subtab-bar,
+  .year-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .subtab-btn,
+  .year-btn {
+    font-family: "Noto Serif KR", serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--brown-soft);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .subtab-btn:hover,
+  .year-btn:hover {
+    border-color: var(--gold);
+    color: var(--brown);
+  }
+  .subtab-btn.active,
+  .year-btn.active {
+    background: var(--brown);
+    border-color: var(--brown);
+    color: var(--cream);
   }
 
   /* ---------- Amenity trends ---------- */
@@ -482,7 +615,6 @@
     nav.site-nav { gap: 16px; }
     nav.site-nav a { font-size: 9.5px; }
     .hero { padding: 0 22px; }
-    .hero .ghost { font-size: clamp(90px, 40vw, 200px); }
     section { padding: 80px 0; }
     .section-head { flex-direction: column; align-items: flex-start; }
     .report-grid { gap: 40px 0; }
@@ -503,8 +635,20 @@
   </header>
 
   <main>
-    <section class="hero" style="border-top:none;">
-      <div class="ghost">MUWA</div>
+    <section class="hero" style="border-top:none;" id="hero-slider">
+      <div class="slide active" data-index="0">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80" alt="무와 지리산" />
+      </div>
+      <div class="slide" data-index="1">
+        <img src="https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?auto=format&fit=crop&w=1920&q=80" alt="무와 니세코" />
+      </div>
+      <div class="slide" data-index="2">
+        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1920&q=80" alt="SSE 시설" />
+      </div>
+
+      <button class="slide-arrow prev" type="button" aria-label="Previous slide">&#8249;</button>
+      <button class="slide-arrow next" type="button" aria-label="Next slide">&#8250;</button>
+
       <div class="content">
         <p class="brandmark">MUWA</p>
         <h1>Highend Living<br />Intelligence</h1>
@@ -513,6 +657,12 @@
           <span>Scroll</span>
           <span class="line"></span>
         </div>
+      </div>
+
+      <div class="slide-dots">
+        <button class="dot active" type="button" data-index="0" aria-label="Slide 1"></button>
+        <button class="dot" type="button" data-index="1" aria-label="Slide 2"></button>
+        <button class="dot" type="button" data-index="2" aria-label="Slide 3"></button>
       </div>
     </section>
 
@@ -549,6 +699,15 @@
         </div>
 
         <div class="tab-panel active" id="panel-trend">
+          <div class="subtab-bar" data-section="trend">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <div class="year-bar" data-section="trend">
+            <button class="year-btn" data-year="2024">'24</button>
+            <button class="year-btn" data-year="2025">'25</button>
+            <button class="year-btn active" data-year="2026">'26.1~현재</button>
+          </div>
           <p class="tab-intro" id="trend-intro"></p>
           <div class="amenity-list" id="trend-list">
             <div class="report-placeholder">불러오는 중...</div>
@@ -556,6 +715,15 @@
         </div>
 
         <div class="tab-panel" id="panel-amenity">
+          <div class="subtab-bar" data-section="amenity">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <div class="year-bar" data-section="amenity">
+            <button class="year-btn" data-year="2024">'24</button>
+            <button class="year-btn" data-year="2025">'25</button>
+            <button class="year-btn active" data-year="2026">'26.1~현재</button>
+          </div>
           <p class="tab-intro" id="amenity-intro"></p>
           <div class="amenity-list" id="amenity-list">
             <div class="report-placeholder">불러오는 중...</div>
@@ -563,6 +731,15 @@
         </div>
 
         <div class="tab-panel" id="panel-facility">
+          <div class="subtab-bar" data-section="facility">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <div class="year-bar" data-section="facility">
+            <button class="year-btn" data-year="2024">'24</button>
+            <button class="year-btn" data-year="2025">'25</button>
+            <button class="year-btn active" data-year="2026">'26.1~현재</button>
+          </div>
           <p class="tab-intro" id="facility-intro"></p>
           <div class="amenity-list" id="facility-list">
             <div class="report-placeholder">불러오는 중...</div>
@@ -570,6 +747,15 @@
         </div>
 
         <div class="tab-panel" id="panel-global_case">
+          <div class="year-bar" data-section="global_case">
+            <button class="year-btn" data-year="2020">'20</button>
+            <button class="year-btn" data-year="2021">'21</button>
+            <button class="year-btn" data-year="2022">'22</button>
+            <button class="year-btn" data-year="2023">'23</button>
+            <button class="year-btn" data-year="2024">'24</button>
+            <button class="year-btn" data-year="2025">'25</button>
+            <button class="year-btn active" data-year="2026">'26</button>
+          </div>
           <p class="tab-intro" id="global_case-intro"></p>
           <div class="overseas-grid" id="global_case-list">
             <div class="overseas-placeholder">불러오는 중...</div>
@@ -599,8 +785,47 @@
     const REPO = "Hanwha_Highend";
     const JSON_PATTERN = /^(\d{4}-\d{2})_trend\.json$/;
     const SECTION_KEYS = ["trend", "amenity", "facility", "global_case"];
+    const SECTION_FILE_PATTERN = /^(\d{4}-\d{2})_(trend|amenity|facility|global_case)\.json$/;
     const rawUrl = (name) =>
       `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${encodeURIComponent(name)}`;
+
+    let sectionFileIndex = { trend: [], amenity: [], facility: [], global_case: [] };
+    const fileCache = new Map();
+    const insightState = {
+      trend: { year: 2026, region: "domestic" },
+      amenity: { year: 2026, region: "domestic" },
+      facility: { year: 2026, region: "domestic" },
+      global_case: { year: 2026 },
+    };
+
+    function buildSectionFileIndex(files) {
+      const index = { trend: [], amenity: [], facility: [], global_case: [] };
+      for (const f of files) {
+        const m = f.name.match(SECTION_FILE_PATTERN);
+        if (m) index[m[2]].push({ label: m[1], name: f.name });
+      }
+      for (const key of Object.keys(index)) {
+        index[key].sort((a, b) => b.label.localeCompare(a.label));
+      }
+      return index;
+    }
+
+    function fetchCached(name) {
+      if (!fileCache.has(name)) {
+        fileCache.set(name, fetchReportJson(name).catch((e) => null));
+      }
+      return fileCache.get(name);
+    }
+
+    function labelsForYear(section, year) {
+      return (sectionFileIndex[section] || []).filter((f) => f.label.startsWith(String(year)));
+    }
+
+    function latestYearWithData(section) {
+      const files = sectionFileIndex[section] || [];
+      if (files.length === 0) return 2026;
+      return Number(files[0].label.slice(0, 4));
+    }
 
     function stripMarkdown(text) {
       return String(text || "")
@@ -614,6 +839,31 @@
       return `${y}. ${m}`;
     }
 
+    function monthsSince(label) {
+      const [y, m] = label.split("-").map(Number);
+      const labelDate = new Date(y, m - 1, 1);
+      const now = new Date();
+      const nowDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      return (
+        (nowDate.getFullYear() - labelDate.getFullYear()) * 12 +
+        (nowDate.getMonth() - labelDate.getMonth())
+      );
+    }
+
+    function isNewReport(label) {
+      const diff = monthsSince(label);
+      return diff >= 0 && diff <= 2;
+    }
+
+    function nextLabel(label) {
+      const now = new Date();
+      const [y, m] = label
+        ? label.split("-").map(Number)
+        : [now.getFullYear(), now.getMonth() + 1];
+      const d = new Date(y, m, 1);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    }
+
     async function fetchReportJson(name) {
       const res = await fetch(rawUrl(name));
       if (!res.ok) throw new Error(`raw fetch ${res.status}`);
@@ -625,42 +875,91 @@
       if (el) el.innerHTML = `<div class="${wrapperClass}">${message}</div>`;
     }
 
-    function renderTrend(data) {
-      document.getElementById("trend-intro").textContent = "";
-      const items = (data?.executive_summary || []).slice(0, 6);
-      if (items.length === 0) {
-        placeholder("trend-list", "report-placeholder", "등록된 트렌드 요약이 없습니다.");
+    async function renderTrendPanel(year, region) {
+      const files = labelsForYear("trend", year);
+      const introEl = document.getElementById("trend-intro");
+      if (introEl) introEl.textContent = "";
+
+      if (files.length === 0) {
+        placeholder("trend-list", "report-placeholder", "데이터 없음");
         return;
       }
-      document.getElementById("trend-list").innerHTML = items
+
+      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
+      const cards = [];
+      files.forEach((f, i) => {
+        const data = results[i];
+        if (!data) return;
+        if (region === "domestic") {
+          (data.executive_summary || []).forEach((text) => {
+            cards.push({ label: f.label, name: null, desc: text });
+          });
+        } else {
+          (data.overseas_highlights || []).forEach((h) => {
+            cards.push({ label: f.label, name: h.keyword, desc: h.description });
+          });
+        }
+      });
+
+      if (cards.length === 0) {
+        placeholder("trend-list", "report-placeholder", "데이터 없음");
+        return;
+      }
+
+      document.getElementById("trend-list").innerHTML = cards
+        .slice(0, 12)
         .map(
-          (text, i) => `
+          (c, i) => `
         <div class="amenity-item">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            <p>${stripMarkdown(text)}</p>
+            ${c.name ? `<h4>${stripMarkdown(c.name)}</h4>` : ""}
+            <p>[${monthLabel(c.label)}] ${stripMarkdown(c.desc)}</p>
           </div>
         </div>`
         )
         .join("");
     }
 
-    function renderItemsSection(data, introElId, listElId, emptyMessage) {
+    async function renderItemsPanel(section, year, region) {
+      const files = labelsForYear(section, year);
+      const introElId = `${section}-intro`;
+      const listElId = `${section}-list`;
       const introEl = document.getElementById(introElId);
-      if (introEl) introEl.textContent = stripMarkdown(data?.intro || "");
+      if (introEl) introEl.textContent = "";
 
-      const items = (data?.items || []).slice(0, 6);
-      if (items.length === 0) {
-        placeholder(listElId, "report-placeholder", emptyMessage);
+      if (files.length === 0) {
+        placeholder(listElId, "report-placeholder", "데이터 없음");
         return;
       }
+
+      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
+      let latestIntro = "";
+      const items = [];
+      files.forEach((f, i) => {
+        const data = results[i];
+        if (!data) return;
+        if (!latestIntro && data.intro) latestIntro = data.intro;
+        (data.items || [])
+          .filter((item) => item.region === region)
+          .forEach((item) => items.push({ label: f.label, item }));
+      });
+
+      if (introEl) introEl.textContent = stripMarkdown(latestIntro);
+
+      if (items.length === 0) {
+        placeholder(listElId, "report-placeholder", "데이터 없음");
+        return;
+      }
+
       document.getElementById(listElId).innerHTML = items
+        .slice(0, 12)
         .map(
-          (item, i) => `
+          ({ label, item }, i) => `
         <div class="amenity-item">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            <h4>${stripMarkdown(item.name)}</h4>
+            <h4>[${monthLabel(label)}] ${stripMarkdown(item.name)}</h4>
             <p>${stripMarkdown(item.description)}</p>
           </div>
         </div>`
@@ -668,16 +967,35 @@
         .join("");
     }
 
-    function renderGlobalCase(data) {
+    async function renderGlobalCasePanel(year) {
+      const files = labelsForYear("global_case", year);
       const introEl = document.getElementById("global_case-intro");
-      if (introEl) introEl.textContent = stripMarkdown(data?.market_overview || "");
+      if (introEl) introEl.textContent = "";
 
-      const deals = (data?.deals || []).slice(0, 6);
-      if (deals.length === 0) {
-        placeholder("global_case-list", "overseas-placeholder", "등록된 해외 사례가 없습니다.");
+      if (files.length === 0) {
+        placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
         return;
       }
+
+      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
+      let latestOverview = "";
+      const deals = [];
+      files.forEach((f, i) => {
+        const data = results[i];
+        if (!data) return;
+        if (!latestOverview && data.market_overview) latestOverview = data.market_overview;
+        (data.deals || []).forEach((d) => deals.push(d));
+      });
+
+      if (introEl) introEl.textContent = stripMarkdown(latestOverview);
+
+      if (deals.length === 0) {
+        placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
+        return;
+      }
+
       document.getElementById("global_case-list").innerHTML = deals
+        .slice(0, 12)
         .map(
           (d) => `
         <div class="overseas-card">
@@ -689,6 +1007,17 @@
         .join("");
     }
 
+    function renderPanel(section) {
+      const state = insightState[section];
+      if (section === "global_case") {
+        renderGlobalCasePanel(state.year);
+      } else if (section === "trend") {
+        renderTrendPanel(state.year, state.region);
+      } else {
+        renderItemsPanel(section, state.year, state.region);
+      }
+    }
+
     function setInsightEmptyState(message) {
       placeholder("trend-list", "report-placeholder", message);
       placeholder("amenity-list", "report-placeholder", message);
@@ -696,36 +1025,43 @@
       placeholder("global_case-list", "overseas-placeholder", message);
     }
 
-    async function loadInsightTabs(label) {
-      const results = await Promise.allSettled(
-        SECTION_KEYS.map((key) => fetchReportJson(`${label}_${key}.json`))
-      );
+    function setupInsightControls() {
+      document.querySelectorAll(".subtab-bar").forEach((bar) => {
+        const section = bar.dataset.section;
+        bar.querySelectorAll(".subtab-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            bar.querySelectorAll(".subtab-btn").forEach((b) => b.classList.toggle("active", b === btn));
+            insightState[section].region = btn.dataset.region;
+            renderPanel(section);
+          });
+        });
+      });
 
-      const [trend, amenity, facility, globalCase] = results;
+      document.querySelectorAll(".year-bar").forEach((bar) => {
+        const section = bar.dataset.section;
+        bar.querySelectorAll(".year-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            bar.querySelectorAll(".year-btn").forEach((b) => b.classList.toggle("active", b === btn));
+            insightState[section].year = Number(btn.dataset.year);
+            renderPanel(section);
+          });
+        });
+      });
+    }
 
-      if (trend.status === "fulfilled") {
-        renderTrend(trend.value);
-      } else {
-        placeholder("trend-list", "report-placeholder", "준비 중입니다.");
-      }
-
-      if (amenity.status === "fulfilled") {
-        renderItemsSection(amenity.value, "amenity-intro", "amenity-list", "준비 중입니다.");
-      } else {
-        placeholder("amenity-list", "report-placeholder", "준비 중입니다.");
-      }
-
-      if (facility.status === "fulfilled") {
-        renderItemsSection(facility.value, "facility-intro", "facility-list", "준비 중입니다.");
-      } else {
-        placeholder("facility-list", "report-placeholder", "준비 중입니다.");
-      }
-
-      if (globalCase.status === "fulfilled") {
-        renderGlobalCase(globalCase.value);
-      } else {
-        placeholder("global_case-list", "overseas-placeholder", "준비 중입니다.");
-      }
+    function initInsightPanels() {
+      SECTION_KEYS.forEach((section) => {
+        const defaultYear = latestYearWithData(section);
+        insightState[section].year = defaultYear;
+        const bar = document.querySelector(`.year-bar[data-section="${section}"]`);
+        if (bar) {
+          bar.querySelectorAll(".year-btn").forEach((b) => {
+            b.classList.toggle("active", Number(b.dataset.year) === defaultYear);
+          });
+        }
+      });
+      setupInsightControls();
+      SECTION_KEYS.forEach((section) => renderPanel(section));
     }
 
     function setupTabs() {
@@ -748,6 +1084,7 @@
         const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/`);
         if (!res.ok) throw new Error(`GitHub API ${res.status}`);
         const files = await res.json();
+        sectionFileIndex = buildSectionFileIndex(files);
 
         const reports = files
           .filter((f) => f.type === "file" && JSON_PATTERN.test(f.name))
@@ -758,16 +1095,9 @@
           }))
           .sort((a, b) => b.label.localeCompare(a.label));
 
-        if (reports.length === 0) {
-          listEl.innerHTML =
-            '<div class="report-placeholder">아직 생성된 리포트가 없습니다. 첫 리포트가 곧 발행됩니다.</div>';
-          setInsightEmptyState("아직 데이터가 없습니다.");
-          return;
-        }
+        const upcoming = { label: nextLabel(reports[0]?.label), upcoming: true };
 
-        listEl.innerHTML = reports
-          .map(
-            (r, i) => `
+        const realCardHtml = (r, i) => `
           <a class="report-card" href="${r.mdUrl}" target="_blank" rel="noopener" data-name="${r.name}">
             <div class="cover">
               <span class="issue">Issue No. ${String(reports.length - i).padStart(2, "0")}</span>
@@ -776,10 +1106,30 @@
             <span class="date">${monthLabel(r.label)}</span>
             <h3>하이엔드 주거 트렌드 리포트</h3>
             <p class="summary">요약을 불러오는 중...</p>
+            ${isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
             <span class="cta">리포트 읽기 →</span>
-          </a>`
-          )
-          .join("");
+          </a>`;
+
+        const upcomingCardHtml = (r) => `
+          <div class="report-card locked" aria-disabled="true">
+            <div class="cover">
+              <span class="issue">Coming Soon</span>
+              <span class="num">${monthLabel(r.label)}</span>
+            </div>
+            <span class="date">${monthLabel(r.label)}</span>
+            <h3>하이엔드 주거 트렌드 리포트</h3>
+            <p class="summary">다음 리포트를 준비하고 있습니다. 발행 시 자동으로 업데이트됩니다.</p>
+            <span class="badge progress">🔒 작성 중</span>
+          </div>`;
+
+        if (reports.length === 0) {
+          listEl.innerHTML = upcomingCardHtml(upcoming);
+          setInsightEmptyState("아직 데이터가 없습니다.");
+          return;
+        }
+
+        const realCards = reports.map(realCardHtml);
+        listEl.innerHTML = [realCards[0], upcomingCardHtml(upcoming), ...realCards.slice(1)].join("");
 
         reports.forEach(async (r) => {
           try {
@@ -794,7 +1144,7 @@
         });
 
         try {
-          await loadInsightTabs(reports[0].label);
+          await initInsightPanels();
         } catch (e) {
           setInsightEmptyState("데이터를 불러오지 못했습니다.");
         }
@@ -807,6 +1157,47 @@
     }
 
     loadReports();
+
+    function setupHeroSlider() {
+      const hero = document.getElementById("hero-slider");
+      if (!hero) return;
+      const slides = Array.from(hero.querySelectorAll(".slide"));
+      const dots = Array.from(hero.querySelectorAll(".slide-dots .dot"));
+      const prevBtn = hero.querySelector(".slide-arrow.prev");
+      const nextBtn = hero.querySelector(".slide-arrow.next");
+      let current = 0;
+      let timer = null;
+
+      function goTo(index) {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+      }
+
+      function restartAutoplay() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), 5000);
+      }
+
+      prevBtn?.addEventListener("click", () => {
+        goTo(current - 1);
+        restartAutoplay();
+      });
+      nextBtn?.addEventListener("click", () => {
+        goTo(current + 1);
+        restartAutoplay();
+      });
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          goTo(Number(dot.dataset.index));
+          restartAutoplay();
+        });
+      });
+
+      restartAutoplay();
+    }
+
+    setupHeroSlider();
   </script>
 </body>
 </html>
