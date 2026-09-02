@@ -7,10 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
   rel="stylesheet"
 />
 <style>
+  @font-face {
+    font-family: "Optima";
+    src: url("fonts/Optima_EN.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Ryumin";
+    src: url("fonts/A-OTF Ryumin Pro M-KL.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :root {
     --cream: #f5f0e8;
     --cream-deep: #ece3d3;
@@ -30,14 +45,14 @@
     margin: 0;
     background: var(--cream);
     color: var(--brown);
-    font-family: "Noto Serif KR", "Apple SD Gothic Neo", serif;
+    font-family: "Optima", "Noto Sans KR", "Ryumin", "Apple SD Gothic Neo", sans-serif;
     font-weight: 300;
     line-height: 1.9;
     -webkit-font-smoothing: antialiased;
   }
 
   .serif {
-    font-family: "Cormorant Garamond", "Noto Serif KR", serif;
+    font-family: "Optima", "Noto Sans KR", "Ryumin", sans-serif;
   }
 
   a { color: inherit; }
@@ -68,13 +83,18 @@
     display: flex;
     align-items: baseline;
     gap: 10px;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-weight: 600;
     font-size: 22px;
     letter-spacing: 0.14em;
   }
+  .logo .logo-img {
+    height: 22px;
+    width: auto;
+    display: block;
+  }
   .logo .sub {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 300;
     font-size: 10px;
     letter-spacing: 0.22em;
@@ -142,8 +162,14 @@
     z-index: 2;
     color: var(--cream);
   }
+  .hero .brandmark-img {
+    height: 20px;
+    width: auto;
+    display: block;
+    margin: 0 auto 40px;
+  }
   .hero .brandmark {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-weight: 500;
     font-size: 15px;
     letter-spacing: 0.5em;
@@ -152,7 +178,7 @@
     margin-bottom: 40px;
   }
   .hero h1 {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-weight: 500;
     font-style: italic;
     font-size: clamp(40px, 6.5vw, 84px);
@@ -161,7 +187,7 @@
     letter-spacing: 0.01em;
   }
   .hero .kr {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 300;
     font-size: 15px;
     letter-spacing: 0.28em;
@@ -200,7 +226,7 @@
     justify-content: center;
     cursor: pointer;
     font-size: 18px;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     transition: all 0.25s ease;
   }
   .hero .slide-arrow:hover {
@@ -257,7 +283,7 @@
   }
   .section-head .label {
     display: block;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-size: 13px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
@@ -265,7 +291,7 @@
     margin-bottom: 14px;
   }
   .section-head h2 {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 600;
     font-size: clamp(28px, 3.4vw, 40px);
     margin: 0;
@@ -308,7 +334,7 @@
     position: absolute;
     bottom: 12px;
     right: 20px;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-weight: 500;
     font-size: 64px;
@@ -319,7 +345,7 @@
     position: absolute;
     top: 26px;
     left: 26px;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-size: 13px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -330,7 +356,7 @@
   }
   .report-card .date {
     display: block;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-size: 14px;
     color: var(--gold);
@@ -338,7 +364,7 @@
     margin-bottom: 10px;
   }
   .report-card h3 {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 600;
     font-size: 19px;
     margin: 0 0 12px;
@@ -372,7 +398,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-weight: 500;
     font-size: 11px;
@@ -418,7 +444,7 @@
     flex-wrap: wrap;
   }
   .tab-btn {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-size: 13px;
     letter-spacing: 0.06em;
     color: var(--brown-soft);
@@ -455,7 +481,7 @@
   }
   .subtab-btn,
   .year-btn {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-size: 12px;
     letter-spacing: 0.04em;
     color: var(--brown-soft);
@@ -492,13 +518,13 @@
   }
   .amenity-item:first-child { border-top: none; }
   .amenity-item .idx {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-size: 32px;
     color: var(--gold);
   }
   .amenity-item h4 {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 600;
     font-size: 18px;
     margin: 0 0 10px;
@@ -529,7 +555,7 @@
     padding: 36px 32px;
   }
   .overseas-card .region {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-size: 13px;
     letter-spacing: 0.06em;
@@ -538,7 +564,7 @@
     display: block;
   }
   .overseas-card h4 {
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 600;
     font-size: 17px;
     margin: 0 0 12px;
@@ -572,14 +598,19 @@
     flex-wrap: wrap;
   }
   footer .foot-logo {
-    font-family: "Cormorant Garamond", serif;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
     font-weight: 600;
     letter-spacing: 0.18em;
     font-size: 18px;
   }
+  footer .foot-logo .logo-img {
+    height: 20px;
+    width: auto;
+    display: block;
+  }
   footer .foot-logo .sub {
     display: block;
-    font-family: "Noto Serif KR", serif;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
     font-weight: 300;
     font-size: 10px;
     letter-spacing: 0.24em;
@@ -625,7 +656,8 @@
 
   <header class="site-header">
     <div class="logo">
-      MUWA<span class="sub">Highend Living Intelligence</span>
+      <img class="logo-img" src="assets/MUWA_Wordmark_Black.png" alt="MUWA" />
+      <span class="sub">Highend Living Intelligence</span>
     </div>
     <nav class="site-nav">
       <a href="#reports">Reports</a>
@@ -650,7 +682,7 @@
       <button class="slide-arrow next" type="button" aria-label="Next slide">&#8250;</button>
 
       <div class="content">
-        <p class="brandmark">MUWA</p>
+        <img class="brandmark-img" src="assets/MUWA_Wordmark_White.png" alt="MUWA" />
         <h1>Highend Living<br />Intelligence</h1>
         <p class="kr">하이엔드 주거, 흐름을 읽다</p>
         <div class="scroll-cue">
@@ -768,7 +800,7 @@
   <footer>
     <div class="wrap">
       <div class="foot-logo">
-        MUWA
+        <img class="logo-img" src="assets/MUWA_Wordmark_White.png" alt="MUWA" />
         <span class="sub">Highend Living Intelligence Journal</span>
       </div>
       <p class="disclaimer">
