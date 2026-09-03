@@ -415,6 +415,41 @@
     color: var(--brown-soft);
     background: rgba(44, 24, 16, 0.05);
   }
+  .tier-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    color: var(--brown-soft);
+    background: var(--cream-deep);
+  }
+  .tier-badge.tier-s {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-soft);
+  }
+  .tier-badge.tier-a {
+    border-color: var(--border);
+    color: var(--brown-soft);
+    background: rgba(44, 24, 16, 0.05);
+  }
+  .tier-badge.tier-overseas {
+    border-color: var(--brown-soft);
+    color: var(--brown-soft);
+    background: rgba(44, 24, 16, 0.03);
+  }
   .report-card.locked {
     opacity: 0.68;
     pointer-events: none;
@@ -813,51 +848,14 @@
   </footer>
 
   <script>
-    const OWNER = "sinika9293";
-    const REPO = "Hanwha_Highend";
-    const JSON_PATTERN = /^(\d{4}-\d{2})_trend\.json$/;
     const SECTION_KEYS = ["trend", "amenity", "facility", "global_case"];
-    const SECTION_FILE_PATTERN = /^(\d{4}-\d{2})_(trend|amenity|facility|global_case)\.json$/;
-    const rawUrl = (name) =>
-      `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${encodeURIComponent(name)}`;
 
-    let sectionFileIndex = { trend: [], amenity: [], facility: [], global_case: [] };
-    const fileCache = new Map();
     const insightState = {
       trend: { year: 2026, region: "domestic" },
       amenity: { year: 2026, region: "domestic" },
       facility: { year: 2026, region: "domestic" },
       global_case: { year: 2026 },
     };
-
-    function buildSectionFileIndex(files) {
-      const index = { trend: [], amenity: [], facility: [], global_case: [] };
-      for (const f of files) {
-        const m = f.name.match(SECTION_FILE_PATTERN);
-        if (m) index[m[2]].push({ label: m[1], name: f.name });
-      }
-      for (const key of Object.keys(index)) {
-        index[key].sort((a, b) => b.label.localeCompare(a.label));
-      }
-      return index;
-    }
-
-    function fetchCached(name) {
-      if (!fileCache.has(name)) {
-        fileCache.set(name, fetchReportJson(name).catch((e) => null));
-      }
-      return fileCache.get(name);
-    }
-
-    function labelsForYear(section, year) {
-      return (sectionFileIndex[section] || []).filter((f) => f.label.startsWith(String(year)));
-    }
-
-    function latestYearWithData(section) {
-      const files = sectionFileIndex[section] || [];
-      if (files.length === 0) return 2026;
-      return Number(files[0].label.slice(0, 4));
-    }
 
     function stripMarkdown(text) {
       return String(text || "")
@@ -896,10 +894,14 @@
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     }
 
-    async function fetchReportJson(name) {
-      const res = await fetch(rawUrl(name));
-      if (!res.ok) throw new Error(`raw fetch ${res.status}`);
-      return res.json();
+    const TIER_LABEL = { S: "Tier S", A: "Tier A", overseas: "해외" };
+
+    function tierBadgeHtml(tiers) {
+      if (!tiers) return "";
+      return ["S", "A", "overseas"]
+        .filter((t) => (tiers[t] || []).length > 0)
+        .map((t) => `<span class="tier-badge tier-${t.toLowerCase()}">${TIER_LABEL[t]}</span>`)
+        .join("");
     }
 
     function placeholder(elId, wrapperClass, message) {
@@ -908,30 +910,20 @@
     }
 
     async function renderTrendPanel(year, region) {
-      const files = labelsForYear("trend", year);
       const introEl = document.getElementById("trend-intro");
       if (introEl) introEl.textContent = "";
 
-      if (files.length === 0) {
+      let data;
+      try {
+        const res = await fetch(`/api/insights/trend/${year}`);
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        data = await res.json();
+      } catch (e) {
         placeholder("trend-list", "report-placeholder", "데이터 없음");
         return;
       }
 
-      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
-      const cards = [];
-      files.forEach((f, i) => {
-        const data = results[i];
-        if (!data) return;
-        if (region === "domestic") {
-          (data.executive_summary || []).forEach((text) => {
-            cards.push({ label: f.label, name: null, desc: text });
-          });
-        } else {
-          (data.overseas_highlights || []).forEach((h) => {
-            cards.push({ label: f.label, name: h.keyword, desc: h.description });
-          });
-        }
-      });
+      const cards = (region === "domestic" ? data.domestic : data.overseas) || [];
 
       if (cards.length === 0) {
         placeholder("trend-list", "report-placeholder", "데이터 없음");
@@ -946,7 +938,7 @@
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
             ${c.name ? `<h4>${stripMarkdown(c.name)}</h4>` : ""}
-            <p>[${monthLabel(c.label)}] ${stripMarkdown(c.desc)}</p>
+            <p>[${monthLabel(c.label)}] ${stripMarkdown(c.description)}</p>
           </div>
         </div>`
         )
@@ -954,30 +946,24 @@
     }
 
     async function renderItemsPanel(section, year, region) {
-      const files = labelsForYear(section, year);
       const introElId = `${section}-intro`;
       const listElId = `${section}-list`;
       const introEl = document.getElementById(introElId);
       if (introEl) introEl.textContent = "";
 
-      if (files.length === 0) {
+      let data;
+      try {
+        const res = await fetch(`/api/insights/${section}/${year}`);
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        data = await res.json();
+      } catch (e) {
         placeholder(listElId, "report-placeholder", "데이터 없음");
         return;
       }
 
-      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
-      let latestIntro = "";
-      const items = [];
-      files.forEach((f, i) => {
-        const data = results[i];
-        if (!data) return;
-        if (!latestIntro && data.intro) latestIntro = data.intro;
-        (data.items || [])
-          .filter((item) => item.region === region)
-          .forEach((item) => items.push({ label: f.label, item }));
-      });
+      if (introEl) introEl.textContent = stripMarkdown(data.intro || "");
 
-      if (introEl) introEl.textContent = stripMarkdown(latestIntro);
+      const items = (region === "domestic" ? data.domestic : data.overseas) || [];
 
       if (items.length === 0) {
         placeholder(listElId, "report-placeholder", "데이터 없음");
@@ -987,11 +973,11 @@
       document.getElementById(listElId).innerHTML = items
         .slice(0, 12)
         .map(
-          ({ label, item }, i) => `
+          (item, i) => `
         <div class="amenity-item">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            <h4>[${monthLabel(label)}] ${stripMarkdown(item.name)}</h4>
+            <h4>[${monthLabel(item.label)}] ${stripMarkdown(item.name)}</h4>
             <p>${stripMarkdown(item.description)}</p>
           </div>
         </div>`
@@ -1000,26 +986,22 @@
     }
 
     async function renderGlobalCasePanel(year) {
-      const files = labelsForYear("global_case", year);
       const introEl = document.getElementById("global_case-intro");
       if (introEl) introEl.textContent = "";
 
-      if (files.length === 0) {
+      let data;
+      try {
+        const res = await fetch(`/api/insights/global_case/${year}`);
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        data = await res.json();
+      } catch (e) {
         placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
         return;
       }
 
-      const results = await Promise.all(files.map((f) => fetchCached(f.name)));
-      let latestOverview = "";
-      const deals = [];
-      files.forEach((f, i) => {
-        const data = results[i];
-        if (!data) return;
-        if (!latestOverview && data.market_overview) latestOverview = data.market_overview;
-        (data.deals || []).forEach((d) => deals.push(d));
-      });
+      if (introEl) introEl.textContent = stripMarkdown(data.intro || "");
 
-      if (introEl) introEl.textContent = stripMarkdown(latestOverview);
+      const deals = data.deals || [];
 
       if (deals.length === 0) {
         placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
@@ -1083,14 +1065,10 @@
 
     function initInsightPanels() {
       SECTION_KEYS.forEach((section) => {
-        const defaultYear = latestYearWithData(section);
-        insightState[section].year = defaultYear;
-        const bar = document.querySelector(`.year-bar[data-section="${section}"]`);
-        if (bar) {
-          bar.querySelectorAll(".year-btn").forEach((b) => {
-            b.classList.toggle("active", Number(b.dataset.year) === defaultYear);
-          });
-        }
+        const activeBtn = document.querySelector(
+          `.year-bar[data-section="${section}"] .year-btn.active`
+        );
+        if (activeBtn) insightState[section].year = Number(activeBtn.dataset.year);
       });
       setupInsightControls();
       SECTION_KEYS.forEach((section) => renderPanel(section));
@@ -1113,31 +1091,23 @@
       const listEl = document.getElementById("report-list");
       setupTabs();
       try {
-        const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/`);
-        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-        const files = await res.json();
-        sectionFileIndex = buildSectionFileIndex(files);
+        const res = await fetch(`/api/reports/monthly`);
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const { reports: rawReports } = await res.json();
 
-        const reports = files
-          .filter((f) => f.type === "file" && JSON_PATTERN.test(f.name))
-          .map((f) => ({
-            name: f.name,
-            label: f.name.match(JSON_PATTERN)[1],
-            mdUrl: `https://github.com/${OWNER}/${REPO}/blob/main/${f.name.match(JSON_PATTERN)[1]}_하이엔드주거_트렌드보고서.md`,
-          }))
-          .sort((a, b) => b.label.localeCompare(a.label));
-
+        const reports = [...rawReports].sort((a, b) => b.label.localeCompare(a.label));
         const upcoming = { label: nextLabel(reports[0]?.label), upcoming: true };
 
         const realCardHtml = (r, i) => `
-          <a class="report-card" href="${r.mdUrl}" target="_blank" rel="noopener" data-name="${r.name}">
+          <a class="report-card" href="${r.mdUrl}" target="_blank" rel="noopener" data-label="${r.label}">
             <div class="cover">
               <span class="issue">Issue No. ${String(reports.length - i).padStart(2, "0")}</span>
               <span class="num">${monthLabel(r.label)}</span>
             </div>
             <span class="date">${monthLabel(r.label)}</span>
             <h3>하이엔드 주거 트렌드 리포트</h3>
-            <p class="summary">요약을 불러오는 중...</p>
+            <p class="summary">${stripMarkdown((r.executive_summary || [])[0] || "") || "리포트 본문에서 자세한 내용을 확인하세요."}</p>
+            <div class="tier-badges">${tierBadgeHtml(r.tiers)}</div>
             ${isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
             <span class="cta">리포트 읽기 →</span>
           </a>`;
@@ -1163,27 +1133,15 @@
         const realCards = reports.map(realCardHtml);
         listEl.innerHTML = [realCards[0], upcomingCardHtml(upcoming), ...realCards.slice(1)].join("");
 
-        reports.forEach(async (r) => {
-          try {
-            const data = await fetchReportJson(r.name);
-            const summary = stripMarkdown((data.executive_summary || [])[0] || "");
-            const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
-            if (card) card.textContent = summary || "리포트 본문에서 자세한 내용을 확인하세요.";
-          } catch (e) {
-            const card = listEl.querySelector(`[data-name="${r.name}"] .summary`);
-            if (card) card.textContent = "리포트 본문에서 자세한 내용을 확인하세요.";
-          }
-        });
-
         try {
-          await initInsightPanels();
+          initInsightPanels();
         } catch (e) {
           setInsightEmptyState("데이터를 불러오지 못했습니다.");
         }
       } catch (err) {
         listEl.innerHTML =
           '<div class="report-placeholder">리포트 목록을 불러오지 못했습니다. ' +
-          `<a href="https://github.com/${OWNER}/${REPO}" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>`;
+          '<a href="https://github.com/sinika9293/Hanwha_Highend" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>';
         setInsightEmptyState("데이터를 불러오지 못했습니다.");
       }
     }

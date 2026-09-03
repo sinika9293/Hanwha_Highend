@@ -209,6 +209,64 @@ GLOBAL_CASE_SCHEMA = {
     },
 }
 
+LISTINGS_SCHEMA = {
+    "type": "object",
+    "required": ["properties", "rankings", "sources"],
+    "properties": {
+        "properties": {
+            "type": "array",
+            "description": (
+                "국내 서울 하이엔드 매물 + 해외 소규모 분양형/임대형 레지던스. "
+                "tier는 채우지 않음(dong/region만 정확히) — 시스템이 자동 분류."
+            ),
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "region",
+                    "dong",
+                    "city",
+                    "deal_type",
+                    "price_range",
+                    "description",
+                ],
+                "properties": {
+                    "id": {"type": "string", "description": "문서 내 고유 슬러그"},
+                    "name": {"type": "string"},
+                    "region": {"type": "string", "enum": ["domestic", "overseas"]},
+                    "dong": {"type": "string", "description": "법정동. 해외는 ''"},
+                    "city": {"type": "string"},
+                    "deal_type": {
+                        "type": "string",
+                        "enum": ["분양", "매매", "전세", "월세", "기타"],
+                    },
+                    "price_range": {"type": "string"},
+                    "description": {"type": "string"},
+                },
+            },
+            "minItems": 5,
+        },
+        "rankings": {
+            "type": "array",
+            "description": (
+                "Tier S/A/해외 버킷별 내부 순위. tier 필드 없음 — property_id로 조회해 자동 유도."
+            ),
+            "items": {
+                "type": "object",
+                "required": ["rank", "property_id", "rationale"],
+                "properties": {
+                    "rank": {"type": "integer"},
+                    "property_id": {"type": "string"},
+                    "rationale": {"type": "string"},
+                },
+            },
+            "minItems": 1,
+        },
+        "sources": {"type": "array", "items": {"type": "string"}},
+    },
+}
+
 SUBMIT_TOOLS = {
     "trend": {
         "name": "submit_trend",
@@ -230,6 +288,30 @@ SUBMIT_TOOLS = {
         "description": "조사한 해외 개발 사례를 고정 템플릿 구조로 최종 제출한다.",
         "input_schema": GLOBAL_CASE_SCHEMA,
     },
+    "listings": {
+        "name": "submit_listings",
+        "description": "조사한 매물 마스터와 순위를 고정 템플릿 구조로 최종 제출한다.",
+        "input_schema": LISTINGS_SCHEMA,
+    },
 }
 
 SECTION_KEYS = ("trend", "amenity", "facility", "global_case")
+
+# collect() 가 실제로 조사하는 5개 섹션. report.py 는 여전히 SECTION_KEYS(4개)만 읽으므로
+# 기존 렌더링 로직에는 영향이 없다.
+ALL_SECTION_KEYS = SECTION_KEYS + ("listings",)
+
+# (A) 월간 리포트의 Tier S 지역 — 압구정동·청담동. 이 목록에 없는 국내 매물은 Tier A.
+TIER_S_DONGS = {"압구정동", "청담동"}
+
+
+def assign_tier(region: str, dong: str) -> str:
+    """매물의 Tier를 결정론적으로 계산한다.
+
+    국내(domestic)이면서 Tier S 법정동에 속하면 'S', 국내의 나머지는 'A',
+    국내가 아니면(해외) 'overseas'. 모델의 판단이 아니라 지리적 규칙이므로
+    항상 이 함수로만 계산하고 Claude에게 tier 필드를 직접 채우게 하지 않는다.
+    """
+    if region != "domestic":
+        return "overseas"
+    return "S" if dong in TIER_S_DONGS else "A"

@@ -21,7 +21,7 @@ import os
 from anthropic import Anthropic
 
 from dates import ReportPeriod
-from schema import SECTION_KEYS, SUBMIT_TOOLS
+from schema import ALL_SECTION_KEYS, SUBMIT_TOOLS, assign_tier
 
 # 웹검색을 많이 시켜야 하는 1단계는 비용 대비 성능이 좋은 모델을,
 # 이미 모아진 텍스트를 JSON으로 옮기기만 하는 2단계는 더 가벼운 모델을 써도 된다.
@@ -121,6 +121,32 @@ SECTION_RESEARCH_PROMPTS = {
 마지막에는 인용한 모든 출처를 "매체명(날짜) — 무엇을 보도했는지" 형식으로
 목록화하세요.
 """,
+    "listings": """\
+조사 대상 기간: {range_label} ({label})
+
+'월간 리포트'에 실릴 하이엔드 매물 마스터와 순위를 조사하세요.
+
+1. 국내 서울 하이엔드 매물 (분양/매매/전세/월세 불문)
+   - 서울 전역을 대상으로 하되, 압구정동·청담동 매물과 그 외 지역 매물을
+     모두 포함하세요. 각 매물의 법정동(예: 압구정동, 대치동, 한남동 등)을
+     정확히 확인해 기재하세요 — 이 값으로 등급이 자동 분류되므로 추측하지
+     말고 확인된 법정동만 쓰세요.
+   - 단지명, 소재지(법정동/시), 거래유형, 가격대(평당가 또는 총액대),
+     핵심 특징을 정리하세요.
+
+2. 해외 소규모 분양형/임대형 레지던스
+   - 대형 개발이 아니라 소규모·부티크 성격의 분양(콘도미니엄) 또는 임대형
+     (서비스 레지던스) 매물을 우선하세요.
+   - 도시, 거래유형, 가격대, 핵심 특징을 정리하세요.
+
+3. 국내·해외 합쳐 최소 5건 이상의 매물을 확인하세요.
+
+4. 각 매물을 국내(서울 전역)/해외 버킷으로 나눠 버킷 내부 순위(1위부터)와
+   그 근거(가격 경쟁력, 브랜드, 위치, 화제성 등)를 정리하세요.
+
+마지막에는 인용한 모든 출처를 "매체명(날짜) — 무엇을 보도했는지" 형식으로
+목록화하세요.
+""",
 }
 
 
@@ -194,7 +220,21 @@ def collect_section(client: Anthropic, period: ReportPeriod, section_key: str) -
     return structure_section(client, period, section_key, memo)
 
 
+def _enrich_tiers(listings: dict) -> dict:
+    """listings["properties"][*]에 region/dong 기준 tier를 결정론적으로 부여한다."""
+    for prop in listings.get("properties", []):
+        prop["tier"] = assign_tier(prop.get("region", ""), prop.get("dong", ""))
+    return listings
+
+
 def collect(period: ReportPeriod) -> dict[str, dict]:
-    """4개 섹션 전체를 조사·구조화해 반환한다. main.py 에서 호출."""
+    """5개 섹션(trend/amenity/facility/global_case/listings) 전체를 조사·구조화해 반환한다.
+
+    listings는 (A) 월간 리포트가, trend/amenity/facility는 (A)와 (B) 둘 다,
+    global_case는 (B)만 소비한다 — 여기서는 섹션 조사 자체는 한 번만 하고
+    main.py 가 저장 시점에 용도별로 나눠 기록한다. main.py 에서 호출.
+    """
     client = Anthropic()  # ANTHROPIC_API_KEY 환경변수를 자동으로 사용
-    return {key: collect_section(client, period, key) for key in SECTION_KEYS}
+    sections = {key: collect_section(client, period, key) for key in ALL_SECTION_KEYS}
+    sections["listings"] = _enrich_tiers(sections["listings"])
+    return sections
