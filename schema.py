@@ -175,35 +175,50 @@ FACILITY_SCHEMA = {
     },
 }
 
+def _global_case_region_schema(description: str) -> dict:
+    return {
+        "type": "object",
+        "required": ["market_overview", "deals"],
+        "properties": {
+            "market_overview": {
+                "type": "string",
+                "description": description,
+            },
+            "deals": {
+                "type": "array",
+                "description": "해당 월 주요 딜 목록.",
+                "items": {
+                    "type": "object",
+                    "required": ["project", "region", "news"],
+                    "properties": {
+                        "project": {"type": "string"},
+                        "region": {"type": "string"},
+                        "news": {"type": "string"},
+                    },
+                },
+                "minItems": 0,
+            },
+        },
+    }
+
+
 GLOBAL_CASE_SCHEMA = {
     "type": "object",
-    "required": ["market_overview", "deals", "design_trends", "sources"],
+    "required": ["domestic", "overseas", "design_trends", "sources"],
     "properties": {
-        "market_overview": {
-            "type": "string",
-            "description": "해외 브랜디드 레지던스/하이엔드 시장 개요와 논지.",
-        },
-        "deals": {
-            "type": "array",
-            "description": "해당 월 주요 해외 딜 목록.",
-            "items": {
-                "type": "object",
-                "required": ["project", "region", "news"],
-                "properties": {
-                    "project": {"type": "string"},
-                    "region": {"type": "string"},
-                    "news": {"type": "string"},
-                },
-            },
-            "minItems": 1,
-        },
+        "domestic": _global_case_region_schema(
+            "국내 하이엔드 브랜드의 해외형 개발/운영 모델 도입 사례 시장 개요."
+        ),
+        "overseas": _global_case_region_schema(
+            "해외 브랜디드 레지던스/하이엔드 시장 개요와 논지."
+        ),
         "design_trends": {
             "type": "string",
             "description": "건축·설계 트렌드 (Dezeen/AD 등) 서술 단락.",
         },
         "sources": {
             "type": "array",
-            "description": "해외 출처. '매체명(날짜) — 내용' 형식.",
+            "description": "국내/해외 출처. '매체명(날짜) — 내용' 형식.",
             "items": {"type": "string"},
         },
     },

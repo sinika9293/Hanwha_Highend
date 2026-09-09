@@ -121,17 +121,25 @@ def render_markdown(sections: dict, period: ReportPeriod, generated_on: date | N
         "",
         "---",
         "",
-        "## 4. 해외 개발 사례",
+        "## 4. 개발 사례 (국내/해외)",
         "",
-        "### 4-1. 시장 개요",
+        "### 4-1. 해외 시장 개요",
         "",
-        global_case.get("market_overview", ""),
+        global_case.get("overseas", {}).get("market_overview", ""),
         "",
-        "### 4-2. 이달 주요 딜",
+        "### 4-2. 해외 이달 주요 딜",
         "",
-        _deals_table_md(global_case.get("deals", [])),
+        _deals_table_md(global_case.get("overseas", {}).get("deals", [])),
         "",
-        "### 4-3. 건축·설계 트렌드",
+        "### 4-3. 국내 시장 개요",
+        "",
+        global_case.get("domestic", {}).get("market_overview", ""),
+        "",
+        "### 4-4. 국내 이달 주요 딜",
+        "",
+        _deals_table_md(global_case.get("domestic", {}).get("deals", [])),
+        "",
+        "### 4-5. 건축·설계 트렌드",
         "",
         global_case.get("design_trends", ""),
         "",
@@ -154,7 +162,7 @@ def render_markdown(sections: dict, period: ReportPeriod, generated_on: date | N
         "**국내**",
         _bullet_list(trend.get("sources", []), numbered=False),
         "",
-        "**해외**",
+        "**개발 사례(국내/해외)**",
         _bullet_list(global_case.get("sources", []), numbered=False),
         "",
         "---",
@@ -216,13 +224,17 @@ def render_excel(sections: dict, period: ReportPeriod, path: Path) -> None:
         [[i.get("name", ""), i.get("description", "")] for i in facility.get("items", [])],
     )
 
-    ws4 = wb.create_sheet("해외딜")
+    ws4 = wb.create_sheet("개발사례")
     _write_table(
         ws4,
-        ["프로젝트", "지역", "뉴스"],
+        ["구분", "프로젝트", "지역", "뉴스"],
         [
-            [d.get("project", ""), d.get("region", ""), d.get("news", "")]
-            for d in global_case.get("deals", [])
+            ["해외", d.get("project", ""), d.get("region", ""), d.get("news", "")]
+            for d in global_case.get("overseas", {}).get("deals", [])
+        ]
+        + [
+            ["국내", d.get("project", ""), d.get("region", ""), d.get("news", "")]
+            for d in global_case.get("domestic", {}).get("deals", [])
         ],
     )
 

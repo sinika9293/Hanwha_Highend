@@ -87,14 +87,18 @@ function monthlyToItemsInsight(section, items) {
 
 function globalCaseToInsight(items) {
   let intro = "";
-  const deals = [];
+  const domestic = [];
+  const overseas = [];
   for (const { label, data } of items) {
-    if (!intro && data.market_overview) intro = data.market_overview;
-    for (const deal of data.deals || []) {
-      deals.push({ label, ...deal });
+    const dom = data.domestic || {};
+    const ov = data.overseas || {};
+    if (!intro && (ov.market_overview || dom.market_overview)) {
+      intro = ov.market_overview || dom.market_overview;
     }
+    for (const deal of dom.deals || []) domestic.push({ label, ...deal });
+    for (const deal of ov.deals || []) overseas.push({ label, ...deal });
   }
-  return { intro, deals };
+  return { intro, domestic, overseas };
 }
 
 function splitItemsByRegion(items) {
@@ -141,9 +145,10 @@ function monthlyToReportDetail(label, monthlyData, globalCaseData) {
     amenity: { intro: amenity.intro || "", ...splitItemsByRegion(amenity.items) },
     facility: { intro: facility.intro || "", ...splitItemsByRegion(facility.items) },
     global_case: {
-      intro: globalCase.market_overview || "",
+      intro: globalCase.overseas?.market_overview || globalCase.domestic?.market_overview || "",
       design_trends: globalCase.design_trends || "",
-      deals: globalCase.deals || [],
+      domestic: globalCase.domestic?.deals || [],
+      overseas: globalCase.overseas?.deals || [],
     },
   };
 }
