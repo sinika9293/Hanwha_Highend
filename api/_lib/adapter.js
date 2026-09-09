@@ -41,6 +41,8 @@ function monthlyToReportSummary(label, data) {
     mdUrl: mdUrl(label),
     banner_image: data.banner_image || "",
     status: data.status || "published",
+    title: data.title || "",
+    release_date: data.release_date || "",
     executive_summary: trend.executive_summary || [],
     tiers: groupByTier(data.listings || {}),
   };
