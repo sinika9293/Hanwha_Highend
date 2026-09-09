@@ -39,6 +39,8 @@ function monthlyToReportSummary(label, data) {
     range_label: data.range_label,
     generated_on: data.generated_on,
     mdUrl: mdUrl(label),
+    banner_image: data.banner_image || "",
+    status: data.status || "published",
     executive_summary: trend.executive_summary || [],
     tiers: groupByTier(data.listings || {}),
   };

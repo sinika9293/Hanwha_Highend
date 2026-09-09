@@ -324,14 +324,33 @@
     margin-bottom: 22px;
     transition: border-color 0.3s ease;
   }
+  .report-card .cover img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .report-card:hover .cover img {
+    transform: scale(1.04);
+  }
+  .report-card .cover.has-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(44, 24, 16, 0.05) 40%, rgba(44, 24, 16, 0.55) 100%);
+  }
   .report-card .cover::before {
     content: "";
     position: absolute;
     inset: 14px;
     border: 1px solid rgba(184, 150, 12, 0.35);
+    z-index: 1;
   }
   .report-card .cover .num {
     position: absolute;
+    z-index: 2;
     bottom: 12px;
     right: 20px;
     font-family: "Optima", "Noto Sans KR", sans-serif;
@@ -343,6 +362,7 @@
   }
   .report-card .cover .issue {
     position: absolute;
+    z-index: 2;
     top: 26px;
     left: 26px;
     font-family: "Optima", "Noto Sans KR", sans-serif;
@@ -353,6 +373,12 @@
   }
   .report-card:hover .cover {
     border-color: var(--gold);
+  }
+  .report-card .cover.has-image .num {
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .report-card .cover.has-image .issue {
+    color: #f0dfa8;
   }
   .report-card .date {
     display: block;
@@ -980,15 +1006,6 @@
       return diff >= 0 && diff <= 2;
     }
 
-    function nextLabel(label) {
-      const now = new Date();
-      const [y, m] = label
-        ? label.split("-").map(Number)
-        : [now.getFullYear(), now.getMonth() + 1];
-      const d = new Date(y, m, 1);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    }
-
     const TIER_LABEL = { S: "Tier S", A: "Tier A", overseas: "해외" };
 
     function tierBadgeHtml(tiers) {
@@ -1191,42 +1208,39 @@
         const { reports: rawReports } = await res.json();
 
         const reports = [...rawReports].sort((a, b) => b.label.localeCompare(a.label));
-        const upcoming = { label: nextLabel(reports[0]?.label), upcoming: true };
 
-        const realCardHtml = (r, i) => `
-          <a class="report-card" href="#/report/${r.label}" data-label="${r.label}">
-            <div class="cover">
-              <span class="issue">Issue No. ${String(reports.length - i).padStart(2, "0")}</span>
+        const cardHtml = (r, i) => {
+          const inProgress = r.status === "in_progress";
+          const coverImg = r.banner_image
+            ? `<img src="${r.banner_image}" alt="" loading="lazy" />`
+            : "";
+          return `
+          <a class="report-card${inProgress ? " locked" : ""}" href="#/report/${r.label}" data-label="${r.label}"${inProgress ? ' aria-disabled="true"' : ""}>
+            <div class="cover${r.banner_image ? " has-image" : ""}">
+              ${coverImg}
+              <span class="issue">${inProgress ? "Coming Soon" : `Issue No. ${String(reports.length - i).padStart(2, "0")}`}</span>
               <span class="num">${monthLabel(r.label)}</span>
             </div>
             <span class="date">${monthLabel(r.label)}</span>
             <h3>하이엔드 주거 트렌드 리포트</h3>
-            <p class="summary">${stripMarkdown((r.executive_summary || [])[0] || "") || "리포트 본문에서 자세한 내용을 확인하세요."}</p>
-            <div class="tier-badges">${tierBadgeHtml(r.tiers)}</div>
-            ${isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
-            <span class="cta">리포트 읽기 →</span>
+            <p class="summary">${
+              inProgress
+                ? "다음 리포트를 준비하고 있습니다. 발행 시 자동으로 업데이트됩니다."
+                : stripMarkdown((r.executive_summary || [])[0] || "") || "리포트 본문에서 자세한 내용을 확인하세요."
+            }</p>
+            ${inProgress ? "" : `<div class="tier-badges">${tierBadgeHtml(r.tiers)}</div>`}
+            ${inProgress ? '<span class="badge progress">🔒 준비중</span>' : isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
+            ${inProgress ? "" : '<span class="cta">리포트 읽기 →</span>'}
           </a>`;
-
-        const upcomingCardHtml = (r) => `
-          <div class="report-card locked" aria-disabled="true">
-            <div class="cover">
-              <span class="issue">Coming Soon</span>
-              <span class="num">${monthLabel(r.label)}</span>
-            </div>
-            <span class="date">${monthLabel(r.label)}</span>
-            <h3>하이엔드 주거 트렌드 리포트</h3>
-            <p class="summary">다음 리포트를 준비하고 있습니다. 발행 시 자동으로 업데이트됩니다.</p>
-            <span class="badge progress">🔒 작성 중</span>
-          </div>`;
+        };
 
         if (reports.length === 0) {
-          listEl.innerHTML = upcomingCardHtml(upcoming);
+          listEl.innerHTML = "";
           setInsightEmptyState("아직 데이터가 없습니다.");
           return;
         }
 
-        const realCards = reports.map(realCardHtml);
-        listEl.innerHTML = [realCards[0], upcomingCardHtml(upcoming), ...realCards.slice(1)].join("");
+        listEl.innerHTML = reports.map(cardHtml).join("");
 
         try {
           initInsightPanels();
