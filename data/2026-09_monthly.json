@@ -1,14 +1,14 @@
 {
-  "label": "2026-08",
-  "range_label": "2026년 8월 1일~8월 31일",
+  "label": "2026-09",
+  "range_label": "2026년 9월 1일~9월 30일",
   "year": 2026,
-  "month": 8,
-  "generated_on": "2026-09-09",
-  "banner_image": "https://images.unsplash.com/photo-1597285112431-115a1f48bde2?auto=format&fit=crop&w=1600&q=80",
+  "month": 9,
+  "generated_on": "2026-10-01",
+  "banner_image": "https://images.unsplash.com/photo-1630587148265-761cbd139043?auto=format&fit=crop&w=1600&q=80",
   "trend": {
     "executive_summary": [
-      "(placeholder) 8월 하이엔드 청약 경쟁률 핵심 요약 1",
-      "(placeholder) 8월 하이엔드 청약 경쟁률 핵심 요약 2",
+      "(placeholder) 9월 하이엔드 청약 경쟁률 핵심 요약 1",
+      "(placeholder) 9월 하이엔드 청약 경쟁률 핵심 요약 2",
       "(placeholder) 정책·세제 변수 요약"
     ],
     "subscription_table": [
@@ -20,7 +20,7 @@
       }
     ],
     "subscription_note": "(placeholder) 개별 단지 경쟁률 서술 - 실제 조사 데이터로 교체 필요.",
-    "monthly_summary": "(placeholder) 8월 청약 결산 서술 - 실제 조사 데이터로 교체 필요.",
+    "monthly_summary": "(placeholder) 9월 청약 결산 서술 - 실제 조사 데이터로 교체 필요.",
     "policy_tax": "(placeholder) 정책·세제 변화와 영향 서술 - 실제 조사 데이터로 교체 필요.",
     "risk_signals": [
       "(placeholder) 리스크 신호 1"
