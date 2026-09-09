@@ -77,6 +77,10 @@
     backdrop-filter: blur(10px);
     background: rgba(245, 240, 232, 0.78);
     border-bottom: 1px solid var(--border-soft);
+    transition: background 0.3s ease;
+  }
+  .site-header.scrolled {
+    background: rgba(10, 15, 30, 0.85);
   }
 
   .logo {
@@ -87,6 +91,9 @@
     font-weight: 600;
     font-size: 22px;
     letter-spacing: 0.14em;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
   .logo .logo-img {
     height: 22px;
@@ -678,6 +685,10 @@
     font-weight: 600;
     font-size: 18px;
     margin: 0 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .amenity-item p {
     margin: 0;
@@ -769,6 +780,10 @@
     font-size: 17px;
     margin: 0 0 12px;
     line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .overseas-card p {
     margin: 0;
@@ -914,10 +929,10 @@
 <body>
 
   <header class="site-header">
-    <div class="logo">
+    <a class="logo logo-home" href="#hero-slider">
       <img class="logo-img" src="assets/MUWA_Wordmark_Black.png" alt="MUWA" />
       <span class="sub">Highend Living Intelligence</span>
-    </div>
+    </a>
     <nav class="site-nav">
       <a href="#reports">Reports</a>
       <a href="#insight">Insight</a>
@@ -1137,6 +1152,22 @@
   </footer>
 
   <script>
+    const siteHeader = document.querySelector(".site-header");
+    const logoHome = document.querySelector(".logo-home");
+
+    if (logoHome) {
+      logoHome.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("hero-slider").scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    window.addEventListener("scroll", () => {
+      if (siteHeader) {
+        siteHeader.classList.toggle("scrolled", window.scrollY > 50);
+      }
+    });
+
     const SECTION_KEYS = ["trend", "amenity", "facility", "global_case"];
 
     const insightState = {
@@ -1828,6 +1859,7 @@
     }
 
     setupHeroSlider();
+
   </script>
 </body>
 </html>

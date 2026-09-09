@@ -1,4 +1,4 @@
-const { listMonthlyLabels, fetchMonthly } = require("../_lib/github");
+﻿const { listMonthlyLabels, fetchMonthly } = require("../_lib/github");
 const { monthlyToReportSummary } = require("../_lib/adapter");
 
 module.exports = async function handler(req, res) {
