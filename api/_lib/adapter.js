@@ -87,10 +87,58 @@ function globalCaseToInsight(items) {
   return { intro, deals };
 }
 
+function splitItemsByRegion(items) {
+  const domestic = [];
+  const overseas = [];
+  for (const item of items || []) {
+    const entry = { name: item.name, description: item.description };
+    if (item.region === "overseas") overseas.push(entry);
+    else domestic.push(entry);
+  }
+  return { domestic, overseas };
+}
+
+/**
+ * 리포트 상세 대시보드 페이지 하나가 필요로 하는 모든 섹션을 한 번에 묶어 반환한다.
+ * monthlyData/globalCaseData는 각각 fetchMonthly(label)/fetchGlobalCase(label) 결과.
+ */
+function monthlyToReportDetail(label, monthlyData, globalCaseData) {
+  const trend = monthlyData.trend || {};
+  const amenity = monthlyData.amenity || {};
+  const facility = monthlyData.facility || {};
+  const globalCase = globalCaseData || {};
+
+  return {
+    label,
+    range_label: monthlyData.range_label,
+    generated_on: monthlyData.generated_on,
+    tiers: groupByTier(monthlyData.listings || {}),
+    trend: {
+      domestic: (trend.executive_summary || []).map((text) => ({ description: text })),
+      overseas: (trend.overseas_highlights || []).map((h) => ({
+        name: h.keyword,
+        description: h.description,
+      })),
+      keywords: trend.keywords || [],
+      watchpoints: trend.watchpoints || [],
+      monthly_summary: trend.monthly_summary || "",
+      policy_tax: trend.policy_tax || "",
+    },
+    amenity: { intro: amenity.intro || "", ...splitItemsByRegion(amenity.items) },
+    facility: { intro: facility.intro || "", ...splitItemsByRegion(facility.items) },
+    global_case: {
+      intro: globalCase.market_overview || "",
+      design_trends: globalCase.design_trends || "",
+      deals: globalCase.deals || [],
+    },
+  };
+}
+
 module.exports = {
   groupByTier,
   monthlyToReportSummary,
   monthlyToTrendInsight,
   monthlyToItemsInsight,
   globalCaseToInsight,
+  monthlyToReportDetail,
 };

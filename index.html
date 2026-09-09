@@ -619,6 +619,47 @@
     background: var(--cream);
   }
 
+  /* ---------- Report dashboard ---------- */
+  .dashboard-view { padding: 160px 0 120px; }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brown-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 3px;
+    margin-bottom: 40px;
+    transition: color 0.25s ease;
+  }
+  .back-btn:hover { color: var(--gold); }
+  .dashboard-header { margin-bottom: 56px; }
+  .dashboard-header .dash-date {
+    display: block;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    margin-bottom: 14px;
+  }
+  .dashboard-header h1 {
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3.2vw, 38px);
+    margin: 0 0 20px;
+  }
+  .dashboard-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .dashboard-footer { margin-top: 72px; }
+
   /* ---------- Footer ---------- */
   footer {
     background: var(--brown);
@@ -827,6 +868,60 @@
           <div class="overseas-grid" id="global_case-list">
             <div class="overseas-placeholder">불러오는 중...</div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="report-dashboard" class="dashboard-view" style="display:none;">
+      <div class="wrap">
+        <a href="#reports" class="back-btn">← 목록으로 돌아가기</a>
+
+        <div class="dashboard-header">
+          <span class="dash-date" id="dash-date"></span>
+          <div class="dashboard-badges" id="dash-badges"></div>
+          <h1 id="dash-title">하이엔드 주거 트렌드 리포트</h1>
+        </div>
+
+        <div class="tab-bar" id="dash-tabs">
+          <button class="tab-btn active" data-tab="trend">트렌드</button>
+          <button class="tab-btn" data-tab="amenity">어메니티</button>
+          <button class="tab-btn" data-tab="facility">부대시설</button>
+          <button class="tab-btn" data-tab="global_case">해외 개발 사례</button>
+        </div>
+
+        <div class="tab-panel active" id="dash-panel-trend">
+          <div class="subtab-bar" data-dash-section="trend">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <div class="amenity-list" id="dash-trend-list"></div>
+        </div>
+
+        <div class="tab-panel" id="dash-panel-amenity">
+          <div class="subtab-bar" data-dash-section="amenity">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <p class="tab-intro" id="dash-amenity-intro"></p>
+          <div class="overseas-grid" id="dash-amenity-list"></div>
+        </div>
+
+        <div class="tab-panel" id="dash-panel-facility">
+          <div class="subtab-bar" data-dash-section="facility">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <p class="tab-intro" id="dash-facility-intro"></p>
+          <div class="overseas-grid" id="dash-facility-list"></div>
+        </div>
+
+        <div class="tab-panel" id="dash-panel-global_case">
+          <p class="tab-intro" id="dash-global_case-intro"></p>
+          <div class="overseas-grid" id="dash-global_case-list"></div>
+        </div>
+
+        <div class="dashboard-footer">
+          <a href="#reports" class="back-btn">← 목록으로 돌아가기</a>
         </div>
       </div>
     </section>
@@ -1099,7 +1194,7 @@
         const upcoming = { label: nextLabel(reports[0]?.label), upcoming: true };
 
         const realCardHtml = (r, i) => `
-          <a class="report-card" href="${r.mdUrl}" target="_blank" rel="noopener" data-label="${r.label}">
+          <a class="report-card" href="#/report/${r.label}" data-label="${r.label}">
             <div class="cover">
               <span class="issue">Issue No. ${String(reports.length - i).padStart(2, "0")}</span>
               <span class="num">${monthLabel(r.label)}</span>
@@ -1147,6 +1242,152 @@
     }
 
     loadReports();
+
+    /* ---------- Report detail dashboard ---------- */
+    const dashboardState = { trend: "domestic", amenity: "domestic", facility: "domestic" };
+    let dashboardDetail = null;
+
+    function dashCardHtml(item, idx) {
+      return `
+        <div class="amenity-item">
+          <span class="idx">${String(idx + 1).padStart(2, "0")}</span>
+          <div>
+            ${item.name ? `<h4>${stripMarkdown(item.name)}</h4>` : ""}
+            <p>${stripMarkdown(item.description || "")}</p>
+          </div>
+        </div>`;
+    }
+
+    function dashOverseasCardHtml(item) {
+      return `
+        <div class="overseas-card">
+          ${item.region ? `<span class="region">${stripMarkdown(item.region)}</span>` : ""}
+          <h4>${stripMarkdown(item.project || item.name || "")}</h4>
+          <p>${stripMarkdown(item.news || item.description || "")}</p>
+        </div>`;
+    }
+
+    function renderDashboardData() {
+      const data = dashboardDetail;
+      if (!data) return;
+
+      document.getElementById("dash-date").textContent = data.range_label || monthLabel(data.label);
+      document.getElementById("dash-badges").innerHTML =
+        tierBadgeHtml(data.tiers) + (isNewReport(data.label) ? '<span class="badge">NEW</span>' : "");
+
+      const trendItems = (data.trend[dashboardState.trend] || []);
+      document.getElementById("dash-trend-list").innerHTML =
+        trendItems.length === 0
+          ? '<div class="report-placeholder">데이터가 없습니다.</div>'
+          : trendItems.map(dashCardHtml).join("");
+
+      document.getElementById("dash-amenity-intro").textContent = stripMarkdown(data.amenity.intro || "");
+      const amenityItems = data.amenity[dashboardState.amenity] || [];
+      document.getElementById("dash-amenity-list").innerHTML =
+        amenityItems.length === 0
+          ? '<div class="overseas-placeholder">데이터가 없습니다.</div>'
+          : amenityItems.map(dashOverseasCardHtml).join("");
+
+      document.getElementById("dash-facility-intro").textContent = stripMarkdown(data.facility.intro || "");
+      const facilityItems = data.facility[dashboardState.facility] || [];
+      document.getElementById("dash-facility-list").innerHTML =
+        facilityItems.length === 0
+          ? '<div class="overseas-placeholder">데이터가 없습니다.</div>'
+          : facilityItems.map(dashOverseasCardHtml).join("");
+
+      document.getElementById("dash-global_case-intro").textContent = stripMarkdown(data.global_case.intro || "");
+      const deals = data.global_case.deals || [];
+      document.getElementById("dash-global_case-list").innerHTML =
+        deals.length === 0
+          ? '<div class="overseas-placeholder">데이터가 없습니다.</div>'
+          : deals.map(dashOverseasCardHtml).join("");
+    }
+
+    function setupDashboardControls() {
+      document.querySelectorAll("#dash-tabs .tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.tab;
+          document.querySelectorAll("#dash-tabs .tab-btn").forEach((b) => b.classList.toggle("active", b === btn));
+          document.querySelectorAll("#report-dashboard .tab-panel").forEach((panel) => {
+            panel.classList.toggle("active", panel.id === `dash-panel-${key}`);
+          });
+        });
+      });
+
+      document.querySelectorAll("#report-dashboard .subtab-bar").forEach((bar) => {
+        const section = bar.dataset.dashSection;
+        bar.querySelectorAll(".subtab-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            bar.querySelectorAll(".subtab-btn").forEach((b) => b.classList.toggle("active", b === btn));
+            dashboardState[section] = btn.dataset.region;
+            renderDashboardData();
+          });
+        });
+      });
+    }
+
+    async function openReportDashboard(label) {
+      dashboardState.trend = "domestic";
+      dashboardState.amenity = "domestic";
+      dashboardState.facility = "domestic";
+      document.querySelectorAll("#report-dashboard .subtab-btn").forEach((b) =>
+        b.classList.toggle("active", b.dataset.region === "domestic")
+      );
+      document.querySelectorAll("#dash-tabs .tab-btn").forEach((b, i) => b.classList.toggle("active", i === 0));
+      document.querySelectorAll("#report-dashboard .tab-panel").forEach((p) =>
+        p.classList.toggle("active", p.id === "dash-panel-trend")
+      );
+
+      dashboardDetail = null;
+      document.getElementById("dash-title").textContent = "불러오는 중...";
+      document.getElementById("dash-date").textContent = "";
+      document.getElementById("dash-badges").innerHTML = "";
+      ["dash-trend-list", "dash-amenity-list", "dash-facility-list", "dash-global_case-list"].forEach((id) => {
+        document.getElementById(id).innerHTML = "";
+      });
+      ["dash-amenity-intro", "dash-facility-intro", "dash-global_case-intro"].forEach((id) => {
+        document.getElementById(id).textContent = "";
+      });
+
+      try {
+        const res = await fetch(`/api/reports/${label}`);
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        dashboardDetail = await res.json();
+        document.getElementById("dash-title").textContent = "하이엔드 주거 트렌드 리포트";
+        renderDashboardData();
+      } catch (e) {
+        document.getElementById("dash-title").textContent = "하이엔드 주거 트렌드 리포트";
+        document.getElementById("dash-trend-list").innerHTML =
+          '<div class="report-placeholder">리포트 데이터를 불러오지 못했습니다.</div>';
+      }
+    }
+
+    function showDashboard(label) {
+      document.querySelectorAll("main > section").forEach((section) => {
+        section.style.display = section.id === "report-dashboard" ? "" : "none";
+      });
+      window.scrollTo(0, 0);
+      openReportDashboard(label);
+    }
+
+    function showMainSections() {
+      document.querySelectorAll("main > section").forEach((section) => {
+        section.style.display = section.id === "report-dashboard" ? "none" : "";
+      });
+    }
+
+    function handleRoute() {
+      const match = /^#\/report\/(.+)$/.exec(window.location.hash);
+      if (match) {
+        showDashboard(decodeURIComponent(match[1]));
+      } else {
+        showMainSections();
+      }
+    }
+
+    setupDashboardControls();
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
 
     function setupHeroSlider() {
       const hero = document.getElementById("hero-slider");
