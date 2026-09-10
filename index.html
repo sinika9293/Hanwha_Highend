@@ -380,8 +380,11 @@
   .report-card .cover.has-image .issue {
     color: #f0dfa8;
   }
+  .report-card .cover.has-image.published::after {
+    content: none;
+  }
   .report-card .cover.coming-soon img {
-    opacity: 0.15;
+    opacity: 0.1;
   }
   .report-card:hover .cover.coming-soon img {
     transform: none;
@@ -390,7 +393,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.82);
     z-index: 2;
   }
   .report-card .cover.coming-soon .issue,
@@ -418,17 +421,7 @@
     font-weight: 500;
     font-size: 15px;
     letter-spacing: 0.04em;
-    color: #fff;
-    text-align: center;
-  }
-  .report-card .cover .coming-soon-brand .coming-soon-label {
-    font-family: "Optima", "Noto Sans KR", sans-serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #f0dfa8;
+    color: #c9a96e;
     text-align: center;
   }
   .report-card.coming-soon {
@@ -1047,12 +1040,6 @@
       return `${y}. ${m}`;
     }
 
-    function nextMonthFirstLabel() {
-      const now = new Date();
-      const next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      return `${next.getFullYear()}년 ${next.getMonth() + 1}월 1일`;
-    }
-
     function monthsSince(label) {
       const [y, m] = label.split("-").map(Number);
       const labelDate = new Date(y, m - 1, 1);
@@ -1062,6 +1049,19 @@
         (nowDate.getFullYear() - labelDate.getFullYear()) * 12 +
         (nowDate.getMonth() - labelDate.getMonth())
       );
+    }
+
+    function computeCardStatus(label) {
+      const diff = monthsSince(label);
+      if (diff >= 1) return "published";
+      if (diff === 0) return "in_progress";
+      return "coming_soon";
+    }
+
+    function releaseDateLabel(releaseDate) {
+      const [y, m] = String(releaseDate || "").split("-");
+      if (!y || !m) return "";
+      return `${y}년 ${Number(m)}월 1일 오픈 예정`;
     }
 
     function isNewReport(label) {
@@ -1273,8 +1273,9 @@
         const reports = [...rawReports].sort((a, b) => b.label.localeCompare(a.label));
 
         const cardHtml = (r, i) => {
-          const inProgress = r.status === "in_progress";
-          const comingSoon = r.status === "coming_soon";
+          const status = computeCardStatus(r.label);
+          const inProgress = status === "in_progress";
+          const comingSoon = status === "coming_soon";
           const coverImg = r.banner_image
             ? `<img src="${r.banner_image}" alt="" loading="lazy" />`
             : "";
@@ -1286,8 +1287,7 @@
                 ${coverImg}
                 <div class="coming-soon-brand">
                   <img src="assets/MUWA_Wordmark_White.png" alt="MUWA" />
-                  <span class="coming-soon-date">${nextMonthFirstLabel()}</span>
-                  <span class="coming-soon-label">준비중</span>
+                  <span class="coming-soon-date">${releaseDateLabel(r.release_date)}</span>
                 </div>
               </div>
               <span class="date">${monthLabel(r.label)}</span>
@@ -1298,7 +1298,7 @@
 
           return `
           <a class="report-card${inProgress ? " locked" : ""}" href="#/report/${r.label}" data-label="${r.label}"${inProgress ? ' aria-disabled="true"' : ""}>
-            <div class="cover${r.banner_image ? " has-image" : ""}">
+            <div class="cover${r.banner_image ? ` has-image${inProgress ? "" : " published"}` : ""}">
               ${coverImg}
               <span class="issue">${inProgress ? "Coming Soon" : `Issue No. ${String(reports.length - i).padStart(2, "0")}`}</span>
               <span class="num">${monthLabel(r.label)}</span>

@@ -48,3 +48,20 @@ def get_previous_month_period(today: date | None = None) -> ReportPeriod:
     start = date(prev_year, prev_month, 1)
     end = date(prev_year, prev_month, last_day)
     return ReportPeriod(year=prev_year, month=prev_month, start=start, end=end)
+
+
+def get_next_month_period(today: date | None = None) -> ReportPeriod:
+    """`today`가 속한 달의 다음달 1일~말일을 반환한다. coming-soon 플레이스홀더 생성용."""
+    if today is None:
+        today = date.today()
+
+    year, month = today.year, today.month
+    if month == 12:
+        next_year, next_month = year + 1, 1
+    else:
+        next_year, next_month = year, month + 1
+
+    last_day = calendar.monthrange(next_year, next_month)[1]
+    start = date(next_year, next_month, 1)
+    end = date(next_year, next_month, last_day)
+    return ReportPeriod(year=next_year, month=next_month, start=start, end=end)
