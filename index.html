@@ -1297,8 +1297,8 @@
           }
 
           return `
-          <a class="report-card${inProgress ? " locked" : ""}" href="#/report/${r.label}" data-label="${r.label}"${inProgress ? ' aria-disabled="true"' : ""}>
-            <div class="cover${r.banner_image ? ` has-image${inProgress ? "" : " published"}` : ""}">
+          <a class="report-card" href="#/report/${r.label}" data-label="${r.label}">
+            <div class="cover${r.banner_image ? " has-image published" : ""}">
               ${coverImg}
               <span class="issue">${inProgress ? "Coming Soon" : `Issue No. ${String(reports.length - i).padStart(2, "0")}`}</span>
               <span class="num">${monthLabel(r.label)}</span>
@@ -1311,8 +1311,8 @@
                 : stripMarkdown((r.executive_summary || [])[0] || "") || "리포트 본문에서 자세한 내용을 확인하세요."
             }</p>
             ${inProgress ? "" : `<div class="tier-badges">${tierBadgeHtml(r.tiers)}</div>`}
-            ${inProgress ? '<span class="badge progress">🔒 준비중</span>' : isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
-            ${inProgress ? "" : '<span class="cta">리포트 읽기 →</span>'}
+            ${inProgress ? '<span class="badge progress">작성중</span>' : isNewReport(r.label) ? '<span class="badge">NEW</span>' : ""}
+            <span class="cta">리포트 읽기 →</span>
           </a>`;
         };
 
@@ -1448,13 +1448,26 @@
       try {
         const res = await fetch(`/api/reports/${label}`);
         if (!res.ok) throw new Error(`API ${res.status}`);
-        dashboardDetail = await res.json();
+        const detail = await res.json();
+        const hasContent =
+          (detail.trend?.domestic?.length || 0) > 0 ||
+          (detail.trend?.overseas?.length || 0) > 0 ||
+          (detail.amenity?.domestic?.length || 0) > 0 ||
+          (detail.amenity?.overseas?.length || 0) > 0 ||
+          (detail.facility?.domestic?.length || 0) > 0 ||
+          (detail.facility?.overseas?.length || 0) > 0;
+        if (!hasContent) throw new Error("no-data");
+        dashboardDetail = detail;
         document.getElementById("dash-title").textContent = "하이엔드 주거 트렌드 리포트";
         renderDashboardData();
       } catch (e) {
         document.getElementById("dash-title").textContent = "하이엔드 주거 트렌드 리포트";
+        const message =
+          computeCardStatus(label) === "in_progress"
+            ? "리포트를 준비 중입니다."
+            : "리포트 데이터를 불러오지 못했습니다.";
         document.getElementById("dash-trend-list").innerHTML =
-          '<div class="report-placeholder">리포트 데이터를 불러오지 못했습니다.</div>';
+          `<div class="report-placeholder">${message}</div>`;
       }
     }
 
