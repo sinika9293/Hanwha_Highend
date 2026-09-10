@@ -380,11 +380,17 @@
   .report-card .cover.has-image .issue {
     color: #f0dfa8;
   }
+  .report-card .cover.coming-soon img {
+    opacity: 0.15;
+  }
+  .report-card:hover .cover.coming-soon img {
+    transform: none;
+  }
   .report-card .cover.coming-soon::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(20, 12, 6, 0.4);
+    background: rgba(0, 0, 0, 0.75);
     z-index: 2;
   }
   .report-card .cover.coming-soon .issue,
@@ -399,21 +405,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
   }
   .report-card .cover .coming-soon-brand img {
     width: 42%;
     max-width: 160px;
     height: auto;
   }
-  .report-card .cover .coming-soon-brand span {
+  .report-card .cover .coming-soon-brand .coming-soon-date {
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: #fff;
+    text-align: center;
+  }
+  .report-card .cover .coming-soon-brand .coming-soon-label {
     font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
     font-weight: 500;
     font-size: 12px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #fff;
+    color: #f0dfa8;
     text-align: center;
   }
   .report-card.coming-soon {
@@ -1032,9 +1047,10 @@
       return `${y}. ${m}`;
     }
 
-    function formatKoreanDate(dateStr) {
-      const [y, m, d] = dateStr.split("-").map(Number);
-      return `${y}년 ${m}월 ${d}일`;
+    function nextMonthFirstLabel() {
+      const now = new Date();
+      const next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      return `${next.getFullYear()}년 ${next.getMonth() + 1}월 1일`;
     }
 
     function monthsSince(label) {
@@ -1264,14 +1280,14 @@
             : "";
 
           if (comingSoon) {
-            const releaseText = r.release_date ? `${formatKoreanDate(r.release_date)} COMING SOON` : "COMING SOON";
             return `
             <a class="report-card locked coming-soon" href="#/report/${r.label}" data-label="${r.label}" aria-disabled="true">
               <div class="cover${r.banner_image ? " has-image coming-soon" : " coming-soon"}">
                 ${coverImg}
                 <div class="coming-soon-brand">
                   <img src="assets/MUWA_Wordmark_White.png" alt="MUWA" />
-                  <span>${releaseText}</span>
+                  <span class="coming-soon-date">${nextMonthFirstLabel()}</span>
+                  <span class="coming-soon-label">준비중</span>
                 </div>
               </div>
               <span class="date">${monthLabel(r.label)}</span>
