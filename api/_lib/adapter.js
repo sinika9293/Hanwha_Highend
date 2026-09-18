@@ -21,6 +21,7 @@ function groupByTier(listings) {
       deal_type: prop.deal_type,
       price_range: prop.price_range,
       description: prop.description,
+      image_url: prop.image_url || "",
       rank: r.rank,
       rationale: r.rationale,
     });
@@ -71,7 +72,12 @@ function monthlyToItemsInsight(section, items) {
     const sec = data[section] || {};
     if (!intro && sec.intro) intro = sec.intro;
     for (const item of sec.items || []) {
-      const entry = { label, name: item.name, description: item.description };
+      const entry = {
+        label,
+        name: item.name,
+        description: item.description,
+        image_url: item.image_url || "",
+      };
       if (item.region === "overseas") overseas.push(entry);
       else domestic.push(entry);
     }
@@ -95,7 +101,11 @@ function splitItemsByRegion(items) {
   const domestic = [];
   const overseas = [];
   for (const item of items || []) {
-    const entry = { name: item.name, description: item.description };
+    const entry = {
+      name: item.name,
+      description: item.description,
+      image_url: item.image_url || "",
+    };
     if (item.region === "overseas") overseas.push(entry);
     else domestic.push(entry);
   }

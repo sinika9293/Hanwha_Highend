@@ -1,82 +1,304 @@
 {
   "label": "2026-08",
+  "title": "하이엔드의 축이 마감재에서 운영으로 — 로봇·의료·롱제비티가 시설을 대체한다",
   "range_label": "2026년 8월 1일~8월 31일",
   "year": 2026,
   "month": 8,
-  "generated_on": "2026-09-09",
-  "banner_image": "https://images.unsplash.com/photo-1773754532196-014342510e64?auto=format&fit=crop&w=1600&q=80",
+  "generated_on": "2026-09-18",
+  "status": "published",
+  "banner_image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80",
+  "source_weeks": ["2026-08-W4"],
   "trend": {
     "executive_summary": [
-      "(placeholder) 8월 하이엔드 청약 경쟁률 핵심 요약 1",
-      "(placeholder) 8월 하이엔드 청약 경쟁률 핵심 요약 2",
-      "(placeholder) 정책·세제 변수 요약"
+      "8월 하이엔드 주거 브랜드평판에서 디에이치가 1위를 지켰으나 전체 지표가 하락하는 가운데 커뮤니티지수만 유일하게 상승(+0.57%)했다. 소비자 탐색이 브랜드·마감재에서 '프라이빗 스카이라운지' 등 실제 운영 콘텐츠로 이동했음을 보여주는 신호다.",
+      "압구정 수주전이 설계·마감 경쟁에서 계열사 자산 동원 경쟁으로 전환됐다. 현대건설은 압구정5구역(지하5~지상68층 1,397가구, 공사비 1조4,960억원)을 599표 대 398표로 확보하며 현대차그룹 DRT 무인셔틀·모베드(MobED) 배송·주차 로봇과 '더 클래식 500' 의료·웰니스 케어를 앞세웠고, 삼성물산은 압구정4구역(1,662가구, 약 2조1,154억원)을 87.4% 찬성으로 확보하며 2000년 래미안 론칭 이후 처음으로 일반 아파트에 비래미안 단독 브랜드 '컬리넌'을 적용했다.",
+      "부대시설이 '공간'에서 '운영 서비스'로 재정의됐다. GS건설은 8월 26일 고메드갤러리아와 MOU를 맺고 자이 커뮤니티에 올데이 다이닝·팝업 라운지·전용 케이터링을 아웃소싱하기로 했으며(목동12단지·안산 성포동 적용), 디에이치 방배는 H 컬처클럽·H 헬퍼·헤이슬립·H 클린팜 등 서비스 번들로 시설을 대체했다. 반면 래미안 원베일리 운영사 교체, 헬리오시티 커뮤니티 식당 원상복구 사례처럼 조식·F&B의 운영 적자가 실질 리스크로 확인됐다."
     ],
     "subscription_table": [
       {
-        "label": "하이엔드",
-        "listings": "(placeholder)",
-        "applicants": "(placeholder)",
-        "competition_rate": "(placeholder)"
+        "label": "이촌 르엘",
+        "listings": "하이엔드 분양",
+        "applicants": "1순위 마감",
+        "competition_rate": "135대 1"
+      },
+      {
+        "label": "더샵 트리센트 (8/4)",
+        "listings": "하이엔드 분양",
+        "applicants": "1순위 마감",
+        "competition_rate": "18.29대 1"
+      },
+      {
+        "label": "챔피언스시티 1차 (광주)",
+        "listings": "3,216가구 · 전용 84~214㎡",
+        "applicants": "견본주택 9월 개관",
+        "competition_rate": "분양 대기"
       }
     ],
-    "subscription_note": "(placeholder) 개별 단지 경쟁률 서술 - 실제 조사 데이터로 교체 필요.",
-    "monthly_summary": "(placeholder) 8월 청약 결산 서술 - 실제 조사 데이터로 교체 필요.",
-    "policy_tax": "(placeholder) 정책·세제 변화와 영향 서술 - 실제 조사 데이터로 교체 필요.",
+    "subscription_note": "이촌 르엘은 조식 다이닝 카페·런드리룸·건식세차장을 앞세워 1순위 135대 1을 기록했고, 8월 4일 청약한 더샵 트리센트는 AIQ 특화 설계로 18.29대 1을 냈다. 광주 챔피언스시티 1차(우미건설·신영씨앤디)는 3,216가구 중 79%(2,534가구)를 84㎡로 구성하고 44층 전체를 스카이 커뮤니티로 할당해 9월 견본주택 개관을 준비했다.",
+    "monthly_summary": "8월 국내 하이엔드 시장의 화두는 '누가 더 좋은 시설을 넣는가'가 아니라 '누가 그 시설을 계속 운영할 수 있는가'였다. 서울에서는 압구정 4·5구역 수주전이 로봇·의료·모빌리티 계열사 자산을 동원하는 방향으로 격화됐고, 지방에서는 광주 챔피언스시티 1차가 AI 로봇과 층별 음식물 자동이송을 서울 최상급 단지보다 먼저 도입했다. 인천 로열파크시티Ⅱ는 38가지 호텔식 커뮤니티와 13가지 주거 서비스로 살기 좋은 아파트 대회 2년 연속 종합대상을 받으면서도 84㎡ 월 관리비를 약 10만원 수준으로 유지해, 하이엔드 사양을 분양가 프리미엄이 아니라 규모의 경제로 증명하는 역방향 사례를 만들었다.",
+    "policy_tax": "8월에는 세제 변화보다 수주 금융 조건이 실질 변수로 작동했다. 현대건설은 압구정5구역에 COFIX+0.49% 확정금리, LTV 100%, 분담금 4년 유예, 공사기간 67개월을 제시했고 DL이앤씨는 '아크로 압구정'으로 57개월 공기, 평당 1,139만원 확정공사비, 가산금리 0%, 7년 유예, LTV 150%를 맞불로 냈다. 여의도에서는 시범(보증금 500억원)·목화(300억원) 입찰공고가 나오며 공동도급이 금지됐고, 성수전략정비구역은 1~4지구 9,428가구·8조원대 규모에서 2지구 무응찰·4지구 유찰이 발생해 1지구만 GS건설 단독 수주(지하4~지상69층 3,014가구)로 확정됐다.",
     "risk_signals": [
-      "(placeholder) 리스크 신호 1"
+      "커뮤니티 F&B 운영 적자 — 래미안 원베일리는 운영사 적자로 추가비용 요구가 발생해 업체를 교체했고, 헬리오시티는 중식 9,000원·석식 10,000원 뷔페를 중단하고 원상복구했다. 조식 가격대는 통상 7,000~11,000원, 주말 특식은 15,000원까지 올랐다.",
+      "커뮤니티 운영비의 입주민 전가 — 개포 디에이치퍼스티어아이파크는 식당 공사 소음·냄새 민원으로 일부 운영을 중단했고 수영장·사우나 유료화를 놓고 논쟁이 이어졌다. 시설 보유가 곧 만족도로 이어지지 않는다는 점이 실증됐다.",
+      "수주전 과열 후 시공사 미확보 리스크 — 성수 2지구 무응찰·4지구 유찰처럼 압구정·여의도 밖 사업지에서는 조건이 맞지 않으면 입찰 자체가 성립하지 않는 양극화가 나타났다."
     ],
     "keywords": [
-      { "rank": 1, "keyword": "(placeholder)", "why_now": "(placeholder)", "indicator": "(placeholder)" },
-      { "rank": 2, "keyword": "(placeholder)", "why_now": "(placeholder)", "indicator": "(placeholder)" },
-      { "rank": 3, "keyword": "(placeholder)", "why_now": "(placeholder)", "indicator": "(placeholder)" },
-      { "rank": 4, "keyword": "(placeholder)", "why_now": "(placeholder)", "indicator": "(placeholder)" },
-      { "rank": 5, "keyword": "(placeholder)", "why_now": "(placeholder)", "indicator": "(placeholder)" }
+      {
+        "rank": 1,
+        "keyword": "운영형 어메니티",
+        "why_now": "시설 보유는 변별력을 잃고, 누가 어떤 브랜드로 운영하는지가 상품 사양이 됐다.",
+        "indicator": "GS건설×고메드갤러리아 MOU(8/26), 디에이치 방배 H 컬처클럽 등 서비스 번들 6종"
+      },
+      {
+        "rank": 2,
+        "keyword": "커뮤니티지수",
+        "why_now": "8월 브랜드평판에서 전체 지표 하락 중 유일하게 상승한 항목.",
+        "indicator": "커뮤니티지수 +0.57%, 디에이치 브랜드평판 1위"
+      },
+      {
+        "rank": 3,
+        "keyword": "로보틱스 인프라",
+        "why_now": "청소·배송·주차·음식물 처리 같은 노동을 설비로 대체하는 설계가 카탈로그에 진입했다.",
+        "indicator": "챔피언스시티 1차 공용부 AI 로봇 + 층별 음식물 자동이송, 현대건설 MobED 제안"
+      },
+      {
+        "rank": 4,
+        "keyword": "전용 브랜드 신설",
+        "why_now": "기존 하이엔드 브랜드조차 압구정 단가를 정당화하기 어렵다는 판단.",
+        "indicator": "삼성물산 '컬리넌 압구정' — 래미안 론칭 후 첫 비래미안 단독시공 일반아파트"
+      },
+      {
+        "rank": 5,
+        "keyword": "롱제비티(수명연장)",
+        "why_now": "해외 럭셔리 호스피탤리티가 스파를 넘어 의료급 진단을 수익모델로 확정했다.",
+        "indicator": "식스센스 더 팜 두바이 롱제비티 클리닉, 클리니크 라 프레리 푸켓 300+ 건강지표"
+      }
     ],
     "watchpoints": [
-      "(placeholder) 관전 포인트 1",
-      "(placeholder) 관전 포인트 2",
-      "(placeholder) 관전 포인트 3"
+      "압구정 3구역(지하5~지상65층 30개동 5,175가구, 공사비 5조5,610억원) 시공사 선정에서 4·5구역의 '계열사 자산 동원' 공식이 다시 통할지.",
+      "여의도 시범·목화 입찰의 공동도급 금지 조건이 대형사 단독 수주 구도를 만들지, 성수 2·4지구처럼 유찰로 이어질지.",
+      "커뮤니티 F&B 아웃소싱(고메드갤러리아·신세계푸드 등)이 원베일리·헬리오시티식 운영 적자를 구조적으로 해결하는지, 입주 후 1년 시점 지속 여부."
     ],
     "overseas_highlights": [
-      { "keyword": "(placeholder)", "description": "(placeholder)" },
-      { "keyword": "(placeholder)", "description": "(placeholder)" },
-      { "keyword": "(placeholder)", "description": "(placeholder)" }
+      {
+        "keyword": "AMAALA 3연속 럭셔리 개관",
+        "description": "사우디 홍해 AMAALA가 6월 포시즌스(202실), 7월 식스센스(룸 64·빌라 30·레지던스 25, LEED 플래티넘)에 이어 8월 18일 로즈우드(40헥타르·110키 전 객실 프라이빗 풀, 아사야 스파 2,100㎡, 1박 SAR 4,000부터)를 개관해 단일 목적지에 초럭셔리 브랜드를 동시 집적하는 국가 주도 모델을 완성했다. 브랜드별 역할도 분담됐다 — 포시즌스는 규모와 F&B 베뉴 6개, 식스센스는 의료급 진단과 환경 인증, 로즈우드는 프라이버시와 리추얼."
+      },
+      {
+        "keyword": "브랜디드 레지던스가 호텔 물량을 역전",
+        "description": "9월 1일 개관하는 식스센스 더 팜 두바이는 스위트 61실 대비 레지던스 172채로 구성돼 레지던스가 호텔 객실을 3배 가까이 앞선다. 마라베 마누엘안토니오 LXR도 총 173실을 리조트 57실·레지던스 116채로 나눴다. 60,000sq ft 웰니스 클럽(롱제비티 클리닉·IV 라운지·바이오해킹 룸) 같은 시설이 두 상품을 동시에 정당화하는 앵커 역할을 한다."
+      },
+      {
+        "keyword": "완공 실물이 증명한 브랜디드 에스테이트 가격",
+        "description": "8월 25일 월도프 아스토리아 레지던스 코스타리카 푼타 카시케의 첫 에스테이트 홈이 완공됐다. 600에이커 부지에 17,000sq ft 웰니스 스파, 프라이빗 비치 클럽, F&B 6개소를 소유자가 공유하고 소유 기간 내내 힐튼 아너스 다이아몬드 자격과 위탁 관리를 받는다. 가격대는 700만 달러 중반~1,175만 달러이며 이미 절반 이상 매각돼, '분양 중' 단계가 아닌 실물로 100억원대 가격이 실증됐다."
+      }
     ],
-    "sources": []
+    "sources": [
+      "한국기업평판연구소 - 2026년 8월 아파트 브랜드평판 (커뮤니티지수 +0.57%)",
+      "압구정5구역 재건축조합 시공사 선정 총회 결과 (현대건설 599표 / DL이앤씨 398표)",
+      "압구정4구역 재건축조합 시공사 선정 (삼성물산 87.4% 찬성, '컬리넌 압구정')",
+      "GS건설·고메드갤러리아 업무협약 (2026-08-26, 그랑서울)",
+      "우미건설·신영씨앤디 챔피언스시티 1차 분양 자료",
+      "DK아시아 로열파크시티Ⅱ / 제30회 살기 좋은 아파트 대회 종합대상",
+      "Red Sea Global - Rosewood AMAALA 개관 (2026-08-18)",
+      "Hilton - Waldorf Astoria Residences Costa Rica Punta Cacique 첫 에스테이트 완공 (2026-08-25)",
+      "Hilton LXR - Maravé Manuel Antonio 계약 체결 (2026-08-27)",
+      "Six Senses / IHG - The Palm Dubai 개관 준비 자료"
+    ]
   },
   "amenity": {
-    "intro": "(placeholder) 어메니티(서비스·운영) 트렌드 개요 - 실제 조사 데이터로 교체 필요.",
+    "intro": "8월 어메니티의 핵심은 '무엇을 넣었는가'에서 '누가 운영하는가'로의 이동이다. 국내는 F&B·서점·교육 브랜드를 커뮤니티에 아웃소싱하고 가사 노동을 로봇·자동화 설비로 흡수하는 방향으로, 해외는 스파를 롱제비티 클리닉으로 승격시키고 소유자 전용 접근권을 계층화하는 방향으로 각각 진화했다.",
     "items": [
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "domestic" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "domestic" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "overseas" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "overseas" }
+      {
+        "name": "프리미엄 F&B 아웃소싱 — 올데이 다이닝·팝업 라운지·전용 케이터링",
+        "description": "GS건설이 8월 26일 그랑서울에서 고메드갤러리아와 MOU를 맺고 자이 커뮤니티에 프리미엄 올데이 다이닝, 브랜드 연계 팝업 라운지, 입주민 전용 소모임·파티 케이터링을 도입한다. 적용지는 목동12단지 재건축과 안산 성포동 주거복합. 로열파크시티Ⅱ도 같은 브랜드로 '트리니티 라운지'를 운영한다. 시공사가 직접 운영하지 않고 호텔·식음 전문 브랜드에 위탁하는 구조가 표준이 됐다.",
+        "region": "domestic",
+        "facility_type": "커뮤니티 다이닝 · F&B 서비스",
+        "image_url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "'H 컬처클럽' — 부대시설을 문화 멤버십으로 전환한 운영형 어메니티",
+        "description": "디에이치 방배는 33층 스카이라운지 'CLOUD 33'과 국내 아파트 최대 규모 프라이빗 영화관 'H 시네마'를 두는 데 그치지 않고, 문화 멤버십 'H 컬처클럽', 세대 컨시어지 'H 헬퍼', 수면관리 '헤이슬립', 도심형 스마트팜 'H 클린팜', 운동 플랫폼 'H 헬시플레저', AI 학습관리 'H 스마트스터디'를 서비스 번들로 묶었다. 물리적 면적을 차지하지 않는 소프트웨어형 어메니티가 카탈로그에 진입한 사례다.",
+        "region": "domestic",
+        "facility_type": "주거 서비스 플랫폼 · 스카이라운지 · 프라이빗 시네마",
+        "image_url": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "AI 로봇·음식물 자동 이송 — 가사 부담을 시설로 흡수하는 설계",
+        "description": "챔피언스시티 1차는 단지 공용부에 청소·운반 AI 로봇을 배치하고 각 층 공용부에서 세대 배출 음식물 쓰레기를 지정 장소까지 자동 이송하는 시스템을 도입한다. 홈플랫폼 '홈닉'과 지하 1층 호텔식 드롭오프도 함께 적용된다. 현대건설은 압구정 브랜드타운에 현대차그룹 모베드(MobED) 기반 배달·짐 운반·분리수거와 DRT 무인셔틀·주차 로봇을 제안했다. 어메니티가 '즐길 공간'에서 '노동을 대체하는 설비'로 확장됐다.",
+        "region": "domestic",
+        "facility_type": "스마트 리빙 · 로보틱스 · 통합 커뮤니티",
+        "image_url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "60,000sq ft 웰니스 클럽 — 롱제비티 클리닉·IV 라운지·바이오해킹 룸",
+        "description": "식스센스 더 팜 두바이(스위트 61실 + 레지던스 172채)는 60,000sq ft 웰니스 클럽에 롱제비티 클리닉, IV 라운지, 바이오해킹 룸, 마사지 서킷 풀, 스쿼시 코트, 온사이트 '어스 랩'을 배치하고 SIRO와 클리니크 라 프레리를 직접 경쟁자로 지목했다. 설계는 SAOTA가 산호에서 착안한 물결형 루프라인과 세포 구조 파사드로 맡았다. 펄 스위트 시뷰 2인 조식 포함 1박 1,500달러부터.",
+        "region": "overseas",
+        "facility_type": "롱제비티 클리닉 · 웰니스 클럽",
+        "image_url": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "아사야 스파 2,100㎡ + 여성 전용 피트니스 + 지역 식물 아포테카리",
+        "description": "8월 18일 개관한 로즈우드 AMAALA는 아사야 스파 2,100㎡에 트리트먼트룸 6개, 더블 스위트, 프라이빗 하맘, 남녀 웻 에어리어를 갖췄고 테크노짐 아티스 피트니스 두 곳 중 하나를 여성 전용으로 운영한다. 투숙객이 지역 식물을 직접 블렌딩하는 '아라비안 아포테카리', 와디 라이브러리·사하·올레아를 순회하며 매일 다른 의식을 진행하는 '수쿤 아워'로 어메니티를 관람형에서 참여형으로 전환했다.",
+        "region": "overseas",
+        "facility_type": "스파 · 피트니스 · 리추얼 프로그램",
+        "image_url": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "오너 우선권이 붙은 스피크이지 바 — 소유자 전용 어메니티의 계층화",
+        "description": "마라베 마누엘안토니오 LXR은 'MARAVÉ 스피크이지 바'에 소유자 우선권을 부여하고 콘도 옥상에 별도 인피니티 풀을 얹었다. 바부다 더 비치 클럽은 소유자 전용 클럽하우스와 전용 풀을 투숙객 시설과 분리했고, 월도프 아스토리아 푼타 카시케는 소유 기간 내내 힐튼 아너스 다이아몬드 자격과 전담 컨시어지, 위탁 관리, 선택적 임대 운영을 제공한다. 레지던스 물량이 호텔 객실을 앞지르면서 시설 접근권의 계층 분리가 필수 설계 조건이 됐다.",
+        "region": "overseas",
+        "facility_type": "비치 클럽 · 오너 전용 라운지 · 스파",
+        "image_url": "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=1200&q=80"
+      }
     ],
-    "sources": []
+    "sources": [
+      "GS건설·고메드갤러리아 업무협약 보도자료 (2026-08-26)",
+      "현대건설 디에이치 방배 커뮤니티·주거서비스 자료",
+      "우미건설·신영씨앤디 챔피언스시티 1차 분양 자료",
+      "Six Senses The Palm Dubai 개관 자료 (IHG)",
+      "Rosewood AMAALA 개관 자료 (Red Sea Global, 2026-08-18)",
+      "Hilton LXR Maravé Manuel Antonio 계약 자료 (2026-08-27)"
+    ]
   },
   "facility": {
-    "intro": "(placeholder) 부대시설(하드웨어 공간) 트렌드 개요 - 실제 조사 데이터로 교체 필요.",
+    "intro": "부대시설은 '보유 여부'가 아니라 '규모·설비 스펙·운영 지속성'으로 경쟁 축이 옮겨갔다. 국내는 스카이라운지·수영장·골프연습장이 사실상 필수 사양으로 정착한 대신 자율주행 주차·의료기관 제휴·마리나 같은 신흥 항목이 변별점이 됐고, 해외는 스파 면적과 F&B 베뉴 개수를 수치로 공표하는 관행이 굳으면서 롱제비티 클리닉이 새 앵커로 올라섰다.",
     "items": [
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "domestic" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "domestic" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "overseas" },
-      { "name": "(placeholder)", "description": "(placeholder)", "region": "overseas" }
+      {
+        "name": "스카이라운지 · 스카이 커뮤니티 — 최상층을 팔지 않는 설계",
+        "description": "8월 브랜드평판에서 커뮤니티지수만 상승(+0.57%)한 배경으로 '프라이빗 스카이라운지' 탐색 강화가 지목됐다. 챔피언스시티 1차는 44층 전체를 스카이 커뮤니티로 할당해 스카이라운지와 디럭스·그랜드디럭스·패밀리스위트 3등급 스카이 게스트하우스를 전용 엘리베이터로 연결했고, 디에이치 방배는 33층 'CLOUD 33'을, 여의도 목화 재건축(래미안 와이니티)은 한강 조망 'Y-라운지'와 리버 테라스를 제안했다. 최상층을 세대로 팔지 않고 공용 조망 공간으로 내주는 것이 하이엔드 판별 기준이 됐다.",
+        "region": "domestic",
+        "trend": "정착 (하이엔드 판별 기준)",
+        "image_url": "https://images.unsplash.com/photo-1522798514-97ceb8c4f1c8?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "자율주행 차량 호출 · 호텔식 드롭오프",
+        "description": "반포 래미안 트리니원은 참슬테크의 테슬라 FSD 기반 자율주행 차량 호출·제어 기술 '티링커'를 국내 신축 아파트 지하주차장 전 동에 처음 적용했다. 챔피언스시티 1차는 지하 1층에 차량 승·하차 전용 호텔식 드롭오프를 별도 조성했고, 여의도 목화 제안에는 동별 드롭오프존과 2.6m 폭 확장형 주차구획, 건식세차 공간이 포함됐다. 주차장을 '보관 공간'에서 '컨시어지 동선'으로 재정의하는 흐름으로, 커뮤니티 면적 경쟁의 다음 축이 될 가능성이 높다.",
+        "region": "domestic",
+        "trend": "신흥 (국내 최초 적용 단계)",
+        "image_url": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "의료기관 제휴 메디컬 · 시니어 케어 · 마리나",
+        "description": "로열파크시티Ⅱ는 국제성모병원 협약으로 입주민 전용 의료서비스와 시니어 클럽을 운영하고, 요트로 아라뱃길을 지나 서해 낙조를 보는 마리나 서비스를 제공한다(예약 경쟁이 치열해 서둘러야 자리를 잡는다는 것이 입주민 전언). 현대건설은 압구정5구역에 '더 클래식 500' 협업 의료·웰니스 케어를, 3·5구역에는 건국대병원 전담 메디컬을 약속했다. 커뮤니티 내 물리적 시설보다 외부 기관과의 계약 자체가 상품 사양이 되는 구조다.",
+        "region": "domestic",
+        "trend": "신흥 (제휴 계약 확산)",
+        "image_url": "https://images.unsplash.com/photo-1540946485063-a40da27545f8?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "대형 웰니스 스파 — 면적 명시가 표준",
+        "description": "로즈우드 AMAALA의 아사야 스파는 2,100㎡, 포시즌스 AMAALA는 HYLIAA 웰니스 앤 스파 2,095㎡와 별도 피트니스 511㎡, 월도프 아스토리아 푼타 카시케는 17,000sq ft, 식스센스 더 팜 두바이는 60,000sq ft 웰니스 클럽을 내세웠다. 스파 유무가 아니라 정확한 면적 수치를 공표하는 것이 럭셔리 리조트의 관행이 됐고, 테크노짐 같은 장비 브랜드와 여성 전용 분리 운영도 사양 표기 항목으로 올라왔다.",
+        "region": "overseas",
+        "trend": "정착 (면적 명시가 표준)",
+        "image_url": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "롱제비티 클리닉 · 진단 스위트 — 스파의 부속에서 수익 중심으로",
+        "description": "식스센스 더 팜 두바이는 웰니스 클럽 안에 롱제비티 클리닉과 IV 라운지를, 7월 개관한 식스센스 AMAALA는 진단 스위트·퍼포먼스 랩·통합의학 전문의·수면 데이터·대사 검사를 운영한다. 11월 개관하는 클리니크 라 프레리 푸켓은 300개 이상 건강 지표를 측정하는 '롱제비티 마스터 어세스먼트'를 모든 프로그램의 입구로 설계했다. 정맥 주입과 세포 단위 개입이 리조트 시설 목록에 오른 것은 최근 사이클의 변화로, 규제가 유연한 중동이 선도한다.",
+        "region": "overseas",
+        "trend": "신흥 (핵심 앵커로 급상승)",
+        "image_url": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "name": "매스팀버 구조 · 도로 없는 단지 — 공법과 뺄셈의 상품화",
+        "description": "마라베 마누엘안토니오 LXR은 코스타리카 최대 규모 매스팀버(대형 목구조) 구조물로 계획됐고, 바부다의 노부 비치 인은 목재·초가·아일랜드 스톤 단층 방갈로 17채(36베드)에 차도를 만들지 않고 모래 보행로만 두는 설계를 핵심 세일즈 포인트로 삼았다. 클리니크 라 프레리 푸켓이 들어서는 트리 바난다는 237헥타르 중 약 85%를 산림·호수로 남기고 습지 여과 시스템을 쓴다. 구조 공법과 '무엇을 없앴는가'가 어메니티 목록과 같은 층위에서 홍보되는 단계다.",
+        "region": "overseas",
+        "trend": "신흥 (건축 방식 자체를 상품화)",
+        "image_url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+      }
     ],
-    "sources": []
+    "sources": [
+      "삼성물산 반포 래미안 트리니원 특화 설계 자료 ('티링커' 국내 최초 적용)",
+      "DK아시아 로열파크시티Ⅱ 커뮤니티·주거서비스 자료",
+      "현대건설 압구정5구역 시공사 제안 자료",
+      "Rosewood AMAALA / Four Seasons Resort AMAALA 시설 자료 (Red Sea Global)",
+      "Clinique La Prairie Phuket at Tri Vananda 프로그램 자료",
+      "The Beach Club Barbuda · Nobu Beach Inn 개발 자료"
+    ]
   },
   "listings": {
     "properties": [
-      { "id": "prop-1", "name": "(placeholder)", "region": "domestic", "dong": "압구정동", "city": "서울", "deal_type": "매매", "price_range": "(placeholder)", "description": "(placeholder)" },
-      { "id": "prop-2", "name": "(placeholder)", "region": "domestic", "dong": "청담동", "city": "서울", "deal_type": "전세", "price_range": "(placeholder)", "description": "(placeholder)" },
-      { "id": "prop-3", "name": "(placeholder)", "region": "domestic", "dong": "대치동", "city": "서울", "deal_type": "분양", "price_range": "(placeholder)", "description": "(placeholder)" },
-      { "id": "prop-4", "name": "(placeholder)", "region": "overseas", "dong": "", "city": "(placeholder)", "deal_type": "분양", "price_range": "(placeholder)", "description": "(placeholder)" },
-      { "id": "prop-5", "name": "(placeholder)", "region": "overseas", "dong": "", "city": "(placeholder)", "deal_type": "월세", "price_range": "(placeholder)", "description": "(placeholder)" }
+      {
+        "id": "prop-1",
+        "name": "압구정 현대 갤러리아 (압구정5구역)",
+        "region": "domestic",
+        "tier": "S",
+        "dong": "압구정동",
+        "city": "서울",
+        "deal_type": "재건축",
+        "price_range": "공사비 1조 4,960억원",
+        "description": "지하 5층~지상 68층 8개동 1,397가구. 240도 파노라마 '제로월', 17m 하이 필로티 로비, 3m 우물 천장고, 람사·모르포시스 설계 협업. 현대차그룹 DRT 무인셔틀과 모베드(MobED) 배송·주차 로봇, '더 클래식 500' 의료·웰니스, 건국대병원 전담 메디컬.",
+        "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "id": "prop-2",
+        "name": "컬리넌 압구정 (압구정4구역)",
+        "region": "domestic",
+        "tier": "S",
+        "dong": "압구정동",
+        "city": "서울",
+        "deal_type": "재건축",
+        "price_range": "약 2조 1,154억원",
+        "description": "지하 5층~지상 67층 8개동 1,662가구, 삼성물산 87.4% 찬성 확정. 2000년 래미안 론칭 이후 일반 아파트 첫 비래미안 단독 브랜드. 포스터앤드파트너스 건축 + PWP 조경, 최대 15m 하이필로티, 세대당 평균 20.5m 폭 270도 파노라마 한강 조망.",
+        "image_url": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "id": "prop-3",
+        "name": "챔피언스시티 1차",
+        "region": "domestic",
+        "tier": "A",
+        "dong": "",
+        "city": "광주",
+        "deal_type": "분양",
+        "price_range": "견본주택 9월 개관",
+        "description": "지하 3층~지상 49층 12개동 전용 84~214㎡ 3,216가구(79%가 84㎡). 44층 스카이 커뮤니티, 20m 어프로치 실내골프연습장, 25m 실내수영장, 영풍문고 큐레이션 북카페, 그린램프 관리형 독서실, 공용부 AI 로봇과 층별 음식물 자동이송.",
+        "image_url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "id": "prop-4",
+        "name": "Waldorf Astoria Residences Costa Rica Punta Cacique",
+        "region": "overseas",
+        "dong": "",
+        "city": "과나카스테, 코스타리카",
+        "deal_type": "분양",
+        "price_range": "USD 7.0M~11.75M (절반 이상 매각)",
+        "description": "8월 25일 600에이커 부지 첫 에스테이트 홈 완공. 17,000sq ft 웰니스 스파, 프라이빗 비치 클럽, 레스토랑·바 6개소 공유. 소유 기간 내내 힐튼 아너스 다이아몬드 자격, 전담 컨시어지, 위탁 관리·유지보수, 선택적 임대 운영. 향후 단계에 운영 농장·승마 시설·큐레이션 빌리지 예정.",
+        "image_url": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        "id": "prop-5",
+        "name": "Rosewood AMAALA",
+        "region": "overseas",
+        "dong": "",
+        "city": "AMAALA, 사우디아라비아",
+        "deal_type": "분양",
+        "price_range": "1박 SAR 4,000부터 · 레지던스 26채",
+        "description": "8월 18일 개관, 40헥타르 110키 전 객실 프라이빗 풀과 모래 테라스. 아사야 스파 2,100㎡(트리트먼트룸 6·프라이빗 하맘), 테크노짐 피트니스 2개소 중 1개 여성 전용, 아라비안 아포테카리와 수쿤 아워. 건축 ACPV, 조경 트리스탕 오제르.",
+        "image_url": "https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?auto=format&fit=crop&w=1200&q=80"
+      }
     ],
     "rankings": [
-      { "rank": 1, "property_id": "prop-1", "rationale": "(placeholder)" },
-      { "rank": 1, "property_id": "prop-2", "rationale": "(placeholder)" },
-      { "rank": 1, "property_id": "prop-4", "rationale": "(placeholder)" }
+      {
+        "rank": 1,
+        "property_id": "prop-1",
+        "rationale": "8월 최대 수주전을 599표 대 398표로 확정하며, 하이엔드 경쟁이 설계·마감에서 그룹 계열사 자산(로봇·모빌리티·의료) 동원으로 전환됐음을 보여준 기준점."
+      },
+      {
+        "rank": 2,
+        "property_id": "prop-2",
+        "rationale": "래미안이라는 최상위 브랜드조차 압구정 단가를 정당화하기 어렵다는 판단에서 전용 브랜드를 신설한 사례. 브랜드 전략의 변곡점."
+      },
+      {
+        "rank": 1,
+        "property_id": "prop-4",
+        "rationale": "'분양 중' 단계가 아닌 완공 실물로 100억원대 가격을 실증. 브랜디드 에스테이트의 가격 상한이 실측 데이터로 확인됐다."
+      }
     ],
-    "sources": []
+    "sources": [
+      "압구정5구역·4구역 재건축조합 시공사 선정 총회 결과",
+      "우미건설·신영씨앤디 챔피언스시티 1차 분양 자료",
+      "Hilton - Waldorf Astoria Residences Costa Rica 첫 에스테이트 완공 발표 (2026-08-25)",
+      "Red Sea Global - Rosewood AMAALA 개관 (2026-08-18)"
+    ]
   }
 }
