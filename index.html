@@ -646,6 +646,25 @@
     font-size: 14px;
     max-width: 640px;
   }
+  .amenity-item .meta {
+    display: inline-block;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    margin: 0 0 8px;
+  }
+  .amenity-item .src {
+    margin: 14px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--brown-soft);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    opacity: 0.8;
+    max-width: 640px;
+  }
 
   /* ---------- Overseas cases ---------- */
   .overseas-intro {
@@ -685,6 +704,24 @@
     margin: 0;
     color: var(--brown-soft);
     font-size: 13.5px;
+  }
+  .overseas-card .highlight {
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.02);
+    border-left: 2px solid var(--gold);
+    color: var(--brown);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .overseas-card .src {
+    margin: 16px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--brown-soft);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    opacity: 0.8;
   }
   .overseas-placeholder {
     grid-column: 1 / -1;
@@ -872,7 +909,10 @@
             <span class="label">Insight</span>
             <h2>최신 인사이트</h2>
           </div>
-          <p>가장 최근 리포트의 트렌드·어메니티·부대시설·해외 개발 사례를 한눈에 확인하세요.</p>
+          <p>
+            이번 주(2026년 9월 8일 ~ 9월 14일) 트렌드·어메니티·부대시설·해외 개발
+            사례를 국내와 해외로 나누어 정리했습니다.
+          </p>
         </div>
 
         <div class="tab-bar" id="insight-tabs">
@@ -931,6 +971,10 @@
         </div>
 
         <div class="tab-panel" id="panel-global_case">
+          <div class="subtab-bar" data-section="global_case">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
           <div class="year-bar" data-section="global_case">
             <button class="year-btn" data-year="2020">'20</button>
             <button class="year-btn" data-year="2021">'21</button>
@@ -1025,7 +1069,7 @@
       trend: { year: 2026, region: "domestic" },
       amenity: { year: 2026, region: "domestic" },
       facility: { year: 2026, region: "domestic" },
-      global_case: { year: 2026 },
+      global_case: { year: 2026, region: "domestic" },
     };
 
     function stripMarkdown(text) {
@@ -1084,113 +1128,130 @@
       if (el) el.innerHTML = `<div class="${wrapperClass}">${message}</div>`;
     }
 
-    async function renderTrendPanel(year, region) {
-      const introEl = document.getElementById("trend-intro");
-      if (introEl) introEl.textContent = "";
+    /* ---------- 주간 인사이트 (data/{week}_{category}.json) ---------- */
 
-      let data;
+    const INSIGHT_WEEK = "2026-09-W2";
+    const INSIGHT_WEEK_YEAR = 2026;
+    const weekCache = {};
+
+    // 서브탭은 domestic / overseas, JSON은 domestic / global 로 구분한다.
+    function regionKey(region) {
+      return region === "domestic" ? "domestic" : "global";
+    }
+
+    function regionLabel(region) {
+      return region === "domestic" ? "국내" : "해외";
+    }
+
+    async function loadWeekSection(section) {
+      if (weekCache[section] !== undefined) return weekCache[section];
       try {
-        const res = await fetch(`/api/insights/trend/${year}`);
-        if (!res.ok) throw new Error(`API ${res.status}`);
-        data = await res.json();
+        const res = await fetch(`data/${INSIGHT_WEEK}_${section}.json`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        weekCache[section] = await res.json();
       } catch (e) {
-        placeholder("trend-list", "report-placeholder", "데이터 없음");
+        weekCache[section] = null;
+      }
+      return weekCache[section];
+    }
+
+    function setIntro(elId, data, region, extra) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (!data) {
+        el.textContent = "";
         return;
       }
+      const parts = [`${regionLabel(region)} · ${data.range_label || INSIGHT_WEEK}`];
+      if (extra) parts.push(extra);
+      el.textContent = parts.join(" · ");
+    }
 
-      const cards = (region === "domestic" ? data.domestic : data.overseas) || [];
-
-      if (cards.length === 0) {
-        placeholder("trend-list", "report-placeholder", "데이터 없음");
-        return;
-      }
-
-      document.getElementById("trend-list").innerHTML = cards
-        .slice(0, 12)
-        .map(
-          (c, i) => `
+    // 타이틀 + 요약 + 출처 카드 (트렌드 · 어메니티 공용)
+    function listCardHtml(item, i) {
+      const title = stripMarkdown(item.title || item.name);
+      const meta = stripMarkdown(item.date || item.facility_type || "");
+      const source = stripMarkdown(item.source || "");
+      return `
         <div class="amenity-item">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            ${c.name ? `<h4>${stripMarkdown(c.name)}</h4>` : ""}
-            <p>[${monthLabel(c.label)}] ${stripMarkdown(c.description)}</p>
+            ${meta ? `<span class="meta">${meta}</span>` : ""}
+            <h4>${title}</h4>
+            <p>${stripMarkdown(item.summary)}</p>
+            ${source ? `<p class="src">출처 · ${source}</p>` : ""}
           </div>
-        </div>`
-        )
-        .join("");
+        </div>`;
     }
 
-    async function renderItemsPanel(section, year, region) {
-      const introElId = `${section}-intro`;
+    async function renderListSection(section, region) {
       const listElId = `${section}-list`;
-      const introEl = document.getElementById(introElId);
-      if (introEl) introEl.textContent = "";
+      const data = await loadWeekSection(section);
+      setIntro(`${section}-intro`, data, region);
 
-      let data;
-      try {
-        const res = await fetch(`/api/insights/${section}/${year}`);
-        if (!res.ok) throw new Error(`API ${res.status}`);
-        data = await res.json();
-      } catch (e) {
-        placeholder(listElId, "report-placeholder", "데이터 없음");
-        return;
-      }
-
-      if (introEl) introEl.textContent = stripMarkdown(data.intro || "");
-
-      const items = (region === "domestic" ? data.domestic : data.overseas) || [];
-
+      const items = (data && data[regionKey(region)]) || [];
       if (items.length === 0) {
         placeholder(listElId, "report-placeholder", "데이터 없음");
         return;
       }
+      document.getElementById(listElId).innerHTML = items.map(listCardHtml).join("");
+    }
 
-      document.getElementById(listElId).innerHTML = items
-        .slice(0, 12)
+    // 부대시설은 popular / emerging 그룹 구조 — 그룹명을 메타 자리에 노출
+    const FACILITY_GROUPS = [
+      { key: "popular", label: "인기 시설" },
+      { key: "emerging", label: "신흥 시설" },
+    ];
+
+    async function renderFacilitySection(region) {
+      const data = await loadWeekSection("facility");
+      setIntro("facility-intro", data, region);
+
+      const bucket = (data && data[regionKey(region)]) || {};
+      const rows = [];
+      FACILITY_GROUPS.forEach((group) => {
+        (bucket[group.key] || []).forEach((item) => rows.push({ group, item }));
+      });
+
+      if (rows.length === 0) {
+        placeholder("facility-list", "report-placeholder", "데이터 없음");
+        return;
+      }
+
+      document.getElementById("facility-list").innerHTML = rows
         .map(
-          (item, i) => `
+          ({ group, item }, i) => `
         <div class="amenity-item">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            <h4>[${monthLabel(item.label)}] ${stripMarkdown(item.name)}</h4>
-            <p>${stripMarkdown(item.description)}</p>
+            <span class="meta">${group.label}${item.trend ? ` · ${stripMarkdown(item.trend)}` : ""}</span>
+            <h4>${stripMarkdown(item.name)}</h4>
+            <p>${stripMarkdown(item.summary)}</p>
           </div>
         </div>`
         )
         .join("");
     }
 
-    async function renderGlobalCasePanel(year) {
-      const introEl = document.getElementById("global_case-intro");
-      if (introEl) introEl.textContent = "";
+    async function renderGlobalCaseSection(region) {
+      const data = await loadWeekSection("global_case");
+      setIntro("global_case-intro", data, region);
 
-      let data;
-      try {
-        const res = await fetch(`/api/insights/global_case/${year}`);
-        if (!res.ok) throw new Error(`API ${res.status}`);
-        data = await res.json();
-      } catch (e) {
+      const cases = (data && data[regionKey(region)]) || [];
+      if (cases.length === 0) {
         placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
         return;
       }
 
-      if (introEl) introEl.textContent = stripMarkdown(data.intro || "");
-
-      const deals = data.deals || [];
-
-      if (deals.length === 0) {
-        placeholder("global_case-list", "overseas-placeholder", "데이터 없음");
-        return;
-      }
-
-      document.getElementById("global_case-list").innerHTML = deals
-        .slice(0, 12)
+      document.getElementById("global_case-list").innerHTML = cases
         .map(
-          (d) => `
+          (c) => `
         <div class="overseas-card">
-          <span class="region">${stripMarkdown(d.region)}</span>
-          <h4>${stripMarkdown(d.project)}</h4>
-          <p>${stripMarkdown(d.news)}</p>
+          <span class="region">${stripMarkdown(c.location || "")}</span>
+          <h4>${stripMarkdown(c.project)}</h4>
+          <p>${stripMarkdown(c.summary)}</p>
+          ${c.highlight ? `<p class="highlight">${stripMarkdown(c.highlight)}</p>` : ""}
+          ${c.developer ? `<p class="src">시행·시공 · ${stripMarkdown(c.developer)}</p>` : ""}
         </div>`
         )
         .join("");
@@ -1198,12 +1259,22 @@
 
     function renderPanel(section) {
       const state = insightState[section];
+      const emptyClass = section === "global_case" ? "overseas-placeholder" : "report-placeholder";
+
+      // 주간 인사이트는 2026년 데이터셋 — 다른 연도는 아카이브 준비 중
+      if (state.year !== INSIGHT_WEEK_YEAR) {
+        const introEl = document.getElementById(`${section}-intro`);
+        if (introEl) introEl.textContent = "";
+        placeholder(`${section}-list`, emptyClass, "해당 연도 데이터 준비 중");
+        return;
+      }
+
       if (section === "global_case") {
-        renderGlobalCasePanel(state.year);
-      } else if (section === "trend") {
-        renderTrendPanel(state.year, state.region);
+        renderGlobalCaseSection(state.region);
+      } else if (section === "facility") {
+        renderFacilitySection(state.region);
       } else {
-        renderItemsPanel(section, state.year, state.region);
+        renderListSection(section, state.region);
       }
     }
 
@@ -1215,8 +1286,9 @@
     }
 
     function setupInsightControls() {
-      document.querySelectorAll(".subtab-bar").forEach((bar) => {
+      document.querySelectorAll("#insight .subtab-bar").forEach((bar) => {
         const section = bar.dataset.section;
+        if (!insightState[section]) return;
         bar.querySelectorAll(".subtab-btn").forEach((btn) => {
           btn.addEventListener("click", () => {
             bar.querySelectorAll(".subtab-btn").forEach((b) => b.classList.toggle("active", b === btn));
@@ -1318,23 +1390,23 @@
 
         if (reports.length === 0) {
           listEl.innerHTML = "";
-          setInsightEmptyState("아직 데이터가 없습니다.");
           return;
         }
 
         listEl.innerHTML = reports.map(cardHtml).join("");
-
-        try {
-          initInsightPanels();
-        } catch (e) {
-          setInsightEmptyState("데이터를 불러오지 못했습니다.");
-        }
       } catch (err) {
         listEl.innerHTML =
           '<div class="report-placeholder">리포트 목록을 불러오지 못했습니다. ' +
           '<a href="https://github.com/sinika9293/Hanwha_Highend" style="color: var(--gold);" target="_blank" rel="noopener">GitHub 저장소</a>에서 직접 확인하세요.</div>';
-        setInsightEmptyState("데이터를 불러오지 못했습니다.");
       }
+    }
+
+    // 최신 인사이트는 정적 주간 데이터(data/{week}_{category}.json)를 직접 읽으므로
+    // 월간 리포트 API 상태와 무관하게 독립적으로 초기화한다.
+    try {
+      initInsightPanels();
+    } catch (e) {
+      setInsightEmptyState("데이터를 불러오지 못했습니다.");
     }
 
     loadReports();
