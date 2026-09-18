@@ -1,0 +1,22 @@
+{
+  "generated_on": "2026-09-18",
+  "default": "2026-09-W2",
+  "weeks": [
+    {
+      "week": "2026-09-W2",
+      "year": 2026,
+      "month": 9,
+      "label": "2026년 9월 2주",
+      "range_label": "2026년 9월 8일 ~ 9월 14일",
+      "sections": ["trend", "amenity", "facility", "global_case"]
+    },
+    {
+      "week": "2026-08-W4",
+      "year": 2026,
+      "month": 8,
+      "label": "2026년 8월 종합",
+      "range_label": "2026년 8월 1일 ~ 8월 31일",
+      "sections": ["trend", "amenity", "facility", "global_case"]
+    }
+  ]
+}

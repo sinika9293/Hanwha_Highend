@@ -583,6 +583,45 @@
     margin: 0 0 40px;
   }
 
+  /* ---------- Insight period selector ---------- */
+  .week-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-soft);
+    flex-wrap: wrap;
+  }
+  .week-label {
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .week-select {
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--brown);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 8px 34px 8px 16px;
+    cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%),
+      linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    transition: border-color 0.25s ease;
+  }
+  .week-select:hover,
+  .week-select:focus { border-color: var(--gold); outline: none; }
+
   .subtab-bar,
   .year-bar {
     display: flex;
@@ -940,10 +979,14 @@
             <span class="label">Insight</span>
             <h2>최신 인사이트</h2>
           </div>
-          <p>
-            이번 주(2026년 9월 8일 ~ 9월 14일) 트렌드·어메니티·부대시설·해외 개발
-            사례를 국내와 해외로 나누어 정리했습니다.
+          <p id="insight-period-desc">
+            트렌드·어메니티·부대시설·해외 개발 사례를 국내와 해외로 나누어 정리했습니다.
           </p>
+        </div>
+
+        <div class="week-bar">
+          <label class="week-label" for="insight-week-select">Period</label>
+          <select id="insight-week-select" class="week-select"></select>
         </div>
 
         <div class="tab-bar" id="insight-tabs">
@@ -1161,9 +1204,122 @@
 
     /* ---------- 주간 인사이트 (data/{week}_{category}.json) ---------- */
 
-    const INSIGHT_WEEK = "2026-09-W2";
-    const INSIGHT_WEEK_YEAR = 2026;
-    const weekCache = {};
+    // INSIGHT_WEEK는 하드코딩하지 않는다.
+    // 1순위: data/insight_index.json (사용 가능한 주차 목록 · 드롭다운 소스)
+    // 2순위: 인덱스가 없으면 현재 날짜 기준 W4→W3→W2→W1 → 전월 → 전전월 순으로 HEAD 탐색
+    let INSIGHT_WEEK = "";
+    let INSIGHT_WEEK_YEAR = new Date().getFullYear();
+    let insightWeeks = []; // [{week, label, range_label, year, month}]
+    const weekCache = {};  // `${week}:${section}` → data | null
+
+    function monthKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    // 최근 3개월 × W4~W1 후보를 최신순으로 만든다.
+    function candidateWeeks(monthsBack = 3) {
+      const now = new Date();
+      const out = [];
+      for (let back = 0; back < monthsBack; back += 1) {
+        const d = new Date(now.getFullYear(), now.getMonth() - back, 1);
+        for (let w = 4; w >= 1; w -= 1) out.push(`${monthKey(d)}-W${w}`);
+      }
+      return out;
+    }
+
+    function weekMeta(week) {
+      const [y, m, w] = String(week).split("-");
+      return {
+        week,
+        year: Number(y),
+        month: Number(m),
+        label: `${y}년 ${Number(m)}월 ${String(w).replace("W", "")}주`,
+        range_label: "",
+      };
+    }
+
+    async function fileExists(path) {
+      try {
+        const res = await fetch(path, { method: "HEAD" });
+        return res.ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // 인덱스 파일이 없을 때만 쓰는 날짜 기반 자동 탐색
+    async function detectWeeksByProbe() {
+      const found = [];
+      for (const week of candidateWeeks(3)) {
+        if (await fileExists(`data/${week}_trend.json`)) found.push(weekMeta(week));
+        if (found.length >= 6) break;
+      }
+      return found;
+    }
+
+    async function resolveInsightWeeks() {
+      try {
+        const res = await fetch("data/insight_index.json");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const index = await res.json();
+        const weeks = (index.weeks || [])
+          .map((w) => ({ ...weekMeta(w.week), ...w }))
+          .sort((a, b) => String(b.week).localeCompare(String(a.week)));
+        if (weeks.length > 0) {
+          insightWeeks = weeks;
+          const preferred = weeks.find((w) => w.week === index.default);
+          return (preferred || weeks[0]).week;
+        }
+      } catch (e) {
+        /* 인덱스 없음 → 아래 탐색으로 폴백 */
+      }
+
+      insightWeeks = await detectWeeksByProbe();
+      return insightWeeks.length > 0 ? insightWeeks[0].week : "";
+    }
+
+    function setInsightWeek(week) {
+      INSIGHT_WEEK = week || "";
+      const meta = insightWeeks.find((w) => w.week === INSIGHT_WEEK);
+      INSIGHT_WEEK_YEAR = meta ? meta.year : Number(String(INSIGHT_WEEK).slice(0, 4)) || INSIGHT_WEEK_YEAR;
+      SECTION_KEYS.forEach((section) => {
+        insightState[section].year = INSIGHT_WEEK_YEAR;
+      });
+      const desc = document.getElementById("insight-period-desc");
+      if (desc && meta) {
+        const range = meta.range_label || meta.label;
+        desc.textContent = `${range} 트렌드·어메니티·부대시설·해외 개발 사례를 국내와 해외로 나누어 정리했습니다.`;
+      }
+      // 연도 필터의 활성 버튼을 실제 데이터 연도에 동기화
+      document.querySelectorAll(".year-bar").forEach((bar) => {
+        const target = bar.querySelector(`.year-btn[data-year="${INSIGHT_WEEK_YEAR}"]`);
+        if (!target) return;
+        bar.querySelectorAll(".year-btn").forEach((b) => b.classList.toggle("active", b === target));
+      });
+    }
+
+    function populateWeekSelect() {
+      const sel = document.getElementById("insight-week-select");
+      if (!sel) return;
+      if (insightWeeks.length === 0) {
+        sel.innerHTML = `<option value="">데이터 없음</option>`;
+        sel.disabled = true;
+        return;
+      }
+      sel.disabled = false;
+      sel.innerHTML = insightWeeks
+        .map(
+          (w) =>
+            `<option value="${w.week}"${w.week === INSIGHT_WEEK ? " selected" : ""}>${
+              w.range_label ? `${w.label} · ${w.range_label}` : w.label
+            }</option>`
+        )
+        .join("");
+      sel.addEventListener("change", () => {
+        setInsightWeek(sel.value);
+        SECTION_KEYS.forEach((section) => renderPanel(section));
+      });
+    }
 
     // 서브탭은 domestic / overseas, JSON은 domestic / global 로 구분한다.
     function regionKey(region) {
@@ -1175,15 +1331,17 @@
     }
 
     async function loadWeekSection(section) {
-      if (weekCache[section] !== undefined) return weekCache[section];
+      if (!INSIGHT_WEEK) return null;
+      const key = `${INSIGHT_WEEK}:${section}`;
+      if (weekCache[key] !== undefined) return weekCache[key];
       try {
         const res = await fetch(`data/${INSIGHT_WEEK}_${section}.json`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        weekCache[section] = await res.json();
+        weekCache[key] = await res.json();
       } catch (e) {
-        weekCache[section] = null;
+        weekCache[key] = null;
       }
-      return weekCache[section];
+      return weekCache[key];
     }
 
     function setIntro(elId, data, region, extra) {
@@ -1345,14 +1503,18 @@
       });
     }
 
-    function initInsightPanels() {
-      SECTION_KEYS.forEach((section) => {
-        const activeBtn = document.querySelector(
-          `.year-bar[data-section="${section}"] .year-btn.active`
-        );
-        if (activeBtn) insightState[section].year = Number(activeBtn.dataset.year);
-      });
+    async function initInsightPanels() {
       setupInsightControls();
+
+      const week = await resolveInsightWeeks();
+      if (!week) {
+        populateWeekSelect();
+        setInsightEmptyState("인사이트 데이터 준비 중");
+        return;
+      }
+
+      setInsightWeek(week);
+      populateWeekSelect();
       SECTION_KEYS.forEach((section) => renderPanel(section));
     }
 
@@ -1438,11 +1600,9 @@
 
     // 최신 인사이트는 정적 주간 데이터(data/{week}_{category}.json)를 직접 읽으므로
     // 월간 리포트 API 상태와 무관하게 독립적으로 초기화한다.
-    try {
-      initInsightPanels();
-    } catch (e) {
+    initInsightPanels().catch(() => {
       setInsightEmptyState("데이터를 불러오지 못했습니다.");
-    }
+    });
 
     loadReports();
 
