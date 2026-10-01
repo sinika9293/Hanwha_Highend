@@ -82,6 +82,9 @@
   .site-header.scrolled {
     background: rgba(10, 15, 30, 0.85);
   }
+  .site-header.scrolled .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+  }
 
   .logo {
     display: flex;
@@ -1148,10 +1151,6 @@
             <button class="subtab-btn" data-region="overseas">해외</button>
           </div>
           <div class="year-bar" data-section="global_case">
-            <button class="year-btn" data-year="2020">'20</button>
-            <button class="year-btn" data-year="2021">'21</button>
-            <button class="year-btn" data-year="2022">'22</button>
-            <button class="year-btn" data-year="2023">'23</button>
             <button class="year-btn" data-year="2024">'24</button>
             <button class="year-btn" data-year="2025">'25</button>
             <button class="year-btn active" data-year="2026">'26</button>
@@ -1241,6 +1240,10 @@
     if (logoHome) {
       logoHome.addEventListener("click", (e) => {
         e.preventDefault();
+        if (window.location.hash) {
+          window.location.hash = "";
+        }
+        showMainSections();
         document.getElementById("hero-slider").scrollIntoView({ behavior: "smooth" });
       });
     }
