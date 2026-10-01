@@ -114,15 +114,66 @@
     gap: 40px;
   }
   nav.site-nav a {
+    position: relative;
     text-decoration: none;
     font-size: 12px;
     letter-spacing: 0.12em;
     color: var(--brown-soft);
     text-transform: uppercase;
     transition: color 0.25s ease;
+    padding-bottom: 6px;
+  }
+  nav.site-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: right 0.25s ease;
   }
   nav.site-nav a:hover {
     color: var(--gold);
+  }
+  nav.site-nav a.active {
+    color: var(--gold);
+  }
+  nav.site-nav a.active::after {
+    right: 0;
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--brown);
+    transition: all 0.3s ease;
+  }
+  .site-header.scrolled .nav-toggle span {
+    background: var(--cream);
+  }
+  .nav-toggle.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   /* ---------- Hero slider ---------- */
@@ -911,14 +962,43 @@
   @media (max-width: 860px) {
     .amenity-item { grid-template-columns: 1fr; gap: 10px; }
     .overseas-grid { grid-template-columns: 1fr; }
+
+    .nav-toggle { display: flex; }
+    nav.site-nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 260px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 28px;
+      padding: 0 40px;
+      background: rgba(44, 24, 16, 0.96);
+      backdrop-filter: blur(12px);
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      z-index: 105;
+    }
+    nav.site-nav.open {
+      transform: translateX(0);
+    }
+    nav.site-nav a {
+      color: var(--cream);
+      font-size: 13px;
+    }
+    nav.site-nav a:hover,
+    nav.site-nav a.active {
+      color: var(--gold);
+    }
   }
 
   @media (max-width: 640px) {
     .wrap { padding: 0 22px; }
     .site-header { padding: 18px 22px; }
+    .site-header.scrolled { padding: 14px 22px; }
     .logo .sub { display: none; }
-    nav.site-nav { gap: 16px; }
-    nav.site-nav a { font-size: 9.5px; }
     .hero { padding: 0 22px; }
     section { padding: 80px 0; }
     .section-head { flex-direction: column; align-items: flex-start; }
@@ -938,6 +1018,9 @@
       <a href="#insight">Insight</a>
       <a href="https://github.com/sinika9293/Hanwha_Highend" target="_blank" rel="noopener">GitHub</a>
     </nav>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main>
