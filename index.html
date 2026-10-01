@@ -678,6 +678,10 @@
     font-weight: 600;
     font-size: 18px;
     margin: 0 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .amenity-item p {
     margin: 0;
@@ -769,6 +773,10 @@
     font-size: 17px;
     margin: 0 0 12px;
     line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .overseas-card p {
     margin: 0;
@@ -914,7 +922,7 @@
 <body>
 
   <header class="site-header">
-    <div class="logo">
+    <div class="logo logo-home">
       <img class="logo-img" src="assets/MUWA_Wordmark_Black.png" alt="MUWA" />
       <span class="sub">Highend Living Intelligence</span>
     </div>
@@ -1828,6 +1836,18 @@
     }
 
     setupHeroSlider();
+  </script>
+  <script>
+    // 로고 클릭 → 메인 스크롤
+    document.querySelector('.logo-home').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('hero-slider').scrollIntoView({behavior:'smooth'});
+    });
+
+    // 스크롤 시 네비 블러
+    window.addEventListener('scroll', function(){
+      document.querySelector('.site-header').classList.toggle('scrolled', window.scrollY > 50);
+    });
   </script>
 </body>
 </html>
