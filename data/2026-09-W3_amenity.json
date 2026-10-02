@@ -4,90 +4,102 @@
   "range_label": "2026년 9월 21일 ~ 9월 27일",
   "domestic": [
     {
-      "title": "래미안 원펜타스, 입주민 전용 '프라이빗 라운지 바' 운영 시작",
-      "summary": "서초구 래미안 원펜타스가 입주민만 이용 가능한 프라이빗 라운지 바를 커뮤니티 시설에 추가해 운영을 시작했다.",
+      "title": "디에이치 방배, 'H 컬처클럽' 등 하이엔드 커뮤니티 시설 공개",
+      "summary": "서초구 방배동 디에이치 방배(현대건설, 방배5구역 재건축)가 9월 입주를 시작하며 문화·예술·건강 콘텐츠를 전용 앱으로 예약하는 'H 컬처클럽', 약 6000권 장서의 북카페, 반려동물 토탈케어 공간 'H위드펫' 등 커뮤니티 시설을 공개했다. 입주민 사전점검 기간에는 셰프 정호영과 협업한 특별 도시락을 제공했으며, 향후 커뮤니티 다이닝 서비스로 이어갈 계획이다.",
       "facility_type": "라운지",
-      "source": "건설경제",
-      "source_url": ""
+      "source": "서울파이낸스",
+      "source_url": "https://www.seoulfn.com/news/articleView.html?idxno=633129",
+      "image_url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "아크로 서울포레스트, 실내 골프 연습장에 스윙 분석 시스템 도입",
-      "summary": "성동구 아크로 서울포레스트가 커뮤니티 내 실내 골프 연습장에 정밀 스윙 분석 시스템을 새로 도입했다.",
+      "title": "아크로 서울포레스트, 29층 클라우드클럽 등 커뮤니티 시설 운영",
+      "summary": "성동구 아크로 서울포레스트(DL이앤씨)가 각 동 29층에 한강·서울숲 조망의 '클라우드클럽'을 두어 피트니스·필라테스 운동시설, 연회홀·클럽라운지·게스트룸, 지하 1층 펫 케어룸·뷰티살롱을 운영 중이다.",
       "facility_type": "스포츠",
-      "source": "데일리안",
-      "source_url": ""
+      "source": "서울신문",
+      "source_url": "https://www.seoul.co.kr/news/economy/estate/2022/10/10/20221010015007",
+      "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "방배 디에이치 클래스트, 입주 전 커뮤니티 시설 '시그니처 라이브러리' 공개",
-      "summary": "방배동 디에이치 클래스트가 입주를 앞두고 북카페형 커뮤니티 시설 '시그니처 라이브러리'의 세부 구성을 공개했다.",
+      "title": "래미안 원펜타스, 입주민 전용 스카이라운지 등 커뮤니티 시설 운영",
+      "summary": "서초구 래미안 원펜타스(삼성물산)가 641세대 규모에도 테크노짐 피트니스, 25m 4레인 수영장, 골프연습장·스크린골프, 사우나와 30층 스카이라운지를 갖춰 가구수 대비 넉넉한 커뮤니티로 평가받는다.",
       "facility_type": "라운지",
-      "source": "뉴스1",
-      "source_url": ""
+      "source": "이데일리",
+      "source_url": "https://v.daum.net/v/20240615070012862",
+      "image_url": "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "잠실 르엘, 조식 서비스에 전담 셰프 상주 체계로 전환",
-      "summary": "잠실 르엘이 입주민 조식 서비스를 외부 위탁에서 전담 셰프 상주 체계로 전환해 서비스 품질을 강화했다.",
+      "title": "이촌 르엘, 조식 서비스 제공하는 다이닝 카페 조성",
+      "summary": "용산구 이촌동 이촌 르엘(롯데건설, 강북권 첫 르엘 단지)이 조식 서비스를 제공하는 다이닝 카페를 커뮤니티 시설로 조성해 서울주거문화대상(서울시장상)을 수상했다.",
       "facility_type": "다이닝",
-      "source": "한국일보",
-      "source_url": ""
+      "source": "헤럴드경제",
+      "source_url": "https://biz.heraldcorp.com/article/10867581",
+      "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "청담 르엘, 반려동물 전용 그루밍 라운지 커뮤니티 시설로 추가",
-      "summary": "청담 르엘이 반려동물 동반 가구를 위한 전용 그루밍 라운지를 커뮤니티 시설에 새로 추가했다.",
-      "facility_type": "펫",
-      "source": "아파트멘터리",
-      "source_url": ""
+      "title": "청담 르엘, 피트니스·골프·북라운지 등 커뮤니티 시설 운영",
+      "summary": "강남구 청담동 청담 르엘(롯데건설)이 지하 1층 '살롱드르엘'에 피트니스·필라테스·사우나를 두고, 22타석 실내골프클럽과 실내수영장, 한강이 보이는 34층 북라운지 등을 운영하고 있다.",
+      "facility_type": "스포츠",
+      "source": "매일경제",
+      "source_url": "https://www.mk.co.kr/news/realestate/11473245",
+      "image_url": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "한남더힐, 입주민 전용 와인 셀러·테이스팅 룸 리모델링 완료",
-      "summary": "한남더힐이 기존 와인 셀러 공간을 테이스팅 룸과 함께 리모델링해 입주민 전용 다이닝 경험을 강화했다.",
+      "title": "한남더힐, 스크린골프·사우나·웰니스 스파 등 커뮤니티 시설 운영",
+      "summary": "용산구 한남동 한남더힐이 지하 커뮤니티센터에 수영장(4레인)·사우나·스크린골프·GX룸을 두고 별도 골프연습장과 클럽하우스·연회장·게스트룸·독서실 등을 운영하고 있다.",
       "facility_type": "다이닝",
-      "source": "조선일보",
-      "source_url": ""
+      "source": "한남더힐 전문 부동산",
+      "source_url": "http://www.thehillhannam.com/html/sub02_02.html",
+      "image_url": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80"
     }
   ],
   "global": [
     {
-      "title": "원 하이드 파크 레지던스, 전용 아이스 배스·냉온 테라피 스위트 오픈",
-      "summary": "런던 원 하이드 파크 레지던스가 입주민 전용 아이스 배스와 냉온 테라피 스위트를 새롭게 선보였다.",
+      "title": "원 하이드 파크, 전용 와인 셀러·스파 등 호텔급 커뮤니티 시설 운영",
+      "summary": "런던 원 하이드 파크(만다린 오리엔탈 운영)가 세대별 전용 와인 셀러, 오존 수영장, 스파·사우나 등 호텔급 커뮤니티 시설을 운영하고 있다.",
       "facility_type": "웰니스",
-      "source": "Mansion Global",
-      "source_url": ""
+      "source": "Country Life",
+      "source_url": "https://www.countrylife.co.uk/property/london-property/one-hyde-park-apartment-in-knightsbridge-12711",
+      "image_url": "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "432 파크 애비뉴, 전용 시가 라운지·휴먹 룸 리노베이션",
-      "summary": "뉴욕 432 파크 애비뉴가 입주민 전용 시가 라운지와 휴먹 룸을 리노베이션해 재단장했다.",
+      "title": "432 파크 애비뉴, 1900여 병 규모 와인 셀러·빌리어드룸 운영",
+      "summary": "뉴욕 432 파크 애비뉴가 최대 1,932병을 보관할 수 있는 와인 셀러와 아술린 큐레이션 서재를 갖춘 빌리어드룸을 포함해 3개 층 규모의 커뮤니티 공간을 운영하고 있다.",
       "facility_type": "라운지",
-      "source": "The Real Deal",
-      "source_url": ""
+      "source": "Forbes",
+      "source_url": "https://www.forbes.com/sites/kristintablang/2016/07/21/432-park-avenue-amenity-spaces-revealed/",
+      "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "원 팜 자메이라, 전용 요트 발레파킹 서비스 도입",
-      "summary": "두바이 원 팜 자메이라가 입주민 전용 요트에 대한 발레파킹 서비스를 새롭게 도입했다.",
+      "title": "두바이 원 팜 자메이라, 전용 제티·요트 계류 서비스 운영",
+      "summary": "두바이 원 팜 자메이라(Omniyat)가 세대별 전용 제티와 요트 계류 공간, 해상 리프트를 통한 바다 직접 접근, 도체스터 컬렉션 관리의 호텔급 서비스를 제공하고 있다.",
       "facility_type": "레저",
-      "source": "Arabian Business",
-      "source_url": ""
+      "source": "Luxhabitat",
+      "source_url": "https://www.luxhabitat.ae/developments/dubai/the-one/",
+      "image_url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "싱가포르 리버 밸리 하이엔드 콘도, IV 테라피 룸 커뮤니티 시설로 신설",
-      "summary": "싱가포르 리버 밸리의 한 하이엔드 콘도가 입주민 대상 IV 테라피 룸을 커뮤니티 시설로 신설했다.",
+      "title": "싱가포르 리버 밸리 신규 콘도, 웰니스 중심 커뮤니티 시설 경쟁",
+      "summary": "싱가포르 리버 밸리 일대 신규 분양 콘도들이 50m 랩풀, 하이드로테라피풀, 요가·필라테스 전용 공간 등 웰니스 시설을 핵심 경쟁력으로 내세우고 있다.",
       "facility_type": "웰니스",
-      "source": "The Business Times Singapore",
-      "source_url": ""
+      "source": "99.co",
+      "source_url": "https://www.99.co/singapore/insider/river-modern-new-launch-review/",
+      "image_url": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "마이애미 세인트 레지스 레지던스, 전용 수영장에 수중 음향 시스템 설치",
-      "summary": "마이애미 세인트 레지스 레지던스가 입주민 전용 수영장에 수중 음향 시스템을 새로 설치했다.",
+      "title": "마이애미 세인트 레지스 레지던스, 전용 마리나·요트 차터 서비스 운영",
+      "summary": "마이애미 세인트 레지스 레지던스(Related Group)가 전용 마리나와 요트 차터, 전용 비치클럽 접근권, 미쉐린 셰프 입주민 전용 다이닝 등을 운영하고 있다.",
       "facility_type": "레저",
-      "source": "Mansion Global",
-      "source_url": ""
+      "source": "St. Regis Residences Miami",
+      "source_url": "https://stregis-brickellresidences.com/amenities/",
+      "image_url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "홍콩 모스트 데저러블 콘도, 전용 헬리패드 접근 서비스 재개",
-      "summary": "홍콩의 한 초고가 콘도가 입주민을 위한 전용 헬리패드 접근 서비스를 재개했다.",
+      "title": "홍콩 더 피크, 연간 신규 공급 100채 미만의 극심한 희소성",
+      "summary": "CBRE 홍콩 보고서에 따르면 더 피크 지역의 연간 신규 주택 공급은 100채 미만에 불과해 일반 주택 상품이 아닌 독자적 자산군으로 평가된다.",
       "facility_type": "레저",
-      "source": "South China Morning Post",
-      "source_url": ""
+      "source": "CBRE Hong Kong",
+      "source_url": "https://www.cbre.com.hk/insights/articles/hong-kong-new-supply-landscape-luxury-residential-market-2026",
+      "image_url": "https://images.unsplash.com/photo-1534009917488-f32d769deefb?auto=format&fit=crop&w=1200&q=80"
     }
   ]
 }

@@ -8,30 +8,34 @@
       "summary": "오랜 역사를 가진 월간지 '샘터'가 소장해온 미술품들이 케이옥션 경매에 출품돼 미술 수집 시장의 관심을 모았다.",
       "source": "스포탈코리아",
       "source_url": "https://www.sportalkorea.com/news/articleView.html?idxno=2025052909553352429",
-      "date": "2026-09-25"
+      "date": "2026-09-25",
+      "image_url": "https://images.unsplash.com/photo-1577720580479-7d839d829c73?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "title": "김홍도 그림·박수근 신문 삽화 등 근현대 미술품 경매 출품",
       "summary": "김홍도의 그림과 박수근의 신문 삽화를 포함한 희귀 근현대 미술품들이 경매 시장에 출품돼 컬렉터들의 주목을 받았다.",
       "source": "헤럴드경제",
       "source_url": "https://biz.heraldcorp.com/article/10881517",
-      "date": "2026-09-22"
+      "date": "2026-09-22",
+      "image_url": "https://images.unsplash.com/photo-1501699169021-3759ee435d66?auto=format&fit=crop&w=1200&q=80"
     }
   ],
   "global": [
     {
-      "title": "쿠사마 야요이 작품, 글로벌 아트페어서 재조명",
-      "summary": "일본 작가 쿠사마 야요이의 작품이 글로벌 아트페어에서 다시 주목받으며 하이엔드 컬렉터들의 수요를 자극했다.",
-      "source": "아주경제",
-      "source_url": "",
-      "date": "2026-09-23"
+      "title": "쿠사마 야요이 대규모 회고전, 암스테르담 스테델릭 미술관서 개막",
+      "summary": "지난 8월 별세한 쿠사마 야요이의 70여 년 창작 활동을 조망하는 대규모 회고전이 암스테르담 스테델릭 미술관에서 추모전 형식으로 개막해 미술 시장과 컬렉터들의 재조명을 이끌었다.",
+      "source": "아트코리아방송",
+      "source_url": "https://www.artkoreatv.com/news/articleView.html?idxno=104668",
+      "date": "2026-09-26",
+      "image_url": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?auto=format&fit=crop&w=1200&q=80"
     },
     {
-      "title": "ARTness, 아먼드 해머 컬렉션 관련 보도",
-      "summary": "ARTnews가 아먼드 해머의 미술품 컬렉션과 관련된 최근 동향을 보도하며 글로벌 아트 컬렉팅 시장의 흐름을 짚었다.",
+      "title": "소더비, 아먼드 해머 컬렉션 3700만달러 규모 경매 출품",
+      "summary": "ARTnews가 소더비 경매에 출품된 아먼드 해머 컬렉션(드가·카사트·르누아르·피사로 등)이 3700만달러 규모로 미술 시장 움직임을 이끌었다고 보도했다.",
       "source": "ARTnews",
-      "source_url": "",
-      "date": "2026-09-24"
+      "source_url": "https://www.artnews.com/art-news/market/sothebys-armand-hammer-auction-industry-moves-september-23-2026-1234799166/",
+      "date": "2026-09-24",
+      "image_url": "https://images.unsplash.com/photo-1549887552-cb1071d3e5ca?auto=format&fit=crop&w=1200&q=80"
     }
   ]
 }

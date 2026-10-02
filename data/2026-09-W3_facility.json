@@ -5,72 +5,82 @@
   "domestic": {
     "popular": [
       {
-        "name": "프라이빗 라운지 바",
+        "name": "문화·웰니스 콘텐츠 예약형 커뮤니티 ('H 컬처클럽' 등)",
         "trend": "지속 강세",
-        "summary": "입주민만 출입 가능한 프라이빗 라운지 바가 신축 하이엔드 단지의 핵심 커뮤니티 시설로 자리잡고 있다.",
-        "source_url": ""
+        "summary": "전용 앱으로 문화·예술·건강 콘텐츠를 예약하는 큐레이션형 커뮤니티 서비스가 신축 하이엔드 단지의 핵심 시설로 자리잡고 있다. 디에이치 방배의 'H 컬처클럽'이 대표적 사례다.",
+        "source_url": "https://www.seoulfn.com/news/articleView.html?idxno=633129",
+        "image_url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "조식 서비스 (셰프 상주형)",
+        "name": "셰프 협업형 다이닝 서비스",
         "trend": "확산",
-        "summary": "외부 위탁이 아닌 전담 셰프 상주 체계의 조식 서비스가 하이엔드 단지 사이에서 표준으로 자리잡아가고 있다.",
-        "source_url": ""
+        "summary": "유명 셰프와 협업한 특별 다이닝·도시락 서비스가 입주 이벤트를 넘어 상시 커뮤니티 다이닝 서비스로 확대되는 추세다.",
+        "source_url": "https://www.seoulfn.com/news/articleView.html?idxno=633129",
+        "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "북카페형 라이브러리",
+        "name": "대형 북카페형 라운지",
         "trend": "지속 강세",
-        "summary": "서재 분위기의 북카페형 라운지가 입주민 휴식 공간으로 꾸준히 선호되고 있다.",
-        "source_url": ""
+        "summary": "수천 권 규모 장서를 갖춘 북카페형 라운지가 입주민 휴식 공간으로 꾸준히 선호되고 있다.",
+        "source_url": "https://www.newsis.com/view/NISX20260923_0003802531",
+        "image_url": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1200&q=80"
       }
     ],
     "emerging": [
       {
-        "name": "반려동물 전용 그루밍 라운지",
+        "name": "반려동물 토탈케어 라운지",
         "trend": "신규 등장",
-        "summary": "반려동물 동반 가구를 위한 전용 그루밍 공간이 신규 커뮤니티 시설로 등장하고 있다.",
-        "source_url": ""
+        "summary": "반려동물 동반 가구를 위한 토탈케어 공간이 신규 커뮤니티 시설로 등장하고 있다.",
+        "source_url": "https://www.seoulfn.com/news/articleView.html?idxno=633129",
+        "image_url": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "스윙 분석 시스템 결합 골프 연습장",
+        "name": "조식 다이닝 카페",
         "trend": "신규 등장",
-        "summary": "정밀 스윙 분석 장비를 결합한 실내 골프 연습장이 신축 단지에 새롭게 도입되고 있다.",
-        "source_url": ""
+        "summary": "조식 서비스를 제공하는 다이닝 카페가 하이엔드 단지의 커뮤니티 시설로 새롭게 조성되고 있다.",
+        "source_url": "https://biz.heraldcorp.com/article/10867581",
+        "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
       }
     ]
   },
   "global": {
     "popular": [
       {
-        "name": "전용 시가 라운지",
+        "name": "전용 와인 셀러",
         "trend": "지속 강세",
-        "summary": "뉴욕·런던 등 주요 도시 하이엔드 레지던스에서 전용 시가 라운지가 꾸준한 인기 시설로 유지되고 있다.",
-        "source_url": ""
+        "summary": "뉴욕·런던 등 주요 도시 하이엔드 레지던스에서 세대별 전용 와인 셀러가 꾸준한 인기 시설로 유지되고 있다. 432 파크 애비뉴는 최대 1,932병 규모의 와인 셀러를 운영한다.",
+        "source_url": "https://www.432parkavenue.com/lifestyle-services/",
+        "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "요트 발레파킹 서비스",
-        "trend": "확산",
-        "summary": "워터프런트 하이엔드 레지던스에서 요트 전용 발레파킹 서비스가 점차 확산되고 있다.",
-        "source_url": ""
+        "name": "호텔 운영사 연계 커뮤니티 서비스",
+        "trend": "지속 강세",
+        "summary": "만다린 오리엔탈 등 호텔 운영사가 직접 관리하는 레지던스 커뮤니티 서비스가 꾸준히 확산되고 있다.",
+        "source_url": "https://www.countrylife.co.uk/property/london-property/one-hyde-park-apartment-in-knightsbridge-12711",
+        "image_url": "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1200&q=80"
       }
     ],
     "emerging": [
       {
-        "name": "IV 테라피 룸",
+        "name": "워터프런트 레지던스 전용 서비스",
         "trend": "신규 등장",
-        "summary": "입주민 대상 정맥 영양 테라피 룸이 아시아 하이엔드 콘도의 새로운 웰니스 시설로 등장하고 있다.",
-        "source_url": ""
+        "summary": "두바이 등 워터프런트 하이엔드 레지던스에서 전용 비치·요트 접근 서비스가 점차 확산되고 있다.",
+        "source_url": "",
+        "image_url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "아이스 배스·냉온 테라피 스위트",
+        "name": "아시아 하이엔드 콘도 웰니스 시설",
         "trend": "신규 등장",
-        "summary": "회복·웰니스 트렌드에 맞춰 아이스 배스와 냉온 테라피를 결합한 전용 스위트가 새로 생겨나고 있다.",
-        "source_url": ""
+        "summary": "싱가포르 등 아시아 주요 도시 하이엔드 콘도에서 웰니스 중심 커뮤니티 시설이 새롭게 강화되고 있다.",
+        "source_url": "https://hitnews.co.uk/modern-luxury-unveiled-a-look-inside-thomson-reserves-lucerne-grand-residences/",
+        "image_url": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        "name": "수중 음향 시스템 결합 전용 수영장",
+        "name": "빌리어드룸·큐레이션 서재 결합 라운지",
         "trend": "신규 등장",
-        "summary": "전용 수영장에 수중 음향 시스템을 결합해 차별화하는 사례가 나타나고 있다.",
-        "source_url": ""
+        "summary": "뉴욕 하이엔드 레지던스에서 큐레이션 서재를 결합한 빌리어드룸이 복합 라운지 형태로 등장하고 있다.",
+        "source_url": "https://www.forbes.com/sites/kristintablang/2016/07/21/432-park-avenue-amenity-spaces-revealed/",
+        "image_url": "https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=1200&q=80"
       }
     ]
   }

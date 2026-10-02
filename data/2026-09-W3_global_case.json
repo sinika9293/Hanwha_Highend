@@ -4,110 +4,123 @@
   "range_label": "2026년 9월 21일 ~ 9월 27일",
   "domestic": [
     {
-      "project": "방배 디에이치 클래스트",
+      "project": "디에이치 방배",
       "location": "서울 서초구 방배동",
       "developer": "현대건설",
-      "summary": "입주를 앞두고 북카페형 커뮤니티 시설 '시그니처 라이브러리'의 세부 구성을 공개하며 하이엔드 커뮤니티 설계 수준을 보여줬다.",
-      "highlight": "북카페형 전용 라운지 '시그니처 라이브러리'",
-      "source_url": ""
+      "summary": "9월 입주를 시작하며 전용 앱으로 문화·예술·건강 콘텐츠를 예약하는 'H 컬처클럽', 약 6000권 장서의 북카페, 반려동물 토탈케어 공간 등을 공개했다. 셰프 정호영과 협업한 입주 특별 도시락을 제공했으며 향후 커뮤니티 다이닝 서비스로 확대할 계획이다.",
+      "highlight": "'H 컬처클럽' 등 큐레이션형 커뮤니티 시설",
+      "source_url": "https://www.seoulfn.com/news/articleView.html?idxno=633129",
+      "image_url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "래미안 원펜타스",
       "location": "서울 서초구 반포동",
       "developer": "삼성물산",
-      "summary": "입주민 전용 프라이빗 라운지 바 운영을 시작하며 상위 평형 단지의 커뮤니티 차별화 경쟁에 나섰다.",
-      "highlight": "입주민 전용 프라이빗 라운지 바",
-      "source_url": ""
+      "summary": "641세대 규모에도 이탈리아 명품 피트니스 브랜드 테크노짐 운동기구, 25m 4레인 수영장, 골프연습장·스크린골프, 사우나 등을 갖췄으며 30층 높이 스카이브릿지에 스카이라운지를 조성해 가구수 대비 넉넉한 커뮤니티로 평가받는다.",
+      "highlight": "30층 스카이라운지·테크노짐 피트니스",
+      "source_url": "https://v.daum.net/v/20240615070012862",
+      "image_url": "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "아크로 서울포레스트",
       "location": "서울 성동구 성수동",
       "developer": "DL이앤씨",
-      "summary": "커뮤니티 내 실내 골프 연습장에 정밀 스윙 분석 시스템을 도입해 입주민 체험형 시설을 강화했다.",
-      "highlight": "스윙 분석 시스템 결합 골프 연습장",
-      "source_url": ""
+      "summary": "각 동 29층에 한강·서울숲 조망이 가능한 '클라우드클럽'을 두어 피트니스·필라테스 운동시설과 연회홀·클럽라운지·게스트룸을 갖췄고, 지하 1층에는 펫 케어룸과 뷰티살롱도 마련했다.",
+      "highlight": "29층 전용 클럽라운지 '클라우드클럽'",
+      "source_url": "https://www.seoul.co.kr/news/economy/estate/2022/10/10/20221010015007",
+      "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+    },
+    {
+      "project": "이촌 르엘",
+      "location": "서울 용산구 이촌동",
+      "developer": "롯데건설",
+      "summary": "조식 서비스를 제공하는 다이닝 카페를 커뮤니티 시설로 조성해 서울주거문화대상(서울시장상)을 수상했다.",
+      "highlight": "조식 서비스 제공 다이닝 카페",
+      "source_url": "https://biz.heraldcorp.com/article/10867581",
+      "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "청담 르엘",
       "location": "서울 강남구 청담동",
       "developer": "롯데건설",
-      "summary": "반려동물 동반 가구를 위한 전용 그루밍 라운지를 커뮤니티 시설에 새로 추가하며 펫 프렌들리 설계를 확대했다.",
-      "highlight": "반려동물 전용 그루밍 라운지",
-      "source_url": ""
-    },
-    {
-      "project": "잠실 르엘",
-      "location": "서울 송파구 잠실동",
-      "developer": "롯데건설",
-      "summary": "조식 서비스를 외부 위탁에서 전담 셰프 상주 체계로 전환하며 입주민 다이닝 서비스 품질을 끌어올렸다.",
-      "highlight": "전담 셰프 상주형 조식 서비스",
-      "source_url": ""
+      "summary": "지하 1층 '살롱드르엘'에 피트니스클럽·필라테스·사우나를 두고, 2개 층 22타석·4대 스크린골프를 갖춘 실내골프클럽과 실내수영장, 북카페, 한강이 보이는 34층 북라운지 등 9400여㎡ 규모 커뮤니티 시설을 운영한다.",
+      "highlight": "살롱드르엘·22타석 실내골프클럽·34층 북라운지",
+      "source_url": "https://www.mk.co.kr/news/realestate/11473245",
+      "image_url": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "한남더힐",
       "location": "서울 용산구 한남동",
       "developer": "현대산업개발",
-      "summary": "기존 와인 셀러 공간을 테이스팅 룸과 함께 리모델링해 입주민 전용 다이닝 경험을 한층 강화했다.",
-      "highlight": "와인 셀러·테이스팅 룸 리모델링",
-      "source_url": ""
+      "summary": "121동 지하 커뮤니티센터에 수영장(4레인)·사우나·스크린골프·GX룸·키즈라이브러리를 두고 별도 골프연습장과 클럽하우스·연회장·게스트룸·독서실 등을 운영하며 호텔급 커뮤니티로 꼽힌다.",
+      "highlight": "지하 커뮤니티센터 수영장·사우나·스크린골프",
+      "source_url": "http://www.thehillhannam.com/html/sub02_02.html",
+      "image_url": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80"
     }
   ],
   "global": [
     {
-      "project": "원 하이드 파크 레지던스",
+      "project": "원 하이드 파크",
       "location": "영국 런던",
       "developer": "Candy & Candy",
-      "summary": "입주민 전용 아이스 배스와 냉온 테라피 스위트를 새롭게 선보이며 웰니스 중심 커뮤니티 시설을 강화했다.",
-      "highlight": "전용 아이스 배스·냉온 테라피 스위트",
-      "source_url": ""
+      "summary": "만다린 오리엔탈이 운영하는 세대별 전용 와인 셀러, 오존 수영장, 스파·사우나 등 호텔급 커뮤니티 시설을 갖추고 있다.",
+      "highlight": "세대별 전용 와인 셀러·호텔급 스파",
+      "source_url": "https://www.countrylife.co.uk/property/london-property/one-hyde-park-apartment-in-knightsbridge-12711",
+      "image_url": "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "432 파크 애비뉴",
       "location": "미국 뉴욕",
       "developer": "CIM Group & Macklowe Properties",
-      "summary": "입주민 전용 시가 라운지와 휴먹 룸을 리노베이션해 상위 평형 입주민 전용 공간을 재단장했다.",
-      "highlight": "전용 시가 라운지·휴먹 룸 리노베이션",
-      "source_url": ""
+      "summary": "최대 1,932병 규모의 와인 셀러와 아술린 큐레이션 서재를 갖춘 빌리어드룸을 포함해 3개 층 규모의 커뮤니티 공간을 운영하고 있다.",
+      "highlight": "1,932병 규모 와인 셀러·빌리어드룸",
+      "source_url": "https://www.forbes.com/sites/kristintablang/2016/07/21/432-park-avenue-amenity-spaces-revealed/",
+      "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "원 팜 자메이라",
       "location": "아랍에미리트 두바이",
       "developer": "Omniyat",
-      "summary": "입주민 전용 요트에 대한 발레파킹 서비스를 새롭게 도입하며 워터프런트 레지던스 서비스를 확대했다.",
-      "highlight": "요트 전용 발레파킹 서비스",
-      "source_url": ""
+      "summary": "두바이 팜 주메이라 트렁크 부지에 위치한 94세대 규모 레지던스로, 세대별 전용 제티·요트 계류 공간과 해상 리프트를 통한 바다 직접 접근, 전용 비치, 도체스터 컬렉션이 관리하는 호텔급 서비스를 제공한다.",
+      "highlight": "전용 제티·요트 계류·해상 리프트",
+      "source_url": "https://www.luxhabitat.ae/developments/dubai/the-one/",
+      "image_url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "리버 밸리 하이엔드 콘도",
       "location": "싱가포르",
-      "developer": "비공개",
-      "summary": "입주민 대상 IV 테라피 룸을 커뮤니티 시설로 신설하며 아시아 하이엔드 콘도의 웰니스 서비스를 확장했다.",
-      "highlight": "IV 테라피 룸 신설",
-      "source_url": ""
+      "developer": "GuocoLand 외",
+      "summary": "싱가포르 리버 밸리 일대에서 분양 중인 리버 모던, 리버 그린 등 신규 콘도들이 50m 랩풀과 하이드로테라피풀, 요가·필라테스 전용 공간 등 웰니스 중심 시설을 핵심 경쟁력으로 내세우고 있다.",
+      "highlight": "50m 랩풀·하이드로테라피풀 등 웰니스 시설",
+      "source_url": "https://www.99.co/singapore/insider/river-modern-new-launch-review/",
+      "image_url": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "세인트 레지스 레지던스",
       "location": "미국 마이애미",
       "developer": "Related Group",
-      "summary": "입주민 전용 수영장에 수중 음향 시스템을 새로 설치하며 레저 시설의 체험 요소를 강화했다.",
-      "highlight": "수중 음향 시스템 결합 전용 수영장",
-      "source_url": ""
+      "summary": "비스케인베이 전면에 들어서는 152세대 규모로, 전용 마리나와 요트 차터 서비스, 전용 비치클럽 접근권, 미쉐린 스타 셰프 파비오 트라보키의 입주민 전용 다이닝 등 5만 평방피트 규모 커뮤니티 시설을 갖췄다.",
+      "highlight": "전용 마리나·요트 차터·미쉐린 셰프 다이닝",
+      "source_url": "https://stregis-brickellresidences.com/amenities/",
+      "image_url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "더 피크 초고가 단독주택",
       "location": "홍콩",
       "developer": "비공개",
-      "summary": "입주민을 위한 전용 헬리패드 접근 서비스를 재개하며 극소수 매물의 희소성과 서비스 수준을 재확인시켰다.",
-      "highlight": "전용 헬리패드 접근 서비스",
-      "source_url": ""
+      "summary": "CBRE 홍콩 보고서에 따르면 더 피크 지역의 연간 신규 주택 공급은 100채 미만에 불과해 일반 주택 상품이 아닌 독자적 자산군으로 평가되며, 노후 인프라에도 불구하고 극심한 공급 제약이 가격을 뒷받침하고 있다.",
+      "highlight": "연간 신규 공급 100채 미만의 극심한 희소성",
+      "source_url": "https://www.cbre.com.hk/insights/articles/hong-kong-new-supply-landscape-luxury-residential-market-2026",
+      "image_url": "https://images.unsplash.com/photo-1534009917488-f32d769deefb?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "project": "마이애미 브랜드 레지던스 신규 공급",
       "location": "미국 마이애미",
       "developer": "복수 디벨로퍼",
-      "summary": "호텔 브랜드와 연계한 신규 브랜드 레지던스 공급이 늘며 기존 하이엔드 콘도 시장과의 경쟁이 치열해지고 있다.",
-      "highlight": "호텔 브랜드 연계 신규 공급 확대",
-      "source_url": ""
+      "summary": "사빌스 '브랜드 레지던스 리포트 2025/26'에 따르면 마이애미는 완공 48개·추가 예정 55개로 두바이에 이어 세계 2위 브랜드 레지던스 시장이며, 완공분보다 많은 파이프라인이 2027~2028년 집중 공급을 예고하고 있다.",
+      "highlight": "완공 48개·추가 예정 55개로 세계 2위 공급",
+      "source_url": "https://luxurydade.com/reports/miami-branded-residences-pipeline-2026",
+      "image_url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
     }
   ]
 }
