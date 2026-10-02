@@ -835,6 +835,10 @@
     align-items: baseline;
   }
   .amenity-item:first-child { border-top: none; }
+  .amenity-item.has-thumb {
+    grid-template-columns: 90px 1fr 140px;
+    align-items: center;
+  }
   .amenity-item .idx {
     font-family: "Optima", "Noto Sans KR", sans-serif;
     font-style: italic;
@@ -907,11 +911,11 @@
     transition: transform 0.9s ease;
   }
   .card-thumb img:hover { transform: scale(1.03); }
-  /* 썸네일이 있는 amenity 카드는 인덱스를 상단 정렬로 전환 */
-  .amenity-item.has-thumb { align-items: start; }
-  .amenity-item .card-thumb {
-    max-width: 640px;
-    margin: 0 0 20px;
+  /* 썸네일이 있는 amenity 카드는 텍스트 줄 오른쪽에 작은 미리보기로 배치 */
+  .amenity-item.has-thumb .card-thumb {
+    grid-column: 3;
+    max-width: 140px;
+    margin: 0;
   }
   /* overseas 카드는 패딩을 상쇄해 상단 풀블리드 */
   .overseas-card .card-thumb {
@@ -1666,10 +1670,10 @@
         <div class="amenity-item${thumb ? " has-thumb" : ""}">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            ${thumb}
             ${meta ? `<span class="meta">${meta}${source ? ` · ${source}` : ""}</span>` : source ? `<span class="meta">${source}</span>` : ""}
             <h4>${cardTitleHtml(title, item.source_url)}</h4>
           </div>
+          ${thumb}
         </div>`;
     }
 
@@ -1714,10 +1718,10 @@
         <div class="amenity-item${item.image_url ? " has-thumb" : ""}">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            ${thumbHtml(item.image_url, title)}
             <span class="meta">${group.label}${item.trend ? ` · ${stripMarkdown(item.trend)}` : ""}</span>
             <h4>${cardTitleHtml(title, item.source_url)}</h4>
           </div>
+          ${thumbHtml(item.image_url, title)}
         </div>`;
         })
         .join("");
@@ -2217,10 +2221,10 @@
         <div class="amenity-item${thumb ? " has-thumb" : ""}">
           <span class="idx">${String(idx + 1).padStart(2, "0")}</span>
           <div>
-            ${thumb}
             ${item.name ? `<h4>${title}</h4>` : ""}
             <p>${stripMarkdown(item.description || "")}</p>
           </div>
+          ${thumb}
         </div>`;
     }
 
