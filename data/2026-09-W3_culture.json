@@ -1,0 +1,37 @@
+{
+  "week": "2026-09-W3",
+  "category": "culture",
+  "range_label": "2026년 9월 21일 ~ 9월 27일",
+  "domestic": [
+    {
+      "title": "월간 '샘터' 소장품, 케이옥션 경매에 출품",
+      "summary": "오랜 역사를 가진 월간지 '샘터'가 소장해온 미술품들이 케이옥션 경매에 출품돼 미술 수집 시장의 관심을 모았다.",
+      "source": "스포탈코리아",
+      "source_url": "https://www.sportalkorea.com/news/articleView.html?idxno=2025052909553352429",
+      "date": "2026-09-25"
+    },
+    {
+      "title": "김홍도 그림·박수근 신문 삽화 등 근현대 미술품 경매 출품",
+      "summary": "김홍도의 그림과 박수근의 신문 삽화를 포함한 희귀 근현대 미술품들이 경매 시장에 출품돼 컬렉터들의 주목을 받았다.",
+      "source": "헤럴드경제",
+      "source_url": "https://biz.heraldcorp.com/article/10881517",
+      "date": "2026-09-22"
+    }
+  ],
+  "global": [
+    {
+      "title": "쿠사마 야요이 작품, 글로벌 아트페어서 재조명",
+      "summary": "일본 작가 쿠사마 야요이의 작품이 글로벌 아트페어에서 다시 주목받으며 하이엔드 컬렉터들의 수요를 자극했다.",
+      "source": "아주경제",
+      "source_url": "",
+      "date": "2026-09-23"
+    },
+    {
+      "title": "ARTness, 아먼드 해머 컬렉션 관련 보도",
+      "summary": "ARTnews가 아먼드 해머의 미술품 컬렉션과 관련된 최근 동향을 보도하며 글로벌 아트 컬렉팅 시장의 흐름을 짚었다.",
+      "source": "ARTnews",
+      "source_url": "",
+      "date": "2026-09-24"
+    }
+  ]
+}

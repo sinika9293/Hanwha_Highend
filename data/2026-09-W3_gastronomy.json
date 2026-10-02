@@ -1,0 +1,37 @@
+{
+  "week": "2026-09-W3",
+  "category": "gastronomy",
+  "range_label": "2026년 9월 21일 ~ 9월 27일",
+  "domestic": [
+    {
+      "title": "웨스틴 조선 서울, 미쉐린 셰프 갈라 디너와 게스트 바텐딩으로 가을밤 물들인다",
+      "summary": "웨스틴 조선 서울이 미쉐린 스타 셰프를 초청한 갈라 디너와 유명 바텐더의 게스트 바텐딩 이벤트를 결합한 가을 시즌 다이닝 프로그램을 선보였다.",
+      "source": "뉴스탭",
+      "source_url": "https://www.newstap.co.kr/news/articleView.html?idxno=315311",
+      "date": "2026-09-23"
+    },
+    {
+      "title": "JW메리어트 동대문 스퀘어 서울, 가을 갈라 디너 선보여",
+      "summary": "JW메리어트 동대문 스퀘어 서울이 가을 제철 식재료를 활용한 특별 갈라 디너를 기획해 프라이빗 다이닝 수요를 공략했다.",
+      "source": "문화일보",
+      "source_url": "",
+      "date": "2026-09-26"
+    }
+  ],
+  "global": [
+    {
+      "title": "셰프 마르쿠스 슈퇴클레, 취리히 구시가지에 레스토랑 'Markus' 오픈",
+      "summary": "스위스 셰프 마르쿠스 슈퇴클레가 취리히 역사적 구시가지에 자신의 이름을 건 파인다이닝 레스토랑을 열었다.",
+      "source": "Hospitality & Catering News",
+      "source_url": "https://www.hospitalityandcateringnews.com/2026/09/chef-markus-stockle-opens-markus-in-zurichs-historic-altstadt/",
+      "date": "2026-09-23"
+    },
+    {
+      "title": "셰프 알레산드로 프로이에티 레프리제리, 가르도네 리비에라 팔라초 비머에서 'Massari' 선보여",
+      "summary": "이탈리아 가르다 호수의 팔라초 비머에서 셰프 알레산드로 프로이에티 레프리제리가 신규 파인다이닝 프로젝트 'Massari'를 론칭했다.",
+      "source": "Gardanotes",
+      "source_url": "https://www.gardanotes.com/massari-at-palazzo-wimmer-chef-alessandro-proietti-refrigeri-gardone-riviera/",
+      "date": "2026-09-22"
+    }
+  ]
+}

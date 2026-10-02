@@ -1,0 +1,37 @@
+{
+  "week": "2026-09-W3",
+  "category": "architecture",
+  "range_label": "2026년 9월 21일 ~ 9월 27일",
+  "domestic": [
+    {
+      "title": "삼성물산, 1.8조원 규모 성수3지구 재개발 수주…포스터+파트너스 협업",
+      "summary": "삼성물산이 성수3지구 재개발 사업을 1.8조원 규모로 수주하며 세계적 건축사무소 포스터+파트너스와 협업한 설계를 선보일 예정이라고 밝혔다.",
+      "source": "헤럴드경제",
+      "source_url": "https://biz.heraldcorp.com/article/10880523",
+      "date": "2026-09-21"
+    },
+    {
+      "title": "삼성물산, 한남4구역에 '한강뷰 극대화' 독창적 설계 적용…UN스튜디오와 협업",
+      "summary": "삼성물산이 한남4구역 재개발에 네덜란드 건축사무소 UN스튜디오와 협업해 한강 조망을 극대화하는 독창적 설계안을 적용했다고 밝혔다.",
+      "source": "글로컬경제",
+      "source_url": "https://www.cwoneconomy.com/news/articleView.html?idxno=6354",
+      "date": "2026-09-26"
+    }
+  ],
+  "global": [
+    {
+      "title": "파크 하얏트, 런던 템스강변에 첫 브랜드 레지던스 론칭",
+      "summary": "파크 하얏트가 런던 템스강변에 103세대 규모의 첫 브랜드 레지던스를 공개했다. 분양가는 179만5000파운드부터 시작한다.",
+      "source": "LanaTime",
+      "source_url": "https://en.lanatime.com/news/park-hyatt-launches-first-branded-residences-in-london-2026-09-23/",
+      "date": "2026-09-23"
+    },
+    {
+      "title": "크리스천 벤스가 디자인한 파크 하얏트 레지던스 인테리어 공개",
+      "summary": "런던 파크 하얏트 레지던스의 인테리어를 디자이너 크리스천 벤스가 맡아, 전통적인 영국식 우아함과 현대적 감각을 결합한 공간을 완성했다.",
+      "source": "Wallpaper*",
+      "source_url": "https://www.wallpaper.com/architecture/residential/park-hyatt-residences-christian-bense-london-uk",
+      "date": "2026-09-23"
+    }
+  ]
+}

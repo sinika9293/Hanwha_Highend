@@ -686,6 +686,110 @@
   .week-select:hover,
   .week-select:focus { border-color: var(--gold); outline: none; }
 
+  /* ---------- Search (header + insight section) ---------- */
+  .site-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--brown);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.25s ease;
+  }
+  .site-header.scrolled .search-toggle { color: var(--cream); }
+  .search-toggle:hover { color: var(--gold); }
+  .search-box {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 10px;
+    z-index: 120;
+  }
+  .search-box.open { display: block; }
+  .site-search .search-input {
+    width: 100%;
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--brown);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.25s ease;
+  }
+  .site-search .search-input:focus { border-color: var(--gold); }
+  .section-search {
+    position: relative;
+    margin-left: auto;
+  }
+  .section-search .search-input {
+    font-family: "Noto Sans KR", "Ryumin", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--brown);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 8px 14px;
+    width: 220px;
+    outline: none;
+    transition: border-color 0.25s ease;
+  }
+  .section-search .search-input:focus { border-color: var(--gold); }
+  .search-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    max-height: 360px;
+    overflow-y: auto;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    z-index: 130;
+  }
+  .site-search .search-results { left: auto; right: 0; width: 280px; }
+  .search-results.open { display: block; }
+  .search-results-group {
+    padding: 10px 14px 4px;
+    font-family: "Optima", "Noto Sans KR", sans-serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .search-result-item {
+    display: block;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--brown);
+    border-top: 1px solid var(--border-soft);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .search-result-item:hover { background: var(--cream-deep); color: var(--gold); }
+  .search-results-empty {
+    padding: 14px;
+    font-size: 13px;
+    color: var(--brown-soft);
+  }
+
   .subtab-bar,
   .year-bar {
     display: flex;
@@ -752,6 +856,18 @@
     color: var(--brown-soft);
     font-size: 14px;
     max-width: 640px;
+  }
+  .amenity-item h4 a.card-link,
+  .overseas-card h4 a.card-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .amenity-item h4 a.card-link:hover,
+  .overseas-card h4 a.card-link:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
   }
   .amenity-item .meta {
     display: inline-block;
@@ -1009,6 +1125,10 @@
     section { padding: 80px 0; }
     .section-head { flex-direction: column; align-items: flex-start; }
     .report-grid { gap: 40px 0; }
+    .search-box { width: calc(100vw - 44px); right: -14px; }
+    .site-search .search-results { width: 100%; }
+    .section-search { width: 100%; margin-left: 0; }
+    .section-search .search-input { width: 100%; }
   }
 </style>
 </head>
@@ -1022,8 +1142,21 @@
     <nav class="site-nav">
       <a href="#reports">Reports</a>
       <a href="#insight">Insight</a>
+      <a href="#lifestyle">Lifestyle</a>
       <a href="https://github.com/sinika9293/Hanwha_Highend" target="_blank" rel="noopener">GitHub</a>
     </nav>
+    <div class="site-search">
+      <button class="search-toggle" id="search-toggle" type="button" aria-label="검색 열기" aria-expanded="false">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <line x1="13.4" y1="13.4" x2="18" y2="18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="search-box" id="search-box">
+        <input type="search" id="site-search-input" class="search-input" placeholder="검색..." autocomplete="off" />
+        <div class="search-results" id="site-search-results"></div>
+      </div>
+    </div>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -1091,6 +1224,10 @@
         <div class="week-bar">
           <label class="week-label" for="insight-week-select">Period</label>
           <select id="insight-week-select" class="week-select"></select>
+          <div class="section-search">
+            <input type="search" id="insight-search-input" class="search-input" placeholder="인사이트 검색..." autocomplete="off" />
+            <div class="search-results" id="insight-search-results"></div>
+          </div>
         </div>
 
         <div class="tab-bar" id="insight-tabs">
@@ -1163,6 +1300,23 @@
             <div class="overseas-placeholder">불러오는 중...</div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="lifestyle">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="label">Lifestyle</span>
+            <h2>하이엔드 라이프스타일</h2>
+          </div>
+          <p id="lifestyle-period-desc">
+            자산가층의 생활·문화·취향을 10개 카테고리로 나누어 국내와 해외로 정리했습니다.
+          </p>
+        </div>
+
+        <div class="tab-bar" id="lifestyle-tabs"></div>
+        <div id="lifestyle-panels"></div>
       </div>
     </section>
 
@@ -1265,6 +1419,26 @@
       facility: { year: 2026, region: "domestic" },
       global_case: { year: 2026, region: "domestic" },
     };
+
+    // 10개 라이프스타일 카테고리 — #insight(SECTION_KEYS/insightState)와는 완전히
+    // 분리된 병렬 네임스페이스. data-lifestyle-tab / data-lifestyle-section 사용.
+    const LIFESTYLE_CATEGORIES = {
+      lifestyle_trend: "Lifestyle 분석",
+      architecture: "주거와 건축",
+      artisan: "장인과 철학",
+      gastronomy: "미식과 요리",
+      private_travel: "프라이빗 여행",
+      culture: "수집과 문화생활",
+      personal_collection: "나만의 수집품",
+      hidden_luxury: "숨겨진 고급",
+      wellness: "건강 관리",
+      luxury_goods: "명품 생활용품",
+    };
+    const LIFESTYLE_KEYS = Object.keys(LIFESTYLE_CATEGORIES);
+
+    const lifestyleState = Object.fromEntries(
+      LIFESTYLE_KEYS.map((key) => [key, { region: "domestic" }])
+    );
 
     function stripMarkdown(text) {
       return String(text || "")
@@ -1476,7 +1650,13 @@
       el.textContent = parts.join(" · ");
     }
 
-    // 타이틀 + 요약 + 출처 카드 (트렌드 · 어메니티 공용)
+    // 제목만 노출하는 클릭스루 카드 (트렌드 · 어메니티 · 라이프스타일 10종 공용)
+    function cardTitleHtml(title, url) {
+      return url
+        ? `<a class="card-link" href="${url}" target="_blank" rel="noopener">${title}</a>`
+        : title;
+    }
+
     function listCardHtml(item, i) {
       const title = stripMarkdown(item.title || item.name);
       const meta = stripMarkdown(item.date || item.facility_type || "");
@@ -1487,10 +1667,8 @@
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
             ${thumb}
-            ${meta ? `<span class="meta">${meta}</span>` : ""}
-            <h4>${title}</h4>
-            <p>${stripMarkdown(item.summary)}</p>
-            ${source ? `<p class="src">출처 · ${source}</p>` : ""}
+            ${meta ? `<span class="meta">${meta}${source ? ` · ${source}` : ""}</span>` : source ? `<span class="meta">${source}</span>` : ""}
+            <h4>${cardTitleHtml(title, item.source_url)}</h4>
           </div>
         </div>`;
     }
@@ -1530,18 +1708,18 @@
       }
 
       document.getElementById("facility-list").innerHTML = rows
-        .map(
-          ({ group, item }, i) => `
+        .map(({ group, item }, i) => {
+          const title = stripMarkdown(item.name);
+          return `
         <div class="amenity-item${item.image_url ? " has-thumb" : ""}">
           <span class="idx">${String(i + 1).padStart(2, "0")}</span>
           <div>
-            ${thumbHtml(item.image_url, stripMarkdown(item.name || ""))}
+            ${thumbHtml(item.image_url, title)}
             <span class="meta">${group.label}${item.trend ? ` · ${stripMarkdown(item.trend)}` : ""}</span>
-            <h4>${stripMarkdown(item.name)}</h4>
-            <p>${stripMarkdown(item.summary)}</p>
+            <h4>${cardTitleHtml(title, item.source_url)}</h4>
           </div>
-        </div>`
-        )
+        </div>`;
+        })
         .join("");
     }
 
@@ -1556,17 +1734,16 @@
       }
 
       document.getElementById("global_case-list").innerHTML = cases
-        .map(
-          (c) => `
+        .map((c) => {
+          const title = stripMarkdown(c.project);
+          return `
         <div class="overseas-card">
-          ${thumbHtml(c.image_url, stripMarkdown(c.project || ""))}
+          ${thumbHtml(c.image_url, title)}
           <span class="region">${stripMarkdown(c.location || "")}</span>
-          <h4>${stripMarkdown(c.project)}</h4>
-          <p>${stripMarkdown(c.summary)}</p>
-          ${c.highlight ? `<p class="highlight">${stripMarkdown(c.highlight)}</p>` : ""}
+          <h4>${cardTitleHtml(title, c.source_url)}</h4>
           ${c.developer ? `<p class="src">시행·시공 · ${stripMarkdown(c.developer)}</p>` : ""}
-        </div>`
-        )
+        </div>`;
+        })
         .join("");
     }
 
@@ -1636,6 +1813,70 @@
       setInsightWeek(week);
       populateWeekSelect();
       SECTION_KEYS.forEach((section) => renderPanel(section));
+    }
+
+    /* ---------- 라이프스타일 10개 카테고리 (#insight와 완전히 분리된 병렬 구조) ---------- */
+
+    function buildLifestyleMarkup() {
+      const tabsHtml = LIFESTYLE_KEYS
+        .map(
+          (key, i) =>
+            `<button class="tab-btn${i === 0 ? " active" : ""}" data-lifestyle-tab="${key}">${LIFESTYLE_CATEGORIES[key]}</button>`
+        )
+        .join("");
+      document.getElementById("lifestyle-tabs").innerHTML = tabsHtml;
+
+      const panelsHtml = LIFESTYLE_KEYS
+        .map(
+          (key, i) => `
+        <div class="tab-panel${i === 0 ? " active" : ""}" id="lifestyle-panel-${key}">
+          <div class="subtab-bar" data-lifestyle-section="${key}">
+            <button class="subtab-btn active" data-region="domestic">국내</button>
+            <button class="subtab-btn" data-region="overseas">해외</button>
+          </div>
+          <p class="tab-intro" id="${key}-intro"></p>
+          <div class="amenity-list" id="${key}-list">
+            <div class="report-placeholder">불러오는 중...</div>
+          </div>
+        </div>`
+        )
+        .join("");
+      document.getElementById("lifestyle-panels").innerHTML = panelsHtml;
+    }
+
+    function setLifestyleEmptyState(message) {
+      LIFESTYLE_KEYS.forEach((key) => placeholder(`${key}-list`, "report-placeholder", message));
+    }
+
+    function setupLifestyleControls() {
+      document.querySelectorAll("#lifestyle-panels .subtab-bar").forEach((bar) => {
+        const key = bar.dataset.lifestyleSection;
+        if (!lifestyleState[key]) return;
+        bar.querySelectorAll(".subtab-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            bar.querySelectorAll(".subtab-btn").forEach((b) => b.classList.toggle("active", b === btn));
+            lifestyleState[key].region = btn.dataset.region;
+            renderListSection(key, lifestyleState[key].region);
+          });
+        });
+      });
+
+      const tabButtons = document.querySelectorAll("#lifestyle-tabs .tab-btn");
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.lifestyleTab;
+          tabButtons.forEach((b) => b.classList.toggle("active", b === btn));
+          document.querySelectorAll("#lifestyle-panels .tab-panel").forEach((panel) => {
+            panel.classList.toggle("active", panel.id === `lifestyle-panel-${key}`);
+          });
+        });
+      });
+    }
+
+    async function initLifestylePanels() {
+      buildLifestyleMarkup();
+      setupLifestyleControls();
+      LIFESTYLE_KEYS.forEach((key) => renderListSection(key, lifestyleState[key].region));
     }
 
     function setupTabs() {
@@ -1718,11 +1959,232 @@
       }
     }
 
+    /* ---------- 검색 (클라이언트 사이드, weekCache 재사용) ---------- */
+
+    const SECTION_LABELS = {
+      trend: "트렌드",
+      amenity: "어메니티",
+      facility: "부대시설",
+      global_case: "해외 개발 사례",
+      ...LIFESTYLE_CATEGORIES,
+    };
+
+    // weekCache[`${INSIGHT_WEEK}:${section}`]에서 카테고리별 아이템을 평탄화한다.
+    // facility(popular/emerging 그룹, item.name)와 global_case(flat, c.project)는
+    // 다른 섹션(item.title)과 필드명이 달라 별도 분기한다.
+    function buildSearchIndex() {
+      const entries = [];
+      [...SECTION_KEYS, ...LIFESTYLE_KEYS].forEach((section) => {
+        const data = weekCache[`${INSIGHT_WEEK}:${section}`];
+        if (!data) return;
+
+        // region은 UI 상태(data-region="domestic"/"overseas")와 동일한 값으로 저장하고,
+        // JSON 조회 시에만 regionKey()로 domestic/global 키로 변환한다.
+        if (section === "facility") {
+          ["domestic", "overseas"].forEach((region) => {
+            const bucket = data[regionKey(region)] || {};
+            FACILITY_GROUPS.forEach((group) => {
+              (bucket[group.key] || []).forEach((item) => {
+                entries.push({
+                  section,
+                  region,
+                  title: stripMarkdown(item.name),
+                  summary: stripMarkdown(item.trend || ""),
+                  source_url: item.source_url || "",
+                });
+              });
+            });
+          });
+        } else if (section === "global_case") {
+          ["domestic", "overseas"].forEach((region) => {
+            (data[regionKey(region)] || []).forEach((item) => {
+              entries.push({
+                section,
+                region,
+                title: stripMarkdown(item.project),
+                summary: stripMarkdown(item.location || ""),
+                source_url: item.source_url || "",
+              });
+            });
+          });
+        } else {
+          ["domestic", "overseas"].forEach((region) => {
+            (data[regionKey(region)] || []).forEach((item) => {
+              entries.push({
+                section,
+                region,
+                title: stripMarkdown(item.title || ""),
+                summary: stripMarkdown(item.summary || ""),
+                source_url: item.source_url || "",
+              });
+            });
+          });
+        }
+      });
+      return entries;
+    }
+
+    function matchSearchEntries(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return buildSearchIndex().filter(
+        (entry) =>
+          entry.title.toLowerCase().includes(q) || entry.summary.toLowerCase().includes(q)
+      );
+    }
+
+    // SECTION_KEYS는 year 게이트(renderPanel)가 있어 활성화 전 insightState[section].year를
+    // INSIGHT_WEEK_YEAR로 되돌리고 .year-btn도 동기화해야 "해당 연도 데이터 준비 중"에
+    // 걸리지 않는다. LIFESTYLE_KEYS는 그런 게이트가 없다.
+    function activateSearchResult(entry) {
+      if (/^#\/report\//.test(window.location.hash)) {
+        window.location.hash = "";
+      }
+      showMainSections();
+
+      if (SECTION_KEYS.includes(entry.section)) {
+        const section = entry.section;
+        insightState[section].region = entry.region;
+        insightState[section].year = INSIGHT_WEEK_YEAR;
+
+        const tabButtons = document.querySelectorAll("#insight-tabs .tab-btn");
+        tabButtons.forEach((b) => b.classList.toggle("active", b.dataset.tab === section));
+        document.querySelectorAll("#insight .tab-panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `panel-${section}`);
+        });
+
+        const subtabBar = document.querySelector(`#insight .subtab-bar[data-section="${section}"]`);
+        if (subtabBar) {
+          subtabBar.querySelectorAll(".subtab-btn").forEach((b) => {
+            b.classList.toggle("active", b.dataset.region === entry.region);
+          });
+        }
+        const yearBar = document.querySelector(`.year-bar[data-section="${section}"]`);
+        if (yearBar) {
+          yearBar.querySelectorAll(".year-btn").forEach((b) => {
+            b.classList.toggle("active", Number(b.dataset.year) === INSIGHT_WEEK_YEAR);
+          });
+        }
+
+        renderPanel(section);
+        document.getElementById(`panel-${section}`).scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        const key = entry.section;
+        lifestyleState[key].region = entry.region;
+
+        const tabButtons = document.querySelectorAll("#lifestyle-tabs .tab-btn");
+        tabButtons.forEach((b) => b.classList.toggle("active", b.dataset.lifestyleTab === key));
+        document.querySelectorAll("#lifestyle-panels .tab-panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `lifestyle-panel-${key}`);
+        });
+
+        const subtabBar = document.querySelector(`#lifestyle-panels .subtab-bar[data-lifestyle-section="${key}"]`);
+        if (subtabBar) {
+          subtabBar.querySelectorAll(".subtab-btn").forEach((b) => {
+            b.classList.toggle("active", b.dataset.region === entry.region);
+          });
+        }
+
+        renderListSection(key, entry.region);
+        document.getElementById(`lifestyle-panel-${key}`).scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function searchResultsHtml(entries) {
+      if (entries.length === 0) {
+        return `<div class="search-results-empty">검색 결과가 없습니다.</div>`;
+      }
+      const grouped = {};
+      entries.forEach((entry) => {
+        (grouped[entry.section] = grouped[entry.section] || []).push(entry);
+      });
+      return Object.entries(grouped)
+        .map(([section, items]) => {
+          const rows = items
+            .slice(0, 8)
+            .map(
+              (entry, i) =>
+                `<div class="search-result-item" data-idx="${i}">${cardTitleHtml(entry.title, "")}</div>`
+            )
+            .join("");
+          return `<div class="search-results-group">${SECTION_LABELS[section] || section}</div>${rows}`;
+        })
+        .join("");
+    }
+
+    function wireSearchBox(inputId, resultsId) {
+      const input = document.getElementById(inputId);
+      const resultsEl = document.getElementById(resultsId);
+      if (!input || !resultsEl) return;
+
+      let currentEntries = [];
+
+      input.addEventListener("input", () => {
+        currentEntries = matchSearchEntries(input.value);
+        if (!input.value.trim()) {
+          resultsEl.classList.remove("open");
+          resultsEl.innerHTML = "";
+          return;
+        }
+        resultsEl.innerHTML = searchResultsHtml(currentEntries);
+        resultsEl.classList.add("open");
+
+        const grouped = {};
+        currentEntries.forEach((entry) => {
+          (grouped[entry.section] = grouped[entry.section] || []).push(entry);
+        });
+        const flatRendered = Object.values(grouped).flatMap((items) => items.slice(0, 8));
+        resultsEl.querySelectorAll(".search-result-item").forEach((el, flatIdx) => {
+          el.addEventListener("click", () => {
+            const entry = flatRendered[flatIdx];
+            if (entry) activateSearchResult(entry);
+            resultsEl.classList.remove("open");
+            input.value = "";
+          });
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!input.contains(e.target) && !resultsEl.contains(e.target)) {
+          resultsEl.classList.remove("open");
+        }
+      });
+    }
+
+    function initSearch() {
+      wireSearchBox("site-search-input", "site-search-results");
+      wireSearchBox("insight-search-input", "insight-search-results");
+
+      const toggleBtn = document.getElementById("search-toggle");
+      const searchBox = document.getElementById("search-box");
+      if (toggleBtn && searchBox) {
+        toggleBtn.addEventListener("click", () => {
+          const open = searchBox.classList.toggle("open");
+          toggleBtn.setAttribute("aria-expanded", String(open));
+          if (open) document.getElementById("site-search-input").focus();
+        });
+        document.addEventListener("click", (e) => {
+          if (!searchBox.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e.target)) {
+            searchBox.classList.remove("open");
+          }
+        });
+      }
+    }
+
+    initSearch();
+
     // 최신 인사이트는 정적 주간 데이터(data/{week}_{category}.json)를 직접 읽으므로
     // 월간 리포트 API 상태와 무관하게 독립적으로 초기화한다.
-    initInsightPanels().catch(() => {
-      setInsightEmptyState("데이터를 불러오지 못했습니다.");
-    });
+    // 라이프스타일 10종도 같은 주차(INSIGHT_WEEK)를 공유하므로 인사이트 초기화 이후에 이어서 실행한다.
+    initInsightPanels()
+      .catch(() => {
+        setInsightEmptyState("데이터를 불러오지 못했습니다.");
+      })
+      .then(() =>
+        initLifestylePanels().catch(() => {
+          setLifestyleEmptyState("데이터를 불러오지 못했습니다.");
+        })
+      );
 
     loadReports();
 

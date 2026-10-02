@@ -1,0 +1,37 @@
+{
+  "week": "2026-09-W3",
+  "category": "lifestyle_trend",
+  "range_label": "2026년 9월 21일 ~ 9월 27일",
+  "domestic": [
+    {
+      "title": "1억 2000만원짜리 위스키 완판…불황 비껴간 추석 VIP 명절 쇼핑",
+      "summary": "백화점 VIP 고객을 겨냥한 초고가 위스키 선물세트가 추석 연휴를 앞두고 완판되는 등, 전반적 소비 둔화 속에서도 자산가층의 명절 쇼핑은 오히려 활발했던 것으로 나타났다.",
+      "source": "뉴스핌",
+      "source_url": "https://newspim.com/news/view/20260923000510",
+      "date": "2026-09-24"
+    },
+    {
+      "title": "신한투자증권, 루이비통과 손잡고 VVIP 전용 뷰티 클래스 운영",
+      "summary": "신한투자증권이 초고액자산가(VVIP) 고객을 대상으로 루이비통과 협업한 비공개 뷰티 클래스를 열어 자산관리 서비스와 라이프스타일 혜택을 결합한 마케팅을 선보였다.",
+      "source": "뉴스핌",
+      "source_url": "https://newspim.com/news/view/20260923000900",
+      "date": "2026-09-23"
+    }
+  ],
+  "global": [
+    {
+      "title": "Knight Frank, '럭셔리의 새로운 희소성' 보고서 발표",
+      "summary": "나이트프랭크가 발표한 보고서에서 공급이 제한된 초고가 자산·상품에 대한 수요가 전 세계적으로 더욱 집중되는 '희소성 프리미엄' 현상을 분석했다.",
+      "source": "Knight Frank",
+      "source_url": "https://www.knightfrank.co.uk/research/article/2026/9/luxurys-new-scarcity",
+      "date": "2026-09-23"
+    },
+    {
+      "title": "AI 붐 속 아시아 증시 호황, 한국·일본 럭셔리 소비 자극",
+      "summary": "AI 관련주 급등에 따른 코스피·닛케이 자산 효과가 한국과 일본의 명품 소비를 다시 끌어올리고 있다는 분석이 나왔다.",
+      "source": "Business Insider",
+      "source_url": "https://www.businessinsider.com/kospi-korea-stock-market-wealth-luxury-spending-hynix-samsung-japan-2026-9",
+      "date": "2026-09-23"
+    }
+  ]
+}

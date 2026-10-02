@@ -1,7 +1,15 @@
 {
-  "generated_on": "2026-09-18",
-  "default": "2026-09-W2",
+  "generated_on": "2026-10-02",
+  "default": "2026-09-W3",
   "weeks": [
+    {
+      "week": "2026-09-W3",
+      "year": 2026,
+      "month": 9,
+      "label": "2026년 9월 3주",
+      "range_label": "2026년 9월 21일 ~ 9월 27일",
+      "sections": ["lifestyle_trend", "architecture", "artisan", "gastronomy", "private_travel", "culture", "personal_collection", "hidden_luxury", "wellness", "luxury_goods"]
+    },
     {
       "week": "2026-09-W2",
       "year": 2026,
