@@ -88,7 +88,21 @@ def collect_category(client: Anthropic, period: WeekPeriod, category_key: str) -
     return structure_category(client, period, category_key, memo)
 
 
-def collect_lifestyle(period: WeekPeriod) -> dict[str, dict]:
-    """10개 라이프스타일 카테고리 전체를 조사·구조화해 반환한다."""
+def collect_lifestyle(
+    period: WeekPeriod, failures: dict[str, str] | None = None
+) -> dict[str, dict]:
+    """10개 라이프스타일 카테고리를 조사·구조화해 반환한다.
+
+    카테고리별로 오류를 격리한다. 실패한 카테고리는 결과에서 빠지고, 사유가
+    `failures`(전달 시)에 기록된다.
+    """
     client = Anthropic()  # ANTHROPIC_API_KEY 환경변수를 자동으로 사용
-    return {key: collect_category(client, period, key) for key in LIFESTYLE_KEYS}
+    results: dict[str, dict] = {}
+    for key in LIFESTYLE_KEYS:
+        try:
+            results[key] = collect_category(client, period, key)
+        except Exception as e:
+            if failures is None:
+                raise
+            failures[key] = f"{type(e).__name__}: {e}"
+    return results
