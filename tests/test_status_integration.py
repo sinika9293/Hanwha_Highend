@@ -8,7 +8,10 @@ import hashlib
 import io
 import json
 import os
+import subprocess
+import sys
 import tempfile
+import textwrap
 import unittest
 from datetime import date
 from pathlib import Path
@@ -467,6 +470,142 @@ class PublicSafetyIntegrationTests(Harness):
                 self.assertNotIn(needle, text)
             self.assertEqual(ops_state.mask_secrets(text, {}), text)
             self.assertNotIn("\r", text)
+
+
+EXIT_CODE_SCRIPT = textwrap.dedent("""
+    import contextlib, io, sys
+    from datetime import date
+    from pathlib import Path
+    from unittest import mock
+    sys.path.insert(0, {root!r})
+    import ops_state, run_insight, run_lifestyle
+    from dates import WeekPeriod
+    name, base, mode = sys.argv[1], Path(sys.argv[2]), sys.argv[3]
+    module = run_insight if name == "insight" else run_lifestyle
+    key = "trend" if name == "insight" else "architecture"
+    collect_name = "collect_insight" if name == "insight" else "collect_lifestyle"
+    period = WeekPeriod(year=2026, week_label="2026-09-W3", start=date(2026, 9, 21), end=date(2026, 9, 27))
+    item = {{"title": "프로세스 종료 코드 확인용 기사 제목", "summary": "s", "source": "m", "source_url": "", "date": "2026-09-23"}}
+
+    def fake_collect(p, fails, *, backend):
+        return {{key: {{"range_label": "r", "domestic": [item], "global": []}}}}
+
+    with contextlib.ExitStack() as st:
+        for target in (module, run_lifestyle):
+            st.enter_context(mock.patch.object(target, "BASE_DIR", base))
+            st.enter_context(mock.patch.object(target, "DATA_DIR", base / "data"))
+        st.enter_context(mock.patch.object(run_lifestyle, "INDEX_PATH", base / "data" / "insight_index.json"))
+        st.enter_context(mock.patch.object(module, "get_last_completed_week_period", lambda: period))
+        st.enter_context(mock.patch.object(module, "prepare_backend", lambda log=print: (object(), None)))
+        st.enter_context(mock.patch.object(module, collect_name, fake_collect))
+        if mode == "fail":
+            st.enter_context(mock.patch.object(ops_state, "write_json_atomic",
+                                               side_effect=ops_state.StatusWriteError("write_failed:OSError")))
+        code = module.main()
+    sys.exit(code)  # run_*.py 의 `if __name__ == "__main__": sys.exit(main())` 와 같은 방식
+""")
+
+
+class ExitCodeTests(Harness):
+    """상태 기록 실패 -> 종료 코드 1, 그 외 정상 -> 0. 두 진입점 모두 같은 규칙이어야 한다."""
+
+    CASES = (("insight", run_insight, "trend"), ("lifestyle", run_lifestyle, "architecture"))
+
+    def payloads(self, module, key):
+        make = self.insight_payloads if module is run_insight else self.lifestyle_payloads
+        return make(**{key: cat([item(TITLE_A, "https://a.com/1")])})
+
+    def data_file(self, base, key):
+        return base / "data" / f"2026-09-W3_{key}.json"
+
+    def test_normal_run_returns_0_for_both_entry_points(self):
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                code, out = self.run_main(module, base, self.payloads(module, key))
+                self.assertEqual(code, 0)
+                self.assertNotIn("STATUS_WRITE_FAILED", out)
+                self.assertEqual(self.status(base)["sections"][key]["effective"]["status"], "saved")
+
+    def test_status_write_failure_returns_1_for_both_entry_points(self):
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                failing = mock.patch.object(ops_state, "write_json_atomic",
+                                            side_effect=ops_state.StatusWriteError("write_failed:OSError"))
+                code, out = self.run_main(module, base, self.payloads(module, key), extra=[failing])
+                self.assertEqual(code, 1)
+                self.assertIn("STATUS_WRITE_FAILED", out)
+                self.assertTrue(self.data_file(base, key).exists())  # 데이터는 이미 저장됨
+                state = ops_state.section_state(base / "ops", "2026-09-W3", key)
+                self.assertEqual((state["status"], state["settled_reason"]), ("unprocessed", "not_run"))
+
+    def test_lock_timeout_during_status_record_returns_1_for_both_entry_points(self):
+        @contextlib.contextmanager
+        def timed_out(*args, **kwargs):
+            raise ops_state.StatusWriteError("lock_timeout")
+            yield  # pragma: no cover
+
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                code, out = self.run_main(module, base, self.payloads(module, key),
+                                          extra=[mock.patch.object(ops_state, "week_lock", timed_out)])
+                self.assertEqual(code, 1)
+                self.assertIn("STATUS_WRITE_FAILED: lock_timeout", out)
+                self.assertTrue(self.data_file(base, key).exists())
+
+    def test_unreadable_existing_status_file_returns_1_and_is_not_overwritten(self):
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                status = ops_state.status_path(base / "ops", "2026-09-W3")
+                status.parent.mkdir(parents=True)
+                status.write_text("{corrupt", encoding="utf-8")
+                code, out = self.run_main(module, base, self.payloads(module, key))
+                self.assertEqual(code, 1)
+                self.assertIn("STATUS_WRITE_FAILED", out)
+                self.assertEqual(status.read_text(encoding="utf-8"), "{corrupt")
+                self.assertTrue(self.data_file(base, key).exists())
+
+    def test_collect_failures_without_status_failure_still_return_0(self):
+        # 상태 기록 실패 외의 종료 코드는 바뀌지 않는다: 수집 실패는 상태에 failed 로 기록되고 종료 코드는 0.
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                code, out = self.run_main(module, base, self.payloads(module, key),
+                                          failures={key: "RuntimeError: api down"})
+                self.assertEqual(code, 0)
+                self.assertIn(f"FAILED {key}", out)
+                self.assertEqual(self.status(base)["sections"][key]["effective"]["status"], "failed")
+
+    def test_legacy_guard_status_write_failure_still_returns_1(self):
+        for name, module, key in self.CASES:
+            with self.subTest(module=name), tempfile.TemporaryDirectory() as t:
+                base = Path(t)
+                (base / "ops").mkdir()
+                (base / "ops" / "legacy_weeks.json").write_text(json.dumps(
+                    {"schema_version": 1, "weeks": {"2026-09-W3": {"reason": "legacy_label_conflict", "approved": True}}}),
+                    encoding="utf-8")
+                failing = mock.patch.object(ops_state, "write_json_atomic",
+                                            side_effect=ops_state.StatusWriteError("write_failed:OSError"))
+                code, out = self.run_main(module, base, self.payloads(module, key), extra=[failing])
+                self.assertEqual(code, 1)
+                self.assertIn("STATUS_WRITE_FAILED", out)
+                self.assertEqual(self.last_collect_calls, [])
+
+    def test_process_exit_status_matches_main_return_value(self):
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONIOENCODING="utf-8")
+        script = EXIT_CODE_SCRIPT.format(root=str(ROOT))
+        for name, module, key in self.CASES:
+            for mode, expected in (("ok", 0), ("fail", 1)):
+                with self.subTest(module=name, mode=mode), tempfile.TemporaryDirectory() as t:
+                    proc = subprocess.run([sys.executable, "-B", "-c", script, name, t, mode], capture_output=True,
+                                          text=True, encoding="utf-8", errors="replace", env=env, cwd=str(ROOT),
+                                          timeout=120)
+                    self.assertEqual(proc.returncode, expected, proc.stderr[-300:])
+                    self.assertEqual("STATUS_WRITE_FAILED" in proc.stdout, mode == "fail")
+                    self.assertTrue((Path(t) / "data" / f"2026-09-W3_{key}.json").exists())
 
 
 if __name__ == "__main__":
