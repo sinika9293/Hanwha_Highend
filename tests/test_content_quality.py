@@ -242,7 +242,11 @@ class CategoryIsolationTests(unittest.TestCase):
     def test_collect_failure_isolated_and_partial_save(self):
         import collect_lifestyle as cl
 
-        def fake_collect(client, period, key):
+        sentinel = object()
+        seen = []
+
+        def fake_collect(backend, period, key):
+            seen.append(backend)
             if key == "wellness":
                 raise RuntimeError("api down")
             return {"range_label": "r", "domestic": [item(title=f"{key} 국내 기사", url=f"https://a.com/{key}d")],
@@ -252,9 +256,11 @@ class CategoryIsolationTests(unittest.TestCase):
         cl.collect_category = fake_collect
         try:
             failures = {}
-            res = cl.collect_lifestyle(PERIOD, failures, backend=object())
+            res = cl.collect_lifestyle(PERIOD, failures, backend=sentinel)
         finally:
             cl.collect_category = orig_collect
+        self.assertEqual(len(seen), 10)
+        self.assertTrue(all(b is sentinel for b in seen))  # 모든 카테고리 호출에 같은 백엔드 전달
         self.assertNotIn("wellness", res)
         self.assertEqual(len(res), 9)
         self.assertIn("wellness", failures)
@@ -275,7 +281,11 @@ class CategoryIsolationTests(unittest.TestCase):
                 base / "data", base / "data" / "insight_index.json", base)
             run_lifestyle.get_last_completed_week_period = lambda: PERIOD
 
-            def fake_collect(period, failures, backend=None):
+            sentinel = object()
+            received = []
+
+            def fake_collect(period, failures, *, backend):  # 필수 키워드: 전달되지 않으면 TypeError
+                received.append(backend)
                 failures["wellness"] = "RuntimeError: api down"
                 return cats
 
@@ -283,7 +293,7 @@ class CategoryIsolationTests(unittest.TestCase):
             from content_quality import filter_items as real_filter
             run_lifestyle.filter_items = lambda *a, **k: real_filter(*a, **k, fetch=lambda u: 200) if False else real_filter(
                 *a, fetch=lambda u: 200, **k)
-            patcher = mock.patch.object(run_lifestyle, "prepare_backend", lambda log=print: (object(), None))
+            patcher = mock.patch.object(run_lifestyle, "prepare_backend", lambda log=print: (sentinel, None))
             patcher.start()
             self.addCleanup(patcher.stop)
             try:

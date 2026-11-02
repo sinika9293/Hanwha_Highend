@@ -80,9 +80,15 @@ _TOKEN_PATTERNS = [
     re.compile(r"\beyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]*"),
 ]
 _BEARER = re.compile(r"(?i)\b(bearer)\s+[A-Za-z0-9._\-]{8,}")
+# 헤더 줄 전체를 지우는 항목 (값에 공백·세미콜론이 섞여도 남기지 않는다)
+_HEADER_LINE = re.compile(
+    r"(?i)(?<![A-Za-z0-9_])(set-cookie|cookie|proxy-authorization|authorization)(['\"]?\s*[:=]\s*)[^\r\n]+"
+)
+# NAME=값 / NAME: 값 / "name": "값" / ?name=값  (이름 앞에 접두어가 붙어도 매칭: ANTHROPIC_API_KEY, GITHUB_TOKEN ...)
 _KEY_VALUE = re.compile(
-    r"(?i)\b(x-api-key|api[_-]?key|authorization|access[_-]?token|token|secret|password)"
-    r"(\s*[:=]\s*)(['\"]?)[^\s'\",;]{4,}"
+    r"(?i)([A-Za-z0-9_\-]*(?:api[_-]?key|access[_-]?token|auth[_-]?token|token|secret|password|passwd|"
+    r"credential|session(?:[_-]?id)?)s?)"
+    r"(['\"]?\s*[:=]\s*)(['\"]?)(?![0-9]+(?:[\s'\",;)]|$))[^\s'\",;&]{4,}"
 )
 _WIN_USER_PATH = re.compile(r"[A-Za-z]:\\Users\\[^\\\s'\"]+")
 _POSIX_USER_PATH = re.compile(r"/(?:home|Users)/[^/\s'\"]+")
@@ -98,6 +104,7 @@ def mask_secrets(text, environ=None) -> str:
             s = s.replace(value, _MASK)
     for pat in _TOKEN_PATTERNS:
         s = pat.sub(_MASK, s)
+    s = _HEADER_LINE.sub(lambda m: f"{m.group(1)}{m.group(2)}{_MASK}", s)
     s = _BEARER.sub(lambda m: f"{m.group(1)} {_MASK}", s)
     s = _KEY_VALUE.sub(lambda m: f"{m.group(1)}{m.group(2)}{m.group(3)}{_MASK}", s)
     s = _WIN_USER_PATH.sub("<local-path>", s)

@@ -157,6 +157,67 @@ class MaskTests(unittest.TestCase):
                            "SomeName", "someone", "a" * 36, "B" * 30):
                 self.assertNotIn(needle, out, s)
 
+    def test_masks_assignment_variants(self):
+        # (입력, 출력에 남으면 안 되는 값)
+        cases = [
+            ("ANTHROPIC_API_KEY=abcd1234efgh5678", "abcd1234efgh5678"),
+            ("export ANTHROPIC_API_KEY=abcd1234efgh", "abcd1234efgh"),
+            ("API_KEY=plainvalue99", "plainvalue99"),
+            ("api-key: plainvalue99", "plainvalue99"),
+            ("x-api-key = plainvalue99", "plainvalue99"),
+            ('ACCESS_TOKEN: "tok_1234abcd"', "tok_1234abcd"),
+            ("GITHUB_TOKEN=notapatternvalue1", "notapatternvalue1"),
+            ("x-auth-token = qwerty123456", "qwerty123456"),
+            ("client_secret=s3cr3tvalue", "s3cr3tvalue"),
+            ("passwd=letmein99", "letmein99"),
+            ("PASSWORD: Zx9!qwerty", "Zx9!qwerty"),
+            ("session=abcdef123456", "abcdef123456"),
+            ("session_id: 9f8e7d6c5b", "9f8e7d6c5b"),
+            ('{"api_key": "json-secret-value"}', "json-secret-value"),
+            ("{'token': 'single-quoted-val'}", "single-quoted-val"),
+            ("GET /v1/x?api_key=urlsecret123&q=1", "urlsecret123"),
+            ("DB_PASSWORD=hunter2hunter2 failed", "hunter2hunter2"),
+        ]
+        for text, needle in cases:
+            with self.subTest(text=text):
+                out = mask_secrets(text, {})
+                self.assertNotIn(needle, out)
+                self.assertIn("[MASKED]", out)
+
+    def test_masks_whole_header_lines(self):
+        cases = [
+            ("Cookie: sid=abcdef123456; theme=dark-mode-x", ("abcdef123456", "dark-mode-x")),
+            ("Set-Cookie: session=abcdef123456; Path=/; HttpOnly", ("abcdef123456",)),
+            ("cookie: session=abcdef123456", ("abcdef123456",)),
+            ("Authorization: Basic dXNlcjpwYXNzd29yZA==", ("dXNlcjpwYXNzd29yZA==",)),
+            ("Authorization: Bearer abcdef0123456789", ("abcdef0123456789",)),
+            ("Proxy-Authorization: Basic cHJveHk6c2VjcmV0", ("cHJveHk6c2VjcmV0",)),
+        ]
+        for text, needles in cases:
+            with self.subTest(text=text):
+                out = mask_secrets(text, {})
+                for needle in needles:
+                    self.assertNotIn(needle, out)
+
+    def test_masking_is_idempotent(self):
+        once = mask_secrets("ANTHROPIC_API_KEY=abcd1234efgh5678 Cookie: a=b", {})
+        self.assertEqual(mask_secrets(once, {}), once)
+
+    def test_normal_log_lines_are_preserved(self):
+        for text in (
+            "RuntimeError: api down",
+            "FAILED trend: RuntimeError: boom",
+            "BackendCallError: APIStatusError: HTTP 429 rate limit exceeded, retry in 30 seconds",
+            "max_tokens: 8000",
+            "tokens used: 1200",
+            "session started",
+            "ANTHROPIC_API_KEY is not set",
+            "AI_BACKEND=anthropic: anthropic SDK is not installed (pip install -r requirements.txt)",
+            "saved 2026-09-W3_trend.json (+1 domestic, +1 global)",
+        ):
+            with self.subTest(text=text):
+                self.assertEqual(mask_secrets(text, {}), text)
+
     def test_masks_env_secret_value(self):
         out = mask_secrets("failed with key my-custom-secret-value", {"ANTHROPIC_API_KEY": "my-custom-secret-value"})
         self.assertNotIn("my-custom-secret-value", out)
