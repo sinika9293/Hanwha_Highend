@@ -12,10 +12,12 @@ import json
 import sys
 from pathlib import Path
 
+import ops_state
 from backends import mask_secrets, prepare_backend
 from collect_lifestyle import collect_lifestyle
 from content_quality import (
     append_run_log,
+    count_items,
     count_shadow,
     filter_items,
     load_section_index,
@@ -74,8 +76,34 @@ def main() -> int:
         return exit_code
 
     period = get_last_completed_week_period()
+
+    # ops 경로는 main() 안에서 BASE_DIR 기준으로 계산한다 (BASE_DIR 을 바꿔 호출하는 코드와 호환).
+    ops_dir = BASE_DIR / "ops"
+    run_id, run_at = ops_state.new_run_id("lifestyle"), now_iso()
+    backend_name = ops_state.safe_identifier(getattr(backend, "name", "unknown"))
+    try:
+        legacy = ops_state.load_legacy_registry(ops_dir / "legacy_weeks.json")
+    except ops_state.StatusError as e:
+        print(f"STATUS_READ_FAILED: {mask_secrets(e)}")
+        return 1
+    if period.week_label in legacy:
+        # 승인된 레거시 주차: AI 호출·데이터·인덱스 변경 없이 실패 시도만 기록한다.
+        blocked = {
+            key: ops_state.SectionOutcome(backend_name, guard=legacy[period.week_label]["reason"])
+            for key in LIFESTYLE_KEYS
+        }
+        try:
+            ops_state.record_run(BASE_DIR, period, "lifestyle", run_id, run_at, blocked, [])
+        except ops_state.StatusError as e:
+            print(f"STATUS_WRITE_FAILED: {mask_secrets(e)}")
+            return 1
+        print(f"{period.week_label}: registered legacy week; nothing was collected or changed")
+        return 1
+
     failures: dict[str, str] = {}
     categories = collect_lifestyle(period, failures, backend=backend)
+    collect_failed = dict(failures)
+    outcomes: dict[str, ops_state.SectionOutcome] = {}
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     log: list[dict] = []
@@ -91,7 +119,7 @@ def main() -> int:
                 for region in ("domestic", "global")
             }
             out_path = DATA_DIR / f"{period.week_label}_{key}.json"
-            merge_category_file(
+            data = merge_category_file(
                 out_path,
                 period.week_label,
                 key,
@@ -100,12 +128,23 @@ def main() -> int:
                 kept["global"],
             )
             saved.append(key)
+            outcomes[key] = ops_state.SectionOutcome(
+                backend_name,
+                saved_new=len(kept["domestic"]) + len(kept["global"]),
+                saved_total=count_items(data["domestic"]) + count_items(data["global"]),
+            )
             for region, items in kept.items():
                 for it in items:
                     kept_records.append((key, region, it.get("title", ""), normalize_url(it.get("source_url", ""))))
             print(f"saved {out_path.name} (+{len(kept['domestic'])} 국내, +{len(kept['global'])} 해외)")
         except Exception as e:
             failures[key] = f"{type(e).__name__}: {mask_secrets(e)}"
+            outcomes[key] = ops_state.SectionOutcome(backend_name, processing_error=type(e).__name__)
+
+    for key in LIFESTYLE_KEYS:
+        if key not in outcomes:  # 수집 단계에서 실패한 섹션
+            outcomes[key] = ops_state.SectionOutcome(
+                backend_name, collect_error=ops_state.error_type_of(collect_failed.get(key)))
 
     if saved:
         _update_insight_index(period, saved)
@@ -124,10 +163,17 @@ def main() -> int:
         {"run_at": now_iso(), "saved": saved, "collect_failed": failures,
          "shadow_l1_only_matches": count_shadow(log), "items": log},
     )
+    # 상태는 데이터·인덱스 저장이 끝난 뒤 마지막에 기록한다.
+    status_failed = False
+    try:
+        ops_state.record_run(BASE_DIR, period, "lifestyle", run_id, run_at, outcomes, log)
+    except ops_state.StatusError as e:
+        print(f"STATUS_WRITE_FAILED: {mask_secrets(e)}")
+        status_failed = True
     for key, reason in failures.items():
         print(f"FAILED {key}: {reason}")
     print(f"log: {log_path}")
-    return 0
+    return 1 if status_failed else 0
 
 
 if __name__ == "__main__":
