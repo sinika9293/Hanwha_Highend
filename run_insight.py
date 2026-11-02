@@ -17,6 +17,7 @@ from content_quality import (
     append_run_log,
     count_items,
     filter_items,
+    count_shadow,
     load_section_index,
     merge_category_file,
     now_iso,
@@ -103,7 +104,8 @@ def main() -> int:
     log_path = append_run_log(
         BASE_DIR / "logs",
         period.week_label,
-        {"run_at": now_iso(), "kind": "insight", "saved": saved, "collect_failed": failures, "items": log},
+        {"run_at": now_iso(), "kind": "insight", "saved": saved, "collect_failed": failures,
+         "shadow_l1_only_matches": count_shadow(log), "items": log},
     )
     for key, reason in failures.items():
         print(f"FAILED {key}: {reason}")

@@ -14,7 +14,16 @@ from pathlib import Path
 
 from backends import mask_secrets, prepare_backend
 from collect_lifestyle import collect_lifestyle
-from content_quality import append_run_log, filter_items, load_existing_index, merge_category_file, now_iso
+from content_quality import (
+    append_run_log,
+    count_shadow,
+    filter_items,
+    load_section_index,
+    load_url_locations,
+    merge_category_file,
+    normalize_url,
+    now_iso,
+)
 from dates import get_last_completed_week_period, today_kst
 from lifestyle_schema import LIFESTYLE_KEYS
 
@@ -69,11 +78,14 @@ def main() -> int:
     categories = collect_lifestyle(period, failures, backend=backend)
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    index = load_existing_index(DATA_DIR)
     log: list[dict] = []
     saved: list[str] = []
+    kept_records: list[tuple[str, str, str, str]] = []  # (카테고리, 지역, 제목, L0 URL)
     for key, payload in categories.items():
         try:
+            # 같은 카테고리의 전체 기존 주간 데이터만 비교한다. 다른 카테고리·주거 섹션과는 중복을 허용하며,
+            # 이번 실행에서 채택한 항목도 이 카테고리 색인에만 쌓인다(카테고리 순서와 무관).
+            index = load_section_index(DATA_DIR, key, period.week_label, same_week_url_dedup=True)
             kept = {
                 region: filter_items(payload.get(region, []), period, index, key, region, log)
                 for region in ("domestic", "global")
@@ -88,6 +100,9 @@ def main() -> int:
                 kept["global"],
             )
             saved.append(key)
+            for region, items in kept.items():
+                for it in items:
+                    kept_records.append((key, region, it.get("title", ""), normalize_url(it.get("source_url", ""))))
             print(f"saved {out_path.name} (+{len(kept['domestic'])} 국내, +{len(kept['global'])} 해외)")
         except Exception as e:
             failures[key] = f"{type(e).__name__}: {mask_secrets(e)}"
@@ -95,11 +110,19 @@ def main() -> int:
     if saved:
         _update_insight_index(period, saved)
         print(f"updated {INDEX_PATH.name} ({period.week_label})")
+        # 같은 기사가 다른 카테고리·섹션에도 있으면 제외하지 않고 로그로만 남긴다(다중 분류 허용).
+        locations = load_url_locations(DATA_DIR)
+        for key, region, title, nurl in kept_records:
+            others = locations.get(nurl, set()) - {key} if nurl else set()
+            if others:
+                log.append({"category": key, "region": region, "title": title,
+                            "action": "multi_classified", "also_in": sorted(others)})
 
     log_path = append_run_log(
         BASE_DIR / "logs",
         period.week_label,
-        {"run_at": now_iso(), "saved": saved, "collect_failed": failures, "items": log},
+        {"run_at": now_iso(), "saved": saved, "collect_failed": failures,
+         "shadow_l1_only_matches": count_shadow(log), "items": log},
     )
     for key, reason in failures.items():
         print(f"FAILED {key}: {reason}")

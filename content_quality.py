@@ -14,7 +14,8 @@ from urllib.error import HTTPError
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
-from dates import WeekPeriod
+from article_keys import key_kind, make_article_key, short_key
+from dates import USABLE_CONFIDENCE, WeekPeriod, date_failure_reason, parse_published
 
 SYNDICATION_RATIO = 0.92
 SYNDICATION_DAYS = 3
@@ -100,6 +101,7 @@ def _collect_entries(node, out: list) -> None:
                     "title": title,
                     "url": node.get("source_url") or "",
                     "date": node.get("date") or "",
+                    "source": node.get("source") if isinstance(node.get("source"), str) else "",
                 }
             )
         for v in node.values():
@@ -123,26 +125,39 @@ def load_existing_index(data_dir: Path) -> list[dict]:
             _collect_entries(json.loads(path.read_text(encoding="utf-8")), entries)
         except (OSError, ValueError):
             continue
-    return [make_index_entry(e["title"], e["url"], e["date"]) for e in entries]
+    return [make_index_entry(e["title"], e["url"], e["date"], source=e["source"]) for e in entries]
 
 
-def make_index_entry(title: str, url: str, date_str: str, url_dedup: bool = True) -> dict:
-    """url_dedup=False 이면 URL 일치로는 중복 판정하지 않는다(제목 기준만 적용)."""
+def proximity_date(date_str) -> date | None:
+    """날짜 근접(syndication) 비교에 쓸 KST 날짜. 신뢰도가 낮은(low) 날짜는 쓰지 않는다."""
+    pd = parse_published(date_str)
+    return pd.date if pd is not None and pd.confidence in USABLE_CONFIDENCE else None
+
+
+def make_index_entry(title: str, url: str, date_str: str, url_dedup: bool = True, source: str = "") -> dict:
+    """url_dedup=False 이면 URL 일치로는 중복 판정하지 않는다(제목 기준만 적용).
+
+    `akey`(article_key)는 내부 색인 전용이다. 현재는 shadow 검증에만 쓰이며 중복 판정(L0)에는 쓰이지 않는다.
+    """
     return {
         "title": title,
         "nurl": normalize_url(url),
         "ntitle": normalize_title(title),
-        "date": parse_date(date_str),
+        "date": proximity_date(date_str),
         "url_dedup": url_dedup,
+        "akey": make_article_key(url, title, parse_published(date_str), source),
     }
 
 
-def load_section_index(data_dir: Path, section: str, week: str, excluded_weeks=()) -> list[dict]:
+def load_section_index(
+    data_dir: Path, section: str, week: str, excluded_weeks=(), same_week_url_dedup: bool = False
+) -> list[dict]:
     """같은 섹션의 주간 파일(`YYYY-MM-Wn_{section}.json`)만 비교 대상으로 삼는다.
 
     다른 섹션 파일은 읽지 않는다. 현재 주차 파일의 항목은 제목 기준으로만 비교한다
     (한 기사에서 여러 항목이 나올 수 있으므로). excluded_weeks 는 월간 종합 데이터가
-    주간 라벨로 저장된 주차로, 비교 대상에서 뺀다.
+    주간 라벨로 저장된 주차로, 비교 대상에서 뺀다. same_week_url_dedup=True 이면 현재 주차 파일의
+    항목도 URL 일치로 중복 판정한다(라이프스타일: 한 기사 = 한 항목, 재실행 멱등성).
     """
     pattern = re.compile(rf"^(\d{{4}}-\d{{2}}-W\d+)_{re.escape(section)}\.json$")
     out: list[dict] = []
@@ -156,7 +171,11 @@ def load_section_index(data_dir: Path, section: str, week: str, excluded_weeks=(
         except (OSError, ValueError):
             continue
         same_week = m.group(1) == week
-        out.extend(make_index_entry(e["title"], e["url"], e["date"], url_dedup=not same_week) for e in entries)
+        url_dedup = (not same_week) or same_week_url_dedup
+        out.extend(
+            make_index_entry(e["title"], e["url"], e["date"], url_dedup=url_dedup, source=e["source"])
+            for e in entries
+        )
     return out
 
 
@@ -169,7 +188,7 @@ def count_items(node) -> int:
 
 def find_duplicate(index: list[dict], title: str, url: str, date_str: str):
     """(reason, matched_title, ratio) 또는 None. 유사도만으로는 'similar' 로그만 남기고 제외하지 않는다."""
-    nurl, ntitle, d = normalize_url(url), normalize_title(title), parse_date(date_str)
+    nurl, ntitle, d = normalize_url(url), normalize_title(title), proximity_date(date_str)
     similar = None
     for e in index:
         if nurl and e["nurl"] == nurl and e.get("url_dedup", True):
@@ -213,11 +232,15 @@ def filter_items(
         base = {"category": category, "region": region, "title": title,
                 "source_url": item.get("source_url", ""), "date": item.get("date", "")}
 
-        d = parse_date(item.get("date"))
-        if d is None:
-            reason = "date_missing" if not item.get("date") else "date_unparseable"
-            log.append({**base, "action": "excluded", "reason": reason})
+        pd = parse_published(item.get("date"))
+        if pd is None:
+            log.append({**base, "action": "excluded", "reason": date_failure_reason(item.get("date"))})
             continue
+        if pd.confidence not in USABLE_CONFIDENCE:  # low: 문장 속에서 찾아낸 날짜는 주차 판정에 쓰지 않는다
+            log.append({**base, "action": "excluded", "reason": "date_low_confidence",
+                        "candidate_date": pd.date.isoformat()})
+            continue
+        d = pd.date
         if not period.contains(d):
             log.append({**base, "action": "excluded", "reason": "date_out_of_range",
                         "period": f"{period.start}~{period.end}"})
@@ -241,10 +264,53 @@ def filter_items(
             if status == "invalid":
                 new_item["source_url"] = ""
 
-        index.append(make_index_entry(title, new_item.get("source_url", "") or url,
-                                      new_item.get("date", ""), url_dedup=url_dedup_new))
+        entry = make_index_entry(title, new_item.get("source_url", "") or url,
+                                 new_item.get("date", ""), url_dedup=url_dedup_new,
+                                 source=item.get("source") if isinstance(item.get("source"), str) else "")
+        _shadow_l1(index, entry, category, region, log)
+        index.append(entry)
         kept.append(new_item)
     return kept
+
+
+def _shadow_l1(index: list[dict], entry: dict, category: str, region: str, log: list[dict]) -> None:
+    """L1(article_key)로는 같지만 L0(nurl)로는 다른 기존 항목이 있으면 로그만 남긴다.
+
+    채택·제외 판정에는 영향을 주지 않는다. URL 전문은 기록하지 않는다(제목과 축약 키만).
+    """
+    akey = entry.get("akey")
+    if key_kind(akey) != "url":
+        return
+    for e in index:
+        if e.get("akey") == akey and e.get("nurl") != entry["nurl"]:
+            log.append({"category": category, "region": region, "title": entry["title"],
+                        "action": "shadow", "reason": "l1_only_match",
+                        "matched_title": e["title"], "key": short_key(akey)})
+            return
+
+
+def count_shadow(log: list[dict]) -> int:
+    return sum(1 for r in log if r.get("action") == "shadow")
+
+
+def load_url_locations(data_dir: Path) -> dict[str, set[str]]:
+    """L0 정규화 URL → 그 URL이 들어 있는 섹션/카테고리 이름 집합 (다중 분류 로그용, 읽기 전용)."""
+    pattern = re.compile(r"^\d{4}-\d{2}-W\d+_(.+)\.json$")
+    out: dict[str, set[str]] = {}
+    for path in sorted(Path(data_dir).glob("*.json")):
+        m = pattern.match(path.name)
+        if not m:
+            continue
+        entries: list[dict] = []
+        try:
+            _collect_entries(json.loads(path.read_text(encoding="utf-8")), entries)
+        except (OSError, ValueError):
+            continue
+        for e in entries:
+            nurl = normalize_url(e["url"])
+            if nurl:
+                out.setdefault(nurl, set()).add(m.group(1))
+    return out
 
 
 def merge_category_file(path: Path, week: str, key: str, range_label: str, domestic: list, global_: list) -> dict:
