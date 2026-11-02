@@ -15,7 +15,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from collect_lifestyle import collect_lifestyle
-from dates import get_last_completed_week_period
+from content_quality import append_run_log, filter_items, load_existing_index, merge_category_file, now_iso
+from dates import get_last_completed_week_period, today_kst
 from lifestyle_schema import LIFESTYLE_KEYS
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -23,9 +24,9 @@ DATA_DIR = BASE_DIR / "data"
 INDEX_PATH = DATA_DIR / "insight_index.json"
 
 
-def _update_insight_index(period) -> None:
+def _update_insight_index(period, keys=LIFESTYLE_KEYS) -> None:
     """insight_index.json의 해당 주차 entry를 찾아(없으면 생성) sections에
-    10개 라이프스타일 키를 추가한다. 기존 섹션 키는 보존한다."""
+    저장에 성공한 라이프스타일 키를 추가한다. 기존 섹션 키는 보존한다."""
     if INDEX_PATH.exists():
         index = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
     else:
@@ -47,13 +48,11 @@ def _update_insight_index(period) -> None:
         index["weeks"].insert(0, week_entry)
 
     existing_sections = set(week_entry.get("sections", []))
-    for key in LIFESTYLE_KEYS:
+    for key in keys:
         if key not in existing_sections:
             week_entry.setdefault("sections", []).append(key)
 
-    from datetime import date
-
-    index["generated_on"] = date.today().isoformat()
+    index["generated_on"] = today_kst().isoformat()
     index["default"] = period.week_label
 
     INDEX_PATH.write_text(
@@ -70,25 +69,45 @@ def main() -> None:
         sys.exit(1)
 
     period = get_last_completed_week_period()
-    categories = collect_lifestyle(period)
+    failures: dict[str, str] = {}
+    categories = collect_lifestyle(period, failures)
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    index = load_existing_index(DATA_DIR)
+    log: list[dict] = []
+    saved: list[str] = []
     for key, payload in categories.items():
-        out_path = DATA_DIR / f"{period.week_label}_{key}.json"
-        data = {
-            "week": period.week_label,
-            "category": key,
-            "range_label": payload.get("range_label", period.range_label),
-            "domestic": payload.get("domestic", []),
-            "global": payload.get("global", []),
-        }
-        out_path.write_text(
-            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"saved {out_path.name}")
+        try:
+            kept = {
+                region: filter_items(payload.get(region, []), period, index, key, region, log)
+                for region in ("domestic", "global")
+            }
+            out_path = DATA_DIR / f"{period.week_label}_{key}.json"
+            merge_category_file(
+                out_path,
+                period.week_label,
+                key,
+                payload.get("range_label", period.range_label),
+                kept["domestic"],
+                kept["global"],
+            )
+            saved.append(key)
+            print(f"saved {out_path.name} (+{len(kept['domestic'])} 국내, +{len(kept['global'])} 해외)")
+        except Exception as e:
+            failures[key] = f"{type(e).__name__}: {e}"
 
-    _update_insight_index(period)
-    print(f"updated {INDEX_PATH.name} ({period.week_label})")
+    if saved:
+        _update_insight_index(period, saved)
+        print(f"updated {INDEX_PATH.name} ({period.week_label})")
+
+    log_path = append_run_log(
+        BASE_DIR / "logs",
+        period.week_label,
+        {"run_at": now_iso(), "saved": saved, "collect_failed": failures, "items": log},
+    )
+    for key, reason in failures.items():
+        print(f"FAILED {key}: {reason}")
+    print(f"log: {log_path}")
 
 
 if __name__ == "__main__":

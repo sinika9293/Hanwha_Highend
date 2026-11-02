@@ -9,7 +9,14 @@ from __future__ import annotations
 
 import calendar
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
+
+KST = timezone(timedelta(hours=9))
+
+
+def today_kst() -> date:
+    """한국 시간(Asia/Seoul, UTC+9) 기준 오늘 날짜. 실행 환경 시간대와 무관하다."""
+    return datetime.now(KST).date()
 
 
 @dataclass(frozen=True)
@@ -36,7 +43,7 @@ def get_previous_month_period(today: date | None = None) -> ReportPeriod:
     `today`를 생략하면 실행 시점의 실제 날짜를 쓴다(운영 시 기본값).
     """
     if today is None:
-        today = date.today()
+        today = today_kst()
 
     year, month = today.year, today.month
     if month == 1:
@@ -53,7 +60,7 @@ def get_previous_month_period(today: date | None = None) -> ReportPeriod:
 def get_next_month_period(today: date | None = None) -> ReportPeriod:
     """`today`가 속한 달의 다음달 1일~말일을 반환한다. coming-soon 플레이스홀더 생성용."""
     if today is None:
-        today = date.today()
+        today = today_kst()
 
     year, month = today.year, today.month
     if month == 12:
@@ -75,6 +82,14 @@ class WeekPeriod:
     end: date  # 일요일
 
     @property
+    def end_exclusive(self) -> date:
+        """다음 주 월요일. 주간 범위는 start 00:00 이상, end_exclusive 00:00 미만(KST)."""
+        return self.end + timedelta(days=1)
+
+    def contains(self, d: date) -> bool:
+        return self.start <= d < self.end_exclusive
+
+    @property
     def range_label(self) -> str:
         """리포트 본문에 쓰는 'YYYY년 M월 D일 ~ M월 D일' 형식."""
         return (
@@ -92,7 +107,7 @@ def get_last_completed_week_period(today: date | None = None) -> WeekPeriod:
     위함이다.
     """
     if today is None:
-        today = date.today()
+        today = today_kst()
 
     last_sunday = today - timedelta(days=today.isoweekday())  # isoweekday: 월=1..일=7
     last_monday = last_sunday - timedelta(days=6)
