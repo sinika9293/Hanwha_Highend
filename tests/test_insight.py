@@ -1,8 +1,10 @@
+import hashlib
 import json
 import os
 import tempfile
 import unittest
 from datetime import date
+from unittest import mock
 from pathlib import Path
 
 import collect_insight as ci
@@ -216,16 +218,24 @@ class RunInsightTests(unittest.TestCase):
         run_lifestyle.INDEX_PATH = base / "data" / "insight_index.json"
         run_insight.get_last_completed_week_period = lambda: period
 
-        def fake_collect(p, fails):
+        sentinel = object()
+        received = []
+
+        def fake_collect(p, fails, *, backend):  # backend는 필수 키워드: 전달되지 않으면 TypeError
+            received.append(backend)
             fails.update(failures or {})
             return fake_payloads
 
         run_insight.collect_insight = fake_collect
         real = cq.filter_items
         run_insight.filter_items = lambda *a, **k: real(*a, fetch=lambda u: 200, **k)
-        os.environ["ANTHROPIC_API_KEY"] = "test"
+        patcher = mock.patch.object(run_insight, "prepare_backend", lambda log=print: (sentinel, None))
+        patcher.start()
+        self.addCleanup(patcher.stop)
         try:
-            run_insight.main()
+            self.assertEqual(run_insight.main(), 0)
+            self.assertEqual(len(received), 1)
+            self.assertIs(received[0], sentinel)  # prepare_backend 반환 객체가 수집 함수에 그대로 전달됨
         finally:
             (run_insight.DATA_DIR, run_insight.BASE_DIR, run_lifestyle.INDEX_PATH,
              run_insight.collect_insight, run_insight.get_last_completed_week_period,
@@ -314,7 +324,9 @@ class RunInsightTests(unittest.TestCase):
                 saved_cfg = (run_insight.DATA_DIR, run_insight.BASE_DIR, run_insight.get_last_completed_week_period)
                 run_insight.DATA_DIR, run_insight.BASE_DIR = base / "data", base
                 run_insight.get_last_completed_week_period = lambda: w4
-                os.environ["ANTHROPIC_API_KEY"] = "test"
+                patcher = mock.patch.object(run_insight, "prepare_backend", lambda log=print: (object(), None))
+                patcher.start()
+                self.addCleanup(patcher.stop)
                 run_insight.main()
             finally:
                 run_insight.collect_insight = saved
@@ -339,10 +351,13 @@ class RunInsightTests(unittest.TestCase):
 
 class CollectIsolationTests(unittest.TestCase):
     def test_collect_insight_isolates_section_failure(self):
-        orig, orig_client = ci.collect_insight_section, ci.Anthropic
-        ci.Anthropic = lambda: None
+        orig = ci.collect_insight_section
 
-        def fake(client, period, section):
+        sentinel = object()
+        seen = []
+
+        def fake(backend, period, section):
+            seen.append(backend)
             if section == "facility":
                 raise RuntimeError("boom")
             return payload(section, [], [])
@@ -350,11 +365,87 @@ class CollectIsolationTests(unittest.TestCase):
         ci.collect_insight_section = fake
         try:
             fails = {}
-            res = ci.collect_insight(PERIOD, fails)
+            res = ci.collect_insight(PERIOD, fails, backend=sentinel)
         finally:
-            ci.collect_insight_section, ci.Anthropic = orig, orig_client
+            ci.collect_insight_section = orig
+        self.assertEqual(len(seen), len(SECTIONS))
+        self.assertTrue(all(b is sentinel for b in seen))  # 모든 섹션 호출에 같은 백엔드 전달
         self.assertEqual(set(res), {"trend", "amenity", "global_case"})
         self.assertIn("facility", fails)
+
+
+# 백엔드 분리 전 기준 커밋(39e4f7c)의 INSIGHT_RESEARCH_PROMPTS 템플릿 SHA-256
+GOLDEN_RESEARCH_PROMPT_SHA256 = {
+    "trend": "36f9e66fae54b523a5c2492246afc38f664f3bc9948bf7a84a2b791b6131b389",
+    "amenity": "b41c0a69981ee0c2d3c71522a83624af07d8d3f7d7a78357bdc6e5fdf7fea862",
+    "facility": "880212e859b42933d3a1ab302c6193ea9d1b23405c4940424079bfc7e8be0047",
+    "global_case": "5599f08aa986a3b6bd7c67bc1eec0c4893dd67a26c3f0bcb84b80ed7315bd4f5",
+}
+
+
+class RecordingBackend:
+    name = "recording"
+
+    def __init__(self, memo="조사 메모 본문", structured=None):
+        self.memo, self.structured = memo, structured if structured is not None else {"ok": True}
+        self.research_calls, self.structure_calls = [], []
+
+    def available(self):
+        return True, "ok"
+
+    def research(self, user_prompt, *, max_searches=None):
+        self.research_calls.append((user_prompt, max_searches))
+        return self.memo
+
+    def structure(self, user_prompt, tool):
+        self.structure_calls.append((user_prompt, tool))
+        return self.structured
+
+
+class PromptPassThroughTests(unittest.TestCase):
+    def test_research_templates_unchanged_from_baseline(self):
+        for section in SECTIONS:
+            digest = hashlib.sha256(ci.INSIGHT_RESEARCH_PROMPTS[section].encode("utf-8")).hexdigest()
+            self.assertEqual(digest, GOLDEN_RESEARCH_PROMPT_SHA256[section], section)
+
+    def test_research_insight_passes_formatted_prompt_only(self):
+        for section in SECTIONS:
+            with self.subTest(section=section):
+                backend = RecordingBackend()
+                memo = ci.research_insight(backend, PERIOD, section)
+                expected = ci.INSIGHT_RESEARCH_PROMPTS[section].format(
+                    range_label=PERIOD.range_label, label=PERIOD.week_label)
+                self.assertEqual(memo, "조사 메모 본문")
+                self.assertEqual(backend.research_calls, [(expected, None)])  # 검색 횟수는 어댑터 기본값 사용
+                self.assertIn(PERIOD.week_label, expected)
+
+    def test_research_insight_empty_memo_still_raises(self):
+        with self.assertRaises(RuntimeError):
+            ci.research_insight(RecordingBackend(memo="  "), PERIOD, "trend")
+
+    def test_structure_insight_passes_exact_user_content_and_tool(self):
+        memo = "메모 내용\n둘째 줄"
+        for section in SECTIONS:
+            with self.subTest(section=section):
+                backend = RecordingBackend(structured={"range_label": "r"})
+                result = ci.structure_insight(backend, PERIOD, section, memo)
+                expected = (
+                    f"대상 기간: {PERIOD.range_label} ({PERIOD.week_label})\n"
+                    "각 항목의 date에는 메모에 적힌 기사 발행일을 YYYY-MM-DD로 옮기고, "
+                    "메모에 발행일이 없으면 빈 문자열로 두세요. 기간 밖 기사는 포함하지 마세요.\n\n"
+                    f"조사 메모:\n{memo}"
+                )
+                self.assertEqual(result, {"range_label": "r"})
+                self.assertEqual(len(backend.structure_calls), 1)
+                prompt, tool = backend.structure_calls[0]
+                self.assertEqual(prompt, expected)
+                self.assertIs(tool, ci.INSIGHT_SUBMIT_TOOLS[section])
+
+    def test_collect_insight_section_chains_memo_into_structure(self):
+        backend = RecordingBackend(memo="연결 확인 메모")
+        ci.collect_insight_section(backend, PERIOD, "amenity")
+        self.assertEqual(len(backend.research_calls), 1)
+        self.assertIn("연결 확인 메모", backend.structure_calls[0][0])
 
 
 if __name__ == "__main__":

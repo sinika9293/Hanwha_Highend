@@ -1,0 +1,38 @@
+name: Tests (Python 3.11, no optional dependencies)
+
+# 무료 수집 경로가 anthropic / python-dotenv 없이 동작하는지 검증한다.
+# 기존 test.yml(requirements.txt 설치 후 전체 테스트)과 별도로 동작하며, 의존성을 설치하지 않는다.
+# 월간 경로(collect.py, main.py)는 anthropic 이 필요하므로 이 job의 대상이 아니다.
+
+on:
+  pull_request: {}
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  no-optional-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Show Python version
+        run: python --version
+
+      # pip install 을 하지 않으므로 아래 확인이 통과해야 "미설치 환경"이다.
+      - name: Assert optional packages are NOT installed
+        run: |
+          python - <<'PY'
+          import importlib.util, sys
+          present = [m for m in ("anthropic", "dotenv", "openpyxl") if importlib.util.find_spec(m)]
+          print("present optional packages:", present)
+          sys.exit(1 if present else 0)
+          PY
+
+      - name: Run backend and isolation tests (no API calls, no secrets)
+        run: python -m unittest tests.test_backends tests.test_isolation -v

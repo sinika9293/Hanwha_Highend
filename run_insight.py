@@ -10,8 +10,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-
+from backends import mask_secrets, prepare_backend
 import run_lifestyle
 from collect_insight import FACILITY_GROUPS, SAVE_FIELDS, TITLE_KEY, collect_insight
 from content_quality import (
@@ -54,21 +53,18 @@ def _filter_region(section: str, bucket, period, index, region: str, log: list) 
     return run(bucket if isinstance(bucket, list) else [], region)
 
 
-def main() -> None:
-    load_dotenv()
-    import os
-
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("환경변수 ANTHROPIC_API_KEY가 설정되어 있지 않습니다.")
-        sys.exit(1)
+def main() -> int:
+    backend, exit_code = prepare_backend()
+    if backend is None:
+        return exit_code
 
     period = get_last_completed_week_period()
     if period.week_label in MONTHLY_SUMMARY_WEEKS:
         print(f"{period.week_label}은(는) 월간 종합 주차라 주간 수집 대상이 아닙니다. 건너뜁니다.")
-        return
+        return 0
 
     failures: dict[str, str] = {}
-    sections = collect_insight(period, failures)
+    sections = collect_insight(period, failures, backend=backend)
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     log: list[dict] = []
@@ -98,7 +94,7 @@ def main() -> None:
             saved.append(key)
             print(f"saved {out_path.name} (+{count_items(kept['domestic'])} 국내, +{count_items(kept['global'])} 해외)")
         except Exception as e:
-            failures[key] = f"{type(e).__name__}: {e}"
+            failures[key] = f"{type(e).__name__}: {mask_secrets(e)}"
 
     if saved:
         run_lifestyle._update_insight_index(period, saved)
@@ -112,7 +108,8 @@ def main() -> None:
     for key, reason in failures.items():
         print(f"FAILED {key}: {reason}")
     print(f"log: {log_path}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

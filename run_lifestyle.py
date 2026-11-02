@@ -12,8 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-
+from backends import mask_secrets, prepare_backend
 from collect_lifestyle import collect_lifestyle
 from content_quality import append_run_log, filter_items, load_existing_index, merge_category_file, now_iso
 from dates import get_last_completed_week_period, today_kst
@@ -60,17 +59,14 @@ def _update_insight_index(period, keys=LIFESTYLE_KEYS) -> None:
     )
 
 
-def main() -> None:
-    load_dotenv()
-    import os
-
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("환경변수 ANTHROPIC_API_KEY가 설정되어 있지 않습니다.")
-        sys.exit(1)
+def main() -> int:
+    backend, exit_code = prepare_backend()
+    if backend is None:
+        return exit_code
 
     period = get_last_completed_week_period()
     failures: dict[str, str] = {}
-    categories = collect_lifestyle(period, failures)
+    categories = collect_lifestyle(period, failures, backend=backend)
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     index = load_existing_index(DATA_DIR)
@@ -94,7 +90,7 @@ def main() -> None:
             saved.append(key)
             print(f"saved {out_path.name} (+{len(kept['domestic'])} 국내, +{len(kept['global'])} 해외)")
         except Exception as e:
-            failures[key] = f"{type(e).__name__}: {e}"
+            failures[key] = f"{type(e).__name__}: {mask_secrets(e)}"
 
     if saved:
         _update_insight_index(period, saved)
@@ -108,7 +104,8 @@ def main() -> None:
     for key, reason in failures.items():
         print(f"FAILED {key}: {reason}")
     print(f"log: {log_path}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
