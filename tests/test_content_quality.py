@@ -2,6 +2,7 @@ import json
 import tempfile
 import unittest
 from datetime import date
+from unittest import mock
 from pathlib import Path
 
 import run_lifestyle
@@ -247,13 +248,13 @@ class CategoryIsolationTests(unittest.TestCase):
             return {"range_label": "r", "domestic": [item(title=f"{key} 국내 기사", url=f"https://a.com/{key}d")],
                     "global": [item(title=f"{key} 해외 기사", url=f"https://a.com/{key}g")]}
 
-        orig_collect, orig_client = cl.collect_category, cl.Anthropic
-        cl.collect_category, cl.Anthropic = fake_collect, lambda: None
+        orig_collect = cl.collect_category
+        cl.collect_category = fake_collect
         try:
             failures = {}
-            res = cl.collect_lifestyle(PERIOD, failures)
+            res = cl.collect_lifestyle(PERIOD, failures, backend=object())
         finally:
-            cl.collect_category, cl.Anthropic = orig_collect, orig_client
+            cl.collect_category = orig_collect
         self.assertNotIn("wellness", res)
         self.assertEqual(len(res), 9)
         self.assertIn("wellness", failures)
@@ -274,7 +275,7 @@ class CategoryIsolationTests(unittest.TestCase):
                 base / "data", base / "data" / "insight_index.json", base)
             run_lifestyle.get_last_completed_week_period = lambda: PERIOD
 
-            def fake_collect(period, failures):
+            def fake_collect(period, failures, backend=None):
                 failures["wellness"] = "RuntimeError: api down"
                 return cats
 
@@ -282,7 +283,9 @@ class CategoryIsolationTests(unittest.TestCase):
             from content_quality import filter_items as real_filter
             run_lifestyle.filter_items = lambda *a, **k: real_filter(*a, **k, fetch=lambda u: 200) if False else real_filter(
                 *a, fetch=lambda u: 200, **k)
-            os.environ["ANTHROPIC_API_KEY"] = "test"
+            patcher = mock.patch.object(run_lifestyle, "prepare_backend", lambda log=print: (object(), None))
+            patcher.start()
+            self.addCleanup(patcher.stop)
             try:
                 run_lifestyle.main()
                 run_lifestyle.main()  # 재실행

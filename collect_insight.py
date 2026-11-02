@@ -8,10 +8,7 @@ collect.py(월간)·collect_lifestyle.py와 같은 2단계(web_search 조사 →
 
 from __future__ import annotations
 
-from anthropic import Anthropic
-
-from collect import MAX_SEARCHES_PER_SECTION, MODEL_RESEARCH, MODEL_STRUCTURE
-from collect import RESEARCH_SYSTEM_PROMPT, STRUCTURE_SYSTEM_PROMPT
+from backends import AIBackend, get_backend, mask_secrets
 from dates import WeekPeriod
 from schema import SECTION_KEYS
 
@@ -154,71 +151,48 @@ emerging(새로 등장)으로 분류하세요. 같은 기사에서 여러 트렌
 }
 
 
-def research_insight(client: Anthropic, period: WeekPeriod, section: str) -> str:
+def research_insight(backend: AIBackend, period: WeekPeriod, section: str) -> str:
     user_prompt = INSIGHT_RESEARCH_PROMPTS[section].format(
         range_label=period.range_label, label=period.week_label
     )
-    response = client.messages.create(
-        model=MODEL_RESEARCH,
-        max_tokens=8000,
-        system=RESEARCH_SYSTEM_PROMPT,
-        tools=[
-            {
-                "type": "web_search_20250305",
-                "name": "web_search",
-                "max_uses": MAX_SEARCHES_PER_SECTION,
-                "user_location": {"type": "approximate", "country": "KR"},
-            }
-        ],
-        messages=[{"role": "user", "content": user_prompt}],
-    )
-    memo = "\n\n".join(b.text for b in response.content if b.type == "text").strip()
+    memo = backend.research(user_prompt).strip()
     if not memo:
         raise RuntimeError(f"[{section}] 1단계 조사에서 텍스트 응답을 받지 못했습니다.")
     return memo
 
 
-def structure_insight(client: Anthropic, period: WeekPeriod, section: str, memo: str) -> dict:
+def structure_insight(backend: AIBackend, period: WeekPeriod, section: str, memo: str) -> dict:
     tool = INSIGHT_SUBMIT_TOOLS[section]
-    response = client.messages.create(
-        model=MODEL_STRUCTURE,
-        max_tokens=8000,
-        system=STRUCTURE_SYSTEM_PROMPT,
-        tools=[tool],
-        tool_choice={"type": "tool", "name": tool["name"]},
-        messages=[
-            {
-                "role": "user",
-                "content": (
-                    f"대상 기간: {period.range_label} ({period.week_label})\n"
-                    "각 항목의 date에는 메모에 적힌 기사 발행일을 YYYY-MM-DD로 옮기고, "
-                    "메모에 발행일이 없으면 빈 문자열로 두세요. 기간 밖 기사는 포함하지 마세요.\n\n"
-                    f"조사 메모:\n{memo}"
-                ),
-            }
-        ],
+    return backend.structure(
+        (
+            f"대상 기간: {period.range_label} ({period.week_label})\n"
+            "각 항목의 date에는 메모에 적힌 기사 발행일을 YYYY-MM-DD로 옮기고, "
+            "메모에 발행일이 없으면 빈 문자열로 두세요. 기간 밖 기사는 포함하지 마세요.\n\n"
+            f"조사 메모:\n{memo}"
+        ),
+        tool,
     )
-    for block in response.content:
-        if block.type == "tool_use" and block.name == tool["name"]:
-            return block.input
-    raise RuntimeError(f"[{section}] 2단계 구조화에서 {tool['name']} 도구 호출을 받지 못했습니다.")
 
 
-def collect_insight_section(client: Anthropic, period: WeekPeriod, section: str) -> dict:
-    return structure_insight(client, period, section, research_insight(client, period, section))
+def collect_insight_section(backend: AIBackend, period: WeekPeriod, section: str) -> dict:
+    return structure_insight(backend, period, section, research_insight(backend, period, section))
 
 
 def collect_insight(
-    period: WeekPeriod, failures: dict[str, str] | None = None, sections=SECTION_KEYS
+    period: WeekPeriod,
+    failures: dict[str, str] | None = None,
+    sections=SECTION_KEYS,
+    backend: AIBackend | None = None,
 ) -> dict[str, dict]:
     """섹션별로 오류를 격리해 조사한다. 실패 섹션은 결과에서 빠지고 사유가 failures에 기록된다."""
-    client = Anthropic()
+    if backend is None:
+        backend = get_backend()
     results: dict[str, dict] = {}
     for key in sections:
         try:
-            results[key] = collect_insight_section(client, period, key)
+            results[key] = collect_insight_section(backend, period, key)
         except Exception as e:
             if failures is None:
                 raise
-            failures[key] = f"{type(e).__name__}: {e}"
+            failures[key] = f"{type(e).__name__}: {mask_secrets(e)}"
     return results

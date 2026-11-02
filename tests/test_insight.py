@@ -3,6 +3,7 @@ import os
 import tempfile
 import unittest
 from datetime import date
+from unittest import mock
 from pathlib import Path
 
 import collect_insight as ci
@@ -216,16 +217,18 @@ class RunInsightTests(unittest.TestCase):
         run_lifestyle.INDEX_PATH = base / "data" / "insight_index.json"
         run_insight.get_last_completed_week_period = lambda: period
 
-        def fake_collect(p, fails):
+        def fake_collect(p, fails, backend=None):
             fails.update(failures or {})
             return fake_payloads
 
         run_insight.collect_insight = fake_collect
         real = cq.filter_items
         run_insight.filter_items = lambda *a, **k: real(*a, fetch=lambda u: 200, **k)
-        os.environ["ANTHROPIC_API_KEY"] = "test"
+        patcher = mock.patch.object(run_insight, "prepare_backend", lambda log=print: (object(), None))
+        patcher.start()
+        self.addCleanup(patcher.stop)
         try:
-            run_insight.main()
+            self.assertEqual(run_insight.main(), 0)
         finally:
             (run_insight.DATA_DIR, run_insight.BASE_DIR, run_lifestyle.INDEX_PATH,
              run_insight.collect_insight, run_insight.get_last_completed_week_period,
@@ -314,7 +317,9 @@ class RunInsightTests(unittest.TestCase):
                 saved_cfg = (run_insight.DATA_DIR, run_insight.BASE_DIR, run_insight.get_last_completed_week_period)
                 run_insight.DATA_DIR, run_insight.BASE_DIR = base / "data", base
                 run_insight.get_last_completed_week_period = lambda: w4
-                os.environ["ANTHROPIC_API_KEY"] = "test"
+                patcher = mock.patch.object(run_insight, "prepare_backend", lambda log=print: (object(), None))
+                patcher.start()
+                self.addCleanup(patcher.stop)
                 run_insight.main()
             finally:
                 run_insight.collect_insight = saved
@@ -339,8 +344,7 @@ class RunInsightTests(unittest.TestCase):
 
 class CollectIsolationTests(unittest.TestCase):
     def test_collect_insight_isolates_section_failure(self):
-        orig, orig_client = ci.collect_insight_section, ci.Anthropic
-        ci.Anthropic = lambda: None
+        orig = ci.collect_insight_section
 
         def fake(client, period, section):
             if section == "facility":
@@ -350,9 +354,9 @@ class CollectIsolationTests(unittest.TestCase):
         ci.collect_insight_section = fake
         try:
             fails = {}
-            res = ci.collect_insight(PERIOD, fails)
+            res = ci.collect_insight(PERIOD, fails, backend=object())
         finally:
-            ci.collect_insight_section, ci.Anthropic = orig, orig_client
+            ci.collect_insight_section = orig
         self.assertEqual(set(res), {"trend", "amenity", "global_case"})
         self.assertIn("facility", fails)
 
