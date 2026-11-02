@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "weeks": {
+    "2026-08-W4": {
+      "reason": "legacy_aggregate",
+      "detail": "Monthly aggregate data stored under a weekly label.",
+      "approved": true,
+      "approved_on": "2026-11-02"
+    },
+    "2026-09-W2": {
+      "reason": "legacy_label_conflict",
+      "detail": "File range 2026-09-08..2026-09-14 conflicts with the current week-label rule (W2 = 2026-09-14..2026-09-20).",
+      "approved": true,
+      "approved_on": "2026-11-02"
+    }
+  }
+}
