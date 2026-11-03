@@ -1,0 +1,36 @@
+# CODEOWNERS - 거버넌스 대상 파일의 변경에 코드 소유자 리뷰를 요구한다.
+#
+# 목적
+#   - 수집 정책(AI 호출 차단), 소스 레지스트리, 라이선스/robots 게이트, 상태 관리,
+#     의존성, 워크플로처럼 "한 번 잘못 바뀌면 권리·보안 문제가 되는" 파일을 지정한다.
+#   - main 브랜치 보호의 "Require review from Code Owners"와 함께 쓸 때만 효력이 있다.
+#
+# 한계 (현재 상태)
+#   - 코드 소유자는 저장소 소유자 1명(@sinika9293)뿐이며 독립된 리뷰어가 없다.
+#     GitHub는 PR 작성자 본인의 승인을 인정하지 않으므로, 소유자가 직접 올린 PR은
+#     독립 승인 없이 관리자 권한(우회)으로만 병합될 수 있다. 이 파일만으로는
+#     "다른 사람의 검토"가 보장되지 않는다.
+#   - 승인 증빙(approved_by, evidence_id, pr_ref 등)은 PR이 수정하는 파일 안의 자기 선언 값이라
+#     코드나 CI로 승인 사실을 검증할 수 없다. 독립 리뷰어를 추가하면 이 파일에 계정을 더한다.
+#   - 아직 존재하지 않는 P5 신규 파일(source_registry.py, safe_fetch.py, ai_policy.py,
+#     source_runner.py, run_sources.py)도 생성 즉시 보호되도록 미리 등록한다.
+#   - 규칙은 마지막으로 일치하는 패턴이 우선한다. 현재는 모든 패턴의 소유자가 같다.
+
+/ops/                     @sinika9293
+/ops_state.py             @sinika9293
+/backends/                @sinika9293
+/collect.py               @sinika9293
+/collect_insight.py       @sinika9293
+/collect_lifestyle.py     @sinika9293
+/main.py                  @sinika9293
+/run_insight.py           @sinika9293
+/run_lifestyle.py         @sinika9293
+/source_registry.py       @sinika9293
+/safe_fetch.py            @sinika9293
+/ai_policy.py             @sinika9293
+/source_runner.py         @sinika9293
+/run_sources.py           @sinika9293
+/requirements*.txt        @sinika9293
+/.env.example             @sinika9293
+/README.md                @sinika9293
+/.github/                 @sinika9293
